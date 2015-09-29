@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JagiWebSample", "JagiWebSample\JagiWebSample.csproj", "{E93FD473-4C37-4DF5-B56B-0E25F2D0F4D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jagi", "Jagi\Jagi.csproj", "{477A3F58-2691-4370-BD44-7C01777C1ADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JagiConsoleSample", "JagiConsoleSample\JagiConsoleSample.csproj", "{42730E79-1F18-41B7-8D81-E28E3591FF05}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E93FD473-4C37-4DF5-B56B-0E25F2D0F4D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E93FD473-4C37-4DF5-B56B-0E25F2D0F4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E93FD473-4C37-4DF5-B56B-0E25F2D0F4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E93FD473-4C37-4DF5-B56B-0E25F2D0F4D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{477A3F58-2691-4370-BD44-7C01777C1ADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{477A3F58-2691-4370-BD44-7C01777C1ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{477A3F58-2691-4370-BD44-7C01777C1ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{477A3F58-2691-4370-BD44-7C01777C1ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42730E79-1F18-41B7-8D81-E28E3591FF05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42730E79-1F18-41B7-8D81-E28E3591FF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42730E79-1F18-41B7-8D81-E28E3591FF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42730E79-1F18-41B7-8D81-E28E3591FF05}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
