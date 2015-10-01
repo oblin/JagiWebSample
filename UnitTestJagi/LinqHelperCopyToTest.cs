@@ -26,7 +26,7 @@ namespace UnitTestJagi
         [TestMethod]
         public void Test_CopyTo_SampleCopy_IgnoreCase()
         {
-            IEnumerable<SampleCopy> result = samples.CopyTo<Sample, SampleCopy>();
+            IEnumerable<SampleCopy2> result = samples.CopyTo<Sample, SampleCopy2>();
             Assert.AreEqual(3, result.Count());
             Assert.AreEqual(11, result.ToList()[0].Number);
             Assert.AreEqual("ABc", result.ToList()[1].Text);
@@ -35,7 +35,7 @@ namespace UnitTestJagi
         [TestMethod]
         public void Test_CopyTo_SampleCopy2_IgnoreCase()
         {
-            var result = samples.CopyTo<Sample, SampleCopy2>();
+            var result = samples.CopyTo<Sample, SampleCopy3>();
             Assert.AreEqual(3, result.Count());
             Assert.AreEqual(11, result.ToList()[0].Number);
             Assert.AreEqual("ABc", result.ToList()[1].Text);

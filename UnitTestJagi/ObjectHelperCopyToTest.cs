@@ -10,16 +10,16 @@ namespace UnitTestJagi
     [TestClass]
     public class ObjectHelperCopyToTest
     {
-        private List<SampleCopy> samples;
+        private List<SampleCopy2> samples;
 
         [TestInitialize]
         public void Setup()
         {
-            samples = new List<SampleCopy>
+            samples = new List<SampleCopy2>
             {
-                new SampleCopy { Number = 11, Text = "Abc" },
-                new SampleCopy { Number = 12, Text = "ABc" },
-                new SampleCopy { Number = 16, Text = "web", StartDate = "2015/3/2".ConvertToDateTime() }
+                new SampleCopy2 { Number = 11, Text = "Abc" },
+                new SampleCopy2 { Number = 12, Text = "ABc" },
+                new SampleCopy2 { Number = 16, Text = "web", StartDate = "2015/3/2".ConvertToDateTime() }
             };
         }
 
@@ -29,7 +29,7 @@ namespace UnitTestJagi
             var result = samples[0].CopyTo();
             Assert.AreEqual(11, result.Number);
 
-            result = new SampleCopy();
+            result = new SampleCopy2();
             samples[1].CopyTo(result);
             Assert.AreEqual(12, result.Number);
         }
@@ -48,7 +48,7 @@ namespace UnitTestJagi
             Assert.IsNull(result.StartDate);
 
             // 測試 Exclude null 不會將空白資料 copy to 欄位
-            result = new SampleCopy();
+            result = new SampleCopy2();
             DateTime targetDate = "2015/03/04".ConvertToDateTime();
             result.StartDate = targetDate;
             samples[1].CopyToExcludeNull(result);
@@ -62,7 +62,7 @@ namespace UnitTestJagi
         [TestMethod]
         public void Test_CopyTo_Complex_Property()
         {
-            SampleCopy source = new SampleCopy
+            SampleCopy2 source = new SampleCopy2
             {
                 Number = 1,
                 Text = "ComplexField"
@@ -84,7 +84,7 @@ namespace UnitTestJagi
         [TestMethod]
         public void Test_CopyToExclude_Complex_Property()
         {
-            SampleCopy source = new SampleCopy
+            SampleCopy2 source = new SampleCopy2
             {
                 Number = 1,
                 Text = "ComplexField"
@@ -94,7 +94,7 @@ namespace UnitTestJagi
 
             Sample testSample = new Sample { Number = 10, Text = "Detail" };
             DateTime testDate = "2012/2/2".ConvertToDateTime();
-            SampleCopy target = new SampleCopy
+            SampleCopy2 target = new SampleCopy2
             {
                 StartDate = testDate,
                 ComplexProp = testSample
@@ -112,7 +112,7 @@ namespace UnitTestJagi
         {
             Sample testSample = new Sample { Number = 10, Text = "Detail" };
             DateTime testDate = "2012/2/2".ConvertToDateTime();
-            SampleCopy source = new SampleCopy
+            SampleCopy2 source = new SampleCopy2
             {
                 Number = 1,
                 Text = "ComplexField",
@@ -120,7 +120,7 @@ namespace UnitTestJagi
                 ComplexProp = testSample
             };
 
-            SampleCopy2 target = new SampleCopy2
+            SampleCopy3 target = new SampleCopy3
             {
                 Id = 1,
                 Number = 2

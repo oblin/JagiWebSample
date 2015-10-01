@@ -1,4 +1,4 @@
-﻿namespace Jagi.Interface
+﻿namespace Jagi.Mapping
 {
     public interface IMapFrom<T>
     {

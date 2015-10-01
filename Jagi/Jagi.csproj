@@ -65,17 +65,20 @@
     <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
-    <Compile Include="Interface\Entity.cs" />
-    <Compile Include="Interface\IEntity.cs" />
-    <Compile Include="Interface\IMapFrom.cs" />
-    <Compile Include="Interface\IMapFromCustomized.cs" />
-    <Compile Include="Interface\IVersionable.cs" />
+    <Compile Include="Database\Entity.cs" />
+    <Compile Include="Database\IEntity.cs" />
+    <Compile Include="Mapping\MappingBaseConfig.cs" />
+    <Compile Include="Mapping\IMapFrom.cs" />
+    <Compile Include="Mapping\IMapFromCustomized.cs" />
+    <Compile Include="Database\IVersionable.cs" />
+    <Compile Include="Mapping\MapTypeConvert.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
