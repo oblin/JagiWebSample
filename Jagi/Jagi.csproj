@@ -62,6 +62,9 @@
   <ItemGroup>
     <Compile Include="Crypto\CryptoProvider.cs" />
     <Compile Include="Crypto\RandomPassword.cs" />
+    <Compile Include="Helpers\LinqHelper.cs" />
+    <Compile Include="Helpers\ObjectHelper.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Interface\Entity.cs" />
     <Compile Include="Interface\IEntity.cs" />
     <Compile Include="Interface\IMapFrom.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jagi.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,7 +23,9 @@ namespace JagiWebSample.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            string testString = "Your contact page. {0} - {1}";
+
+            ViewBag.Message = testString.FormatWith("test", "string");
 
             return View();
         }
