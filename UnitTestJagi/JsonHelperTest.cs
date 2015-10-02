@@ -80,5 +80,22 @@ namespace UnitTestJagi
 
             Assert.AreEqual("complexProp.number", result);
         }
+
+        [TestMethod]
+        public void Test_JsonFor_Model_To_HtmlString()
+        {
+            var mvc = new MockMvc();
+            var sampleModel = mvc.CreateHtmlHelper<Sample>();
+
+            Sample sample = new Sample { Number = 11, Text = "Sample Text" };
+
+            var result = sampleModel.JsonFor(sample);
+
+            var resultObject = JsonConvert.DeserializeObject<dynamic>(result.ToString());
+
+            Assert.IsNull(resultObject.Number);
+            Assert.AreEqual(11, (int)resultObject.number);
+            Assert.AreEqual("Sample Text", (string)resultObject.text);
+        }
     }
 }

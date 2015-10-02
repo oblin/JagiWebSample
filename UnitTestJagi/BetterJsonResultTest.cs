@@ -14,11 +14,8 @@ using System.Web.Routing;
 namespace UnitTestJagi
 {
     [TestClass]
-    public class BetterJsonResultTest
+    public class BetterJsonResultTest : MockMvcBase
     {
-        protected HttpContextBase context;
-        protected HttpRequestBase request;
-        protected HttpResponseBase response;
 
         /// <summary>
         /// 標準設定 Context, Request & Response 提供後續測試
@@ -27,22 +24,7 @@ namespace UnitTestJagi
         [TestInitialize ]
         public void Setup()
         {
-            context = Substitute.For<HttpContextBase>();
-            request = Substitute.For<HttpRequestBase>();
-            response = Substitute.For<HttpResponseBase>();
-            response.Output.Returns(new StringWriter());
-            context.Request.Returns(request);
-            context.Response.Returns(response);
-        }
-
-        protected TestController SetupController()
-        {
-            var routes = new RouteCollection();
-            var controller = new TestController();
-            controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
-            controller.Url = new UrlHelper(new RequestContext(context, new RouteData()), routes);
-
-            return controller;
+            base.SetupHttpContext();
         }
 
         protected virtual void SetupRequestCollection()
@@ -155,51 +137,6 @@ namespace UnitTestJagi
             var resultObjects = JsonConvert.DeserializeObject<List<dynamic>>(responseWrite);
             Assert.AreEqual("Abc", (string)resultObjects[0].text);
             Assert.AreEqual(11, (int)resultObjects[0].number);
-        }
-    }
-
-    public class TestController : JagiControllerBase
-    {
-        public JsonResult GetStandardJson()
-        {
-            var sample = SetupSample();
-            return Json(sample);
-        }
-
-        public JsonResult GetStandardJsonArray()
-        {
-            var samples = SetupSamples();
-            return Json(samples);
-        }
-
-        private static List<Sample> SetupSamples()
-        {
-            var samples = new List<Sample>
-            {
-                new Sample { Number = 11, Text = "Abc", StartDate = "2015/2/2".ConvertToDateTime() },
-                new Sample { Number = 12, Text = "ABc", NullableInt = 1 },
-                new Sample { Number = 13, Text = "AbD", IsChinese = true },
-            };
-            return samples;
-        }
-
-        public JsonResult GetBetterJson()
-        {
-            return BetterJson(SetupSample());
-        }
-
-        public JsonResult GetBetterJsonArray()
-        {
-            var samples = SetupSamples();
-            return BetterJson(samples);
-        }
-
-        private Sample SetupSample()
-        {
-            string text = Request.QueryString["x"];
-            string input = Request.Form["y"];
-            var sample = new Sample { Number = 1, Text = text, StartDate = "2015/2/1".ConvertToDateTime(), EndDate = input };
-            return sample;
         }
     }
 }

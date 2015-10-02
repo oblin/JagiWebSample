@@ -5,12 +5,26 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Jagi.Helpers
 {
     public static class JsonHelper
     {
+        /// <summary>
+        /// 傳回 IHtmlString 代表該物件的 JSON 型態；請注意，使用時候要用 single quote：
+        ///     ng-init='vm.init(@Html.JsonFor(Model))
+        /// 理由是因為 C# 字串採用 double quote
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>傳回 IHtmlString 代表該物件的 JSON 型態</returns>
+        public static IHtmlString JsonFor<T>(this HtmlHelper helper, T obj)
+        {
+            // 傳回 IHTMLString 不會做任何的處理
+            return helper.Raw(obj.ToJson());
+        }
+
         /// <summary>
         /// 將物件轉換成 Json 表達式； ex: {"number":11,"text":"Sample Text","isChinese":false,"startDate":"0001-01-01T00:00:00","endDate":null,"nullableInt":null}
         /// </summary>

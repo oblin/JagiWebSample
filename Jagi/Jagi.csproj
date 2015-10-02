@@ -34,6 +34,14 @@
       <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlTags, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlTags.3.0.0.186\lib\4.0\HtmlTags.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Humanizer, Version=1.37.7.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.1.37.7\lib\portable-win+net40+sl50+wp8+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Humanizer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -109,6 +117,9 @@
     <Compile Include="Mapping\IMapFromCustomized.cs" />
     <Compile Include="Database\IVersionable.cs" />
     <Compile Include="Mapping\MapTypeConvert.cs" />
+    <Compile Include="Mvc\Angular\AngularHelper.cs" />
+    <Compile Include="Mvc\Angular\AngularModelHelper.cs" />
+    <Compile Include="Mvc\Angular\AngularNgRepeatHelper.cs" />
     <Compile Include="Mvc\BetterJsonResult.cs" />
     <Compile Include="Mvc\JagiControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

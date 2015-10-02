@@ -93,7 +93,7 @@ namespace UnitTestJagi
         /// 這裡主要測試 AES key length 128 and 256 哪一個速度比較快；猜測是 128 但事實上不分上下
         /// 因此取消 TestMethod
         /// </summary>
-        [TestMethod]
+        //[TestMethod]
         public void Test_Performance_AES_KeyLength()
         {
             AESCryptoProvider defaultProvider = new AESCryptoProvider();
