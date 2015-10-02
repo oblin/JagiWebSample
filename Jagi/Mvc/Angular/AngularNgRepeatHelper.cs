@@ -4,6 +4,11 @@ using System.Web.Mvc;
 
 namespace Jagi.Mvc.Angular
 {
+    /// <summary>
+    /// 主要產生 &lt;div ng-repeat='sample in samples'&gt;&lt;/div&gt; 的文字
+    /// 可以搭配 .BindingFor() 使用
+    /// </summary>
+    /// <typeparam name="TModel"></typeparam>
     public class AngularNgRepeatHelper<TModel> : AngularModelHelper<TModel>, IDisposable
     {
         public AngularNgRepeatHelper(HtmlHelper helper,

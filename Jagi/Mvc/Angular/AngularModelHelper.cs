@@ -44,6 +44,11 @@ namespace Jagi.Mvc.Angular
         /// Creates a div with an ng-repeat directive to enumerate the specified property,
         /// and returns a new helper you can use for strongly-typed bindings on the items
         /// in the enumerable property.
+        /// 使用方式：
+        ///     @using(var object = model.Repeat(x => x.objects, "object")) {
+        ///         <li>@object.BindingFor(x => x.Title)</li>
+        ///         <li>@object.BindingFor(x => x.Name)</li>
+        ///     }
         /// </summary>
         public AngularNgRepeatHelper<TSubModel> Repeat<TSubModel>(
             Expression<Func<TModel, IEnumerable<TSubModel>>> property, string variableName)

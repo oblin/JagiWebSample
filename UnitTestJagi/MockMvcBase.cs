@@ -45,12 +45,14 @@ namespace UnitTestJagi
 
     public class MockMvc : MockMvcBase
     {
+        public string ViewContextWriteOut { get; set; }
+
         public MockMvc()
         {
             base.SetupHttpContext();
         }
 
-        public HtmlHelper<T> CreateHtmlHelper<T>() where T : new()
+        public HtmlHelper<T> CreateHtmlHelper<T>(bool needOut = false) where T : new()
         {
             var viewDataDictionary = new ViewDataDictionary(new T());
             var controllerContext = new ControllerContext(context, new RouteData(), baseController);
@@ -61,6 +63,9 @@ namespace UnitTestJagi
 
             IViewDataContainer viewDataContainer = Substitute.For<IViewDataContainer>();
             viewDataContainer.ViewData.Returns(viewDataDictionary);
+
+            if (needOut)
+                viewContext.Writer.Write(Arg.Do<string>(x => ViewContextWriteOut = x));
 
             return new HtmlHelper<T>(viewContext, viewDataContainer);
         }
