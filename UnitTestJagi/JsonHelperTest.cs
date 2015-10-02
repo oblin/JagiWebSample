@@ -1,9 +1,7 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using Jagi.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Jagi.Helpers;
 using Newtonsoft.Json;
+using System;
 using System.Linq.Expressions;
 
 namespace UnitTestJagi

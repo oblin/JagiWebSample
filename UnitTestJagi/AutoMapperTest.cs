@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Jagi.Helpers;
 using Jagi.Mapping;
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 

@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using AutoMapper;
 using Jagi.Helpers;
 using Jagi.Mapping;
-using AutoMapper;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Reflection;
 
 namespace UnitTestJagi

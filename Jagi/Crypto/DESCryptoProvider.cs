@@ -6,23 +6,12 @@ using System.Text;
 
 namespace Jagi.Crypto
 {
-    public class CryptoSetting
-    {
-        public string Key { get; set; }
-        public string Iv { get; set; }
-
-        public CryptoSetting(string key, string iv)
-        {
-            this.Key = key;
-            this.Iv = iv;
-        }
-    }
-
     /// <summary>
-    /// 必須要指定 CryptoSetting，或者給予加解密的值
+    /// 必須要指定 CryptoSetting，或者給予加解密的值，缺點：不安全，並且 KEY & IV只能八碼　（６４ｂｉｔ）
+    /// 且速度比 AES 慢上八倍，不建議使用，改用 AESCryptoProvider
     /// 如果不給予指定，必須要使用 ServiceLocator 提供預設的做法
     /// </summary>
-    public class CryptoProvider
+    public class DESCryptoProvider : ICryptoProvider
     {
         private const string _key = "JagiDeft";
         private const string _iv = "J@gi4909";
@@ -30,18 +19,18 @@ namespace Jagi.Crypto
         [Dependency("default")]
         public CryptoSetting Crypto { get; set; }
 
-        public CryptoProvider()
+        public DESCryptoProvider()
         {
             //this.Crypto = new CryptoSetting(_key, _iv);
             this.Crypto = ServiceLocator.Current.GetInstance<CryptoSetting>();
         }
 
-        public CryptoProvider(CryptoSetting setting)
+        public DESCryptoProvider(CryptoSetting setting)
         {
             this.Crypto = setting;
         }
 
-        public CryptoProvider(string key, string iv)
+        public DESCryptoProvider(string key, string iv)
         {
             this.Crypto = new CryptoSetting(key, iv);
         }
@@ -73,6 +62,7 @@ namespace Jagi.Crypto
             inputByteArray = Encoding.Default.GetBytes(Text);
             des.Key = ASCIIEncoding.ASCII.GetBytes(sKey);
             des.IV = ASCIIEncoding.ASCII.GetBytes(this.Crypto.Iv);
+            
             System.IO.MemoryStream ms = new System.IO.MemoryStream();
 
             string encrypt = string.Empty;
@@ -94,14 +84,14 @@ namespace Jagi.Crypto
         /// <summary>
         /// 解密
         /// </summary>
-        /// <param name="Text">加密過的文字</param>
+        /// <param name="text">加密過的文字</param>
         /// <returns>傳回解密文字</returns>
-        public string Decrypt(string Text)
+        public string Decrypt(string text)
         {
-            if (string.IsNullOrEmpty(Text))
+            if (string.IsNullOrEmpty(text))
                 return string.Empty;
 
-            return Decrypt(Text, this.Crypto.Key);
+            return Decrypt(text, this.Crypto.Key);
         }
         /// <summary> 
         /// 解密文字 

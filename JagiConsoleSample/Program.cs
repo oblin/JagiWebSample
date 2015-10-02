@@ -28,7 +28,7 @@ namespace JagiConsoleSample
             UnityServiceLocator locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            var crypto = new CryptoProvider();
+            var crypto = new DESCryptoProvider();
 
             string testText = "It's a test!";
             string encryptText = crypto.Encrypt(testText);
