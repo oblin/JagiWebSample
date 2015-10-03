@@ -69,16 +69,17 @@ namespace Jagi.Mvc.Angular
             return expression;
         }
 
-        public IHtmlString FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property, bool isHtmlString)
-        {
-            return FormGroupFor(property);
-        }
-
-        public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property)
+        public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property, 
+            FormGroupType type = FormGroupType.Default,
+            string attr = null,
+            Dictionary<string, string> attrs = null,
+            Dictionary<string, string> options = null)
         {
             var metadata = ModelMetadata.FromLambdaExpression(property, new ViewDataDictionary<TModel>());
+            var angularMapper = new MetaAngularMapping(metadata);
 
             var name = ExpressionHelper.GetExpressionText(property);
+            var labelText = metadata.DisplayName ?? name.Humanize(LetterCasing.Title);
 
             var expression = ExpressionForInternal(property);
 
@@ -89,34 +90,53 @@ namespace Jagi.Mvc.Angular
                 .Attr("form-group-validation", name)
                 ;
 
-            var labelText = metadata.DisplayName ?? name.Humanize(LetterCasing.Title);
-
             //Creates <label class="control-label" for="Name">Name</label>
             var label = new HtmlTag("label")
                 .AddClass("control-label")
                 .Attr("for", name)
                 .Text(labelText);
 
-            var tagName = metadata.DataTypeName == "MultilineText"
-                ? "textarea"
-                : "input";
+            HtmlTag input = angularMapper.CreateInput(type, name, options);
 
-            var placeholder = metadata.Watermark ??
-                              (labelText + "...");
             //Creates <input ng-model="expression"
             //		   class="form-control" name="Name" type="text" >
-            var input = new HtmlTag(tagName)
-                .AddClass("form-control")
-                .Attr("ng-model", expression)
-                .Attr("name", name)
-                .Attr("type", "text")
-                .Attr("placeholder", placeholder);
+
+            //var input = new HtmlTag(tagName)
+            //    .AddClass("form-control")
+            //    .Attr("ng-model", expression)
+            //    .Attr("name", name)
+
+            //    .Attr("type", "text")
+            //    .Attr("placeholder", placeholder);
+
+            input.AddClass("form-control")
+                 .Attr("name", name)
+                 .Attr("ng-model", expression);
+
+            SetupCustomizedAttributes(attr, attrs, input);
 
             ApplyValidationToInput(input, metadata);
 
             return formGroup
                 .Append(label)
                 .Append(input);
+        }
+
+        private static void SetupCustomizedAttributes(string attr, Dictionary<string, string> attrs, HtmlTag input)
+        {
+            if (attrs != null)
+                foreach (var item in attrs)
+                    input.Attr(item.Key, item.Value);
+
+            if (!string.IsNullOrEmpty(attr))
+            {
+                if (attr.Contains("="))
+                {
+                    var splitAttr = attr.Split('=');
+                    string cleanQuote = splitAttr[1].Replace("'", "").Replace("\"", "");
+                    input.Attr(splitAttr[0], cleanQuote);
+                }
+            }
         }
 
         private void ApplyValidationToInput(HtmlTag input, ModelMetadata metadata)
@@ -130,5 +150,10 @@ namespace Jagi.Mvc.Angular
             if (metadata.DataTypeName == "PhoneNumber")
                 input.Attr("pattern", @"[\ 0-9()-]+");
         }
+
+        //private string GetInputType(ModelMetadata metadata)
+        //{
+        //    FormGroupType type = metadata.GetModelType();
+        //}
     }
 }

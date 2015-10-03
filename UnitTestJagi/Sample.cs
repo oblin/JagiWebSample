@@ -1,17 +1,21 @@
 ﻿using AutoMapper;
 using Jagi.Mapping;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace UnitTestJagi
 {
     public class Sample
     {
         public int Number { get; set; }
+        [Display(Prompt ="請輸入任意文字...")]
         public string Text { get; set; }
         public bool IsChinese { get; set; }
         public DateTime StartDate { get; set; }
+        [DataType(DataType.MultilineText)]
         public string EndDate { get; set; }
         public int? NullableInt { get; set; }
+        public Decimal FloatingPoint { get; set; }
     }
 
     public class SampleCopy1 : IMapFrom<Sample>

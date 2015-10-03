@@ -1,10 +1,11 @@
-﻿using Jagi.Helpers;
+﻿using Jagi.Mvc;
 using Jagi.Mvc.Angular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System;
 
 namespace UnitTestJagi
 {
@@ -30,7 +31,7 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
-        public void Test_Angula_ExpressionFor()
+        public void Test_Angular_ExpressionFor()
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
 
@@ -44,7 +45,7 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
-        public void Test_Angula_ExpressionFor_ComplexType_Properties()
+        public void Test_Angular_ExpressionFor_ComplexType_Properties()
         {
             List<Sample> samples = new List<Sample>()
             {
@@ -65,7 +66,7 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
-        public void Test_Angula_NgRepeat()
+        public void Test_Angular_NgRepeat()
         {
             List<Sample> samples = new List<Sample>()
             {
@@ -88,7 +89,7 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
-        public void Test_Angula_BindingFor()
+        public void Test_Angular_BindingFor()
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
 
@@ -102,14 +103,103 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
-        public void Test_Angula_FormGroupFor()
+        public void Test_Angular_FormGroupFor()
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
 
-            var htmlString = sampleModel.FormGroupFor(x => x.Text, true).ToString();
+            var htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Default).ToString();
             Assert.IsTrue(htmlString.Contains("label for=\"Text\" class=\"control-label\">"));
-            Assert.IsTrue(
-                htmlString.Contains("<input ng-model=\"text\" name=\"Text\" type=\"text\" placeholder=\"Text...\" class=\"form-control\" />"));
+            Assert.IsTrue(htmlString.Contains("<input"));
+            Assert.IsTrue(htmlString.Contains("ng-model=\"text\""));
+            Assert.IsTrue(htmlString.Contains("name=\"Text\""));
+            Assert.IsTrue(htmlString.Contains("type=\"text\""));
+            Assert.IsTrue(htmlString.Contains("placeholder=\"請輸入任意文字...\""));
+            Assert.IsTrue(htmlString.Contains("class=\"form-control\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Textarea()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
+
+            var htmlString = sampleModel.FormGroupFor(x => x.EndDate).ToString();
+            Assert.IsTrue(htmlString.Contains("<textarea"));
+
+            htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Textarea).ToString();
+            Assert.IsTrue(htmlString.Contains("<textarea"));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Number()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
+
+            var htmlString = sampleModel.FormGroupFor(x => x.Number).ToString();
+            Assert.IsTrue(htmlString.Contains("text-right"));
+
+            htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Number).ToString();
+            Assert.IsTrue(htmlString.Contains("text-right"));
+
+            htmlString = sampleModel.FormGroupFor(x => x.FloatingPoint).ToString();
+            Assert.IsTrue(htmlString.Contains("text-right"));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Dropdown()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var options = SetOptions();
+            var htmlString = sampleModel.FormGroupFor(x => x.Text, 
+                FormGroupType.Dropdown, 
+                options: options).ToString();
+
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.text\""));
+            Assert.IsTrue(htmlString.Contains("<option value=\"\">請選擇...</option>"));
+            Assert.IsTrue(htmlString.Contains("<option value=\"1\">Key 1</option>"));
+            Assert.IsTrue(htmlString.Contains("</select>"));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Dropdown_CustomAttr()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var attrs = SetAttrs();
+            var htmlString = sampleModel.FormGroupFor(x => x.Text,
+                FormGroupType.Dropdown,
+                attrs: attrs).ToString();
+
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.text\""));
+            Assert.IsTrue(htmlString.Contains("ng-options=\"color.name for color in colors\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Dropdown_CustomAttr_String()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var attrs = SetAttrs();
+            var htmlString = sampleModel.FormGroupFor(x => x.Text,
+                FormGroupType.Dropdown,
+                attr: "ng-options='color.name for color in colors'").ToString();
+
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.text\""));
+            Assert.IsTrue(htmlString.Contains("ng-options=\"color.name for color in colors\""));
+        }
+
+        private Dictionary<string, string> SetAttrs()
+        {
+            Dictionary<string, string> attrs = new Dictionary<string, string>();
+            attrs.Add("ng-options", "color.name for color in colors");
+            return attrs;
+        }
+
+        private Dictionary<string, string> SetOptions()
+        {
+            Dictionary<string, string> options = new Dictionary<string, string>();
+            options.Add("", "請選擇...");
+            options.Add("1", "Key 1");
+            options.Add("2", "Key 2");
+
+            return options;
         }
     }
 

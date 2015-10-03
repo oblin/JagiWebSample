@@ -112,6 +112,7 @@
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Database\Entity.cs" />
     <Compile Include="Database\IEntity.cs" />
+    <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Mapping\MappingBaseConfig.cs" />
     <Compile Include="Mapping\IMapFrom.cs" />
     <Compile Include="Mapping\IMapFromCustomized.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Mvc\Angular\AngularHelper.cs" />
     <Compile Include="Mvc\Angular\AngularModelHelper.cs" />
     <Compile Include="Mvc\Angular\AngularNgRepeatHelper.cs" />
+    <Compile Include="Mvc\Angular\MetaAngularMapping.cs" />
     <Compile Include="Mvc\BetterJsonResult.cs" />
     <Compile Include="Mvc\JagiControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
