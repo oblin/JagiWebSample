@@ -118,10 +118,11 @@
     <Compile Include="Mapping\IMapFromCustomized.cs" />
     <Compile Include="Database\IVersionable.cs" />
     <Compile Include="Mapping\MapTypeConvert.cs" />
+    <Compile Include="Mvc\Angular\AngularControl.cs" />
     <Compile Include="Mvc\Angular\AngularHelper.cs" />
     <Compile Include="Mvc\Angular\AngularModelHelper.cs" />
     <Compile Include="Mvc\Angular\AngularNgRepeatHelper.cs" />
-    <Compile Include="Mvc\Angular\MetaAngularMapping.cs" />
+    <Compile Include="Mvc\Angular\AngularEnums.cs" />
     <Compile Include="Mvc\BetterJsonResult.cs" />
     <Compile Include="Mvc\JagiControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

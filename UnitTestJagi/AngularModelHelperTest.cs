@@ -1,11 +1,7 @@
-﻿using Jagi.Mvc;
-using Jagi.Mvc.Angular;
+﻿using Jagi.Mvc.Angular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System;
 
 namespace UnitTestJagi
 {
@@ -149,8 +145,8 @@ namespace UnitTestJagi
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
             var options = SetOptions();
-            var htmlString = sampleModel.FormGroupFor(x => x.Text, 
-                FormGroupType.Dropdown, 
+            var htmlString = sampleModel.FormGroupFor(x => x.Text,
+                FormGroupType.Dropdown,
                 options: options).ToString();
 
             Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.text\""));
@@ -164,8 +160,7 @@ namespace UnitTestJagi
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
             var attrs = SetAttrs();
-            var htmlString = sampleModel.FormGroupFor(x => x.Text,
-                FormGroupType.Dropdown,
+            var htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Dropdown,
                 attrs: attrs).ToString();
 
             Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.text\""));
@@ -183,6 +178,25 @@ namespace UnitTestJagi
 
             Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.text\""));
             Assert.IsTrue(htmlString.Contains("ng-options=\"color.name for color in colors\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Checkbox()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var attrs = SetAttrs();
+            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese).ToString();
+
+            Assert.IsTrue(htmlString.Contains("type=\"checkbox\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_LabelFor()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");
+            var htmlString = sampleModel.AngularLabelFor(x => x.IsChinese).ToString();
+
+            Assert.AreEqual("<label for=\"IsChinese\" class=\"control-label\">Is Chinese</label>", htmlString);
         }
 
         private Dictionary<string, string> SetAttrs()
@@ -203,7 +217,7 @@ namespace UnitTestJagi
         }
     }
 
-    class LotsSamples
+    internal class LotsSamples
     {
         public IList<Sample> Samples { get; set; }
     }

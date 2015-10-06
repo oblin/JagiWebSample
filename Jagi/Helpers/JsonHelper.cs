@@ -64,6 +64,18 @@ namespace Jagi.Helpers
             return camelCaseName;
         }
 
+        public static string ExpressionForInternal<TModel, TProp>(this Expression<Func<TModel, TProp>> property, 
+            string expressionPrefix = null)
+        {
+            var camelCaseName = property.ToCamelCaseName();
+
+            var expression = !string.IsNullOrEmpty(expressionPrefix)
+                ? expressionPrefix + "." + camelCaseName
+                : camelCaseName;
+
+            return expression;
+        }
+
         //Converts expressions of the form Some.PropertyName to some.propertyName
         private static string ConvertFullNameToCamelCase(string pascalCaseName)
         {
