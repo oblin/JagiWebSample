@@ -46,22 +46,7 @@ namespace Jagi.Mvc.Angular
             return label;
         }
 
-        public virtual HtmlTag GetInputWithValidation(
-            FormGroupType type = FormGroupType.Default,
-            string attr = null,
-            Dictionary<string, string> attrs = null,
-            Dictionary<string, string> options = null)
-        {
-            HtmlTag input = GetInput(type, options);
-
-            ApplyValidationToInput(input);
-
-            ApplyCustomizedAttributes(input, attr, attrs);
-
-            return input;
-        }
-
-        public virtual HtmlTag GetInput(FormGroupType type,
+        public virtual HtmlTag GetInput(FormGroupType type, string value,
             Dictionary<string, string> selectOptions = null)
         {
             var inputTag = GetInputTag(type);
@@ -82,7 +67,7 @@ namespace Jagi.Mvc.Angular
                     //var labelText = _metadata.DisplayName ?? name.Humanize(LetterCasing.Title);
                     //var placeholder = _metadata.Watermark ?? (labelText + "...");
                     string placeholder = _metadata.Watermark;
-                    input = CreateInputTag(type, placeholder);
+                    input = CreateInputTag(type, value, placeholder);
                     break;
             }
 
@@ -139,7 +124,7 @@ namespace Jagi.Mvc.Angular
             return input;
         }
 
-        protected virtual HtmlTag CreateInputTag(FormGroupType type, string placeholder)
+        protected virtual HtmlTag CreateInputTag(FormGroupType type, string value, string placeholder)
         {
             var input = new HtmlTag("input");
             string numberClass = GetNumberClass(type);
@@ -149,7 +134,7 @@ namespace Jagi.Mvc.Angular
                 if (!string.IsNullOrEmpty(placeholder))
                 input.Attr("placeholder", placeholder);
 
-            SetInputType(input, type);
+            SetInputType(input, type, value);
 
             return input;
         }
@@ -181,7 +166,7 @@ namespace Jagi.Mvc.Angular
             return InputTag.Input;
         }
 
-        protected virtual void SetInputType(HtmlTag input, FormGroupType type)
+        protected virtual void SetInputType(HtmlTag input, FormGroupType type, string value)
         {
             string inputType = "text";
             switch (type)
@@ -202,7 +187,10 @@ namespace Jagi.Mvc.Angular
             if (_metadata.ModelType == typeof(bool))
             {
                 inputType = "checkbox";
-                input.Attr("value", "true");
+                if (string.IsNullOrEmpty(value))
+                    input.Attr("value", "true");
+                else
+                    input.Attr("value", value);
             }
 
             input.Attr("type", inputType);

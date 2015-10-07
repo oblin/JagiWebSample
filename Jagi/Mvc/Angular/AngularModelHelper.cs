@@ -68,10 +68,11 @@ namespace Jagi.Mvc.Angular
             FormGroupType type = FormGroupType.Default,
             string attr = null,
             Dictionary<string, string> attrs = null,
-            Dictionary<string, string> options = null)
+            Dictionary<string, string> options = null,
+            string value = null)
         {
             AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
-            HtmlTag input = ngControl.GetInput(type, options);
+            HtmlTag input = ngControl.GetInput(type, value, options);
 
             ngControl.ApplyValidationToInput(input);
 
@@ -80,11 +81,25 @@ namespace Jagi.Mvc.Angular
             return input;
         }
 
+        /// <summary>
+        /// 建立 bootstrap Fromgroup Div 與其所屬的內容，範例：
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="property"></param>
+        /// <param name="type">可以手動指定 text, checkbox... </param>
+        /// <param name="attr">任意指定的 attr，如： ng-click="checkItOut()" </param>
+        /// <param name="attrs">同 attr，但是可以有多個，使用 Dict<attrKey, attrValue>，如： { "ng-click", "checkItOut()" }</param>
+        /// <param name="options">提供 dropdown options</param>
+        /// <param name="value">提供指定的 value，主要是給 checkbox or radio button 使用</param>
+        /// <param name="values">提供多個 value，並且會依據每一個 value 產生 input</param>
+        /// <returns></returns>
         public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property, 
             FormGroupType type = FormGroupType.Default,
             string attr = null,
             Dictionary<string, string> attrs = null,
-            Dictionary<string, string> options = null)
+            Dictionary<string, string> options = null,
+            string value = null,
+            string[] values = null)
         {
             AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
 
@@ -94,48 +109,42 @@ namespace Jagi.Mvc.Angular
                 .AddClasses("form-group", "has-feedback")
                 .Attr("form-group-validation", name);
 
-            HtmlTag label = AngularLabelFor(property);
+            HtmlTag label = null;
+            HtmlTag input = AngularEditorFor(property, type, attr, attrs, options, value);
 
-            HtmlTag input = AngularEditorFor(property, type, attr, attrs, options);
+            if (type == FormGroupType.Checkbox || input.Attr("type") == "checkbox")
+            {
+                // for type="checkbox"
+                if (values == null || values.Length == 0)
+                {
+                    formGroup = AppendCheckbox(formGroup, input);
+                }
+                else
+                {
+                    foreach (var item in values)
+                    {
+                        input = AngularEditorFor(property, type, attr, attrs, options, item);
+                        formGroup = AppendCheckbox(formGroup, input);
+                    }
+                }
+                return formGroup;
+            }
+            else
+            {
+                // Default for type="text" and textarea
+                label = AngularLabelFor(property);
+                return formGroup.Append(label).Append(input);
+            }
+        }
 
-            //HtmlTag input = ngControl.GetInput(type, options);
-
-            //ngControl.ApplyValidationToInput(input);
-
-            //ngControl.ApplyCustomizedAttributes(input, attr, attrs);
-
-            //var angularMapper = new AngularModelDecorator(metadata);
-
-            //var name = ExpressionHelper.GetExpressionText(property);
-            //var labelText = metadata.DisplayName ?? name.Humanize(LetterCasing.Title);
-
-            //var expression = ExpressionForInternal(property);
-
-            ////Creates <div class="form-group has-feedback"
-            ////				form-group-validation="Name">
-            //var formGroup = new HtmlTag("div")
-            //    .AddClasses("form-group", "has-feedback")
-            //    .Attr("form-group-validation", name);
-
-            ////Creates <label class="control-label" for="Name">Name</label>
-            //var label = new HtmlTag("label")
-            //    .AddClass("control-label")
-            //    .Attr("for", name)
-            //    .Text(labelText);
-
-            //HtmlTag input = angularMapper.CreateInput(type, name, options);
-
-            //input.AddClass("form-control")
-            //     .Attr("name", name)
-            //     .Attr("ng-model", expression);
-
-            //SetupCustomizedAttributes(attr, attrs, input);
-
-            //ApplyValidationToInput(input, metadata);
-
-            return formGroup
-                .Append(label)
-                .Append(input);
+        private static HtmlTag AppendCheckbox(HtmlTag formGroup, HtmlTag input)
+        {
+            HtmlTag div = new HtmlTag("div").AddClass("checkbox");
+            var label = new HtmlTag("label");
+            label.Append(input);
+            div.Append(label);
+            formGroup.Append(div);
+            return formGroup;
         }
     }
 }

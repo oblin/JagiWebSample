@@ -184,12 +184,41 @@ namespace UnitTestJagi
         public void Test_Angular_FormGroupFor_Checkbox()
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
-            var attrs = SetAttrs();
             var htmlString = sampleModel.FormGroupFor(x => x.IsChinese).ToString();
+            /// <div class="checkbox">
+            ///     <label><input type="checkbox" value="perkCar" 
+            ///               ng-model="editableEmployee.perkCar"/>Company Car</label>
+            /// </div>
+            Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\""));
+            Assert.IsTrue(htmlString.Contains("<label><input value=\"true\" type=\"checkbox\""));
 
-            Assert.IsTrue(htmlString.Contains("type=\"checkbox\""));
+            htmlString = sampleModel.FormGroupFor(x => x.IsChinese, value: "CheckboxValue").ToString();
+            Assert.IsTrue(htmlString.Contains("<label><input value=\"CheckboxValue\" type=\"checkbox\""));
         }
 
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Checkbox_MultiValues()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var values = SetValues();
+            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, values: values).ToString();
+
+            /// <div form-group-validation="IsChinese" class="form-group has-feedback">
+            ///    <div class="checkbox">
+            ///      <label>
+            ///        <input value="True" type="checkbox" name="IsChinese" ng-model="vm.sample.isChinese" class="form-control" />
+            ///      </label>
+            ///    </div>
+            ///    <div class="checkbox">
+            ///      <label>
+            ///        <input value="False" type="checkbox" name="IsChinese" ng-model="vm.sample.isChinese" class="form-control" />
+            ///      </label>
+            ///    </div>
+            /// </div>
+            Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[0] + "\" type=\"checkbox\""));
+            Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[1] + "\" type=\"checkbox\""));
+        }
+        
         [TestMethod]
         public void Test_Angular_LabelFor()
         {
@@ -206,6 +235,12 @@ namespace UnitTestJagi
             return attrs;
         }
 
+        private string[] SetValues()
+        {
+            string[] values = new string[]{ "True", "False", "Null" };
+            return values;
+        }
+        
         private Dictionary<string, string> SetOptions()
         {
             Dictionary<string, string> options = new Dictionary<string, string>();
