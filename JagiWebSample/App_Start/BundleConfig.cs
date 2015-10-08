@@ -25,6 +25,7 @@ namespace JagiWebSample
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/MvcMembership.css",
                       "~/Content/site.css"));
         }
     }
