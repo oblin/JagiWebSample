@@ -182,11 +182,19 @@ namespace Jagi.Mvc.Angular
                 case FormGroupType.Checkbox:
                     inputType = "checkbox";
                     break;
+
+                case FormGroupType.RadioButton:
+                    inputType = "radio";
+                    break;
             }
 
-            if (_metadata.ModelType == typeof(bool))
+            if (inputType == "text" && _metadata.ModelType == typeof(bool))
             {
                 inputType = "checkbox";
+            }
+
+            if (inputType == "radio" || inputType == "checkbox")
+            {
                 if (string.IsNullOrEmpty(value))
                     input.Attr("value", "true");
                 else

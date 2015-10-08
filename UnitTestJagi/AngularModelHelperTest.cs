@@ -218,7 +218,38 @@ namespace UnitTestJagi
             Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[0] + "\" type=\"checkbox\""));
             Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[1] + "\" type=\"checkbox\""));
         }
-        
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_RadioButton()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, 
+                type: FormGroupType.RadioButton).ToString();
+            /// <div class="radio">
+            ///     <label><input type="radio" value="perkCar" 
+            ///               ng-model="editableEmployee.perkCar"/>Company Car</label>
+            /// </div>
+            Assert.IsTrue(htmlString.Contains("<div class=\"radio\""));
+            Assert.IsTrue(htmlString.Contains("<label><input value=\"true\" type=\"radio\""));
+
+            htmlString = sampleModel.FormGroupFor(x => x.IsChinese, 
+                type: FormGroupType.RadioButton, 
+                value: "CheckboxValue").ToString();
+            Assert.IsTrue(htmlString.Contains("<label><input value=\"CheckboxValue\" type=\"radio\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_RadioButton_Multi()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var values = SetValues();
+            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese,
+                type: FormGroupType.RadioButton, values: values).ToString();
+
+            Assert.IsTrue(htmlString.Contains("<div class=\"radio\"><label><input value=\"" + values[0] + "\" type=\"radio\""));
+            Assert.IsTrue(htmlString.Contains("<div class=\"radio\"><label><input value=\"" + values[1] + "\" type=\"radio\""));
+        }
+
         [TestMethod]
         public void Test_Angular_LabelFor()
         {

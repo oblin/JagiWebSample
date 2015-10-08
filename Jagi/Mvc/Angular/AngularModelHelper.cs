@@ -112,34 +112,40 @@ namespace Jagi.Mvc.Angular
             HtmlTag label = null;
             HtmlTag input = AngularEditorFor(property, type, attr, attrs, options, value);
 
+            string checkOrRadioType = string.Empty;
             if (type == FormGroupType.Checkbox || input.Attr("type") == "checkbox")
+                checkOrRadioType = "checkbox";
+            else if (type == FormGroupType.RadioButton)
+                checkOrRadioType = "radio";
+
+            if (string.IsNullOrEmpty(checkOrRadioType))
             {
-                // for type="checkbox"
+                // Default for type="text" and textarea
+                label = AngularLabelFor(property);
+                return formGroup.Append(label).Append(input);
+            }
+            else
+            {
+                // for type="checkbox" or "radio"
                 if (values == null || values.Length == 0)
                 {
-                    formGroup = AppendCheckbox(formGroup, input);
+                    formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
                 }
                 else
                 {
                     foreach (var item in values)
                     {
                         input = AngularEditorFor(property, type, attr, attrs, options, item);
-                        formGroup = AppendCheckbox(formGroup, input);
+                        formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
                     }
                 }
                 return formGroup;
             }
-            else
-            {
-                // Default for type="text" and textarea
-                label = AngularLabelFor(property);
-                return formGroup.Append(label).Append(input);
-            }
         }
 
-        private static HtmlTag AppendCheckbox(HtmlTag formGroup, HtmlTag input)
+        private static HtmlTag AppendCheckboxOrRadio(HtmlTag formGroup, HtmlTag input, string type)
         {
-            HtmlTag div = new HtmlTag("div").AddClass("checkbox");
+            HtmlTag div = new HtmlTag("div").AddClass(type);
             var label = new HtmlTag("label");
             label.Append(input);
             div.Append(label);
