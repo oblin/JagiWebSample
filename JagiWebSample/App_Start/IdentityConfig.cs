@@ -86,6 +86,21 @@ namespace JagiWebSample
             }
             return manager;
         }
+
+        public virtual async Task<IdentityResult> AddUserToRolesAsync(string userId, IList<string> roles)
+        {
+            var userRoleStore = (IUserRoleStore<ApplicationUser, string>)Store;
+            var user = await FindByIdAsync(userId).ConfigureAwait(false);
+            if (user == null)
+                throw new InvalidOperationException("無此使用者帳號 Identity");
+
+            var userRoles = await userRoleStore.GetRolesAsync(user).ConfigureAwait(false);
+            // Add user to each role using userRoleStore
+            foreach (var role in roles.Where(role => !userRoles.Contains(role)))
+                await userRoleStore.AddToRoleAsync(user, role).ConfigureAwait(false);
+
+            return await UpdateAsync(user).ConfigureAwait(false);
+        }
     }
 
     public class ApplicationRoleManager : RoleManager<IdentityRole>

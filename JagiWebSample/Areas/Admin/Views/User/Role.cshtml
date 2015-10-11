@@ -1,0 +1,42 @@
+﻿@model IEnumerable<JagiWebSample.Models.ApplicationUser>
+@{
+    ViewBag.Title = "Role";
+}
+
+<h2>Role: @ViewBag.RoleName 的使用者列表</h2>
+
+<table>
+    <tr>
+        <th>
+            Username
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            IsApproved
+        </th>
+        <th>
+            LockoutEnabled
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.UserName, "Details", new { id = item.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsApproved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LockoutEnabled)
+            </td>
+        </tr>
+    }
+
+</table>

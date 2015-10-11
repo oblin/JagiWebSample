@@ -1,5 +1,5 @@
 ﻿@using JagiWebSample.Models
-@model JagiWebSample.Areas.Admin.Models.UserManageIndex
+@model JagiWebSample.Areas.Admin.Models.UserIndexView
 @{
     ViewBag.Text = "使用者帳號管理";
     IEnumerable<ApplicationUser> onlineUsers = Model.OnlineUsers;    
@@ -38,7 +38,7 @@
     </fieldset>
 </form>
 
-<h3 class="mvcMembership">使用者列表：  (@Html.ActionLink("建立新的使用者", "CreateUser", "UserAdmin"))</h3>
+<h3 class="mvcMembership">使用者列表：  (@Html.ActionLink("建立新的使用者", "CreateUser", "User"))</h3>
 
 <div class="mvcMembership-allUsers">
     <ul class="mvcMembership mvcMembership-users">
@@ -86,17 +86,17 @@
 {
     <h3 class="mvcMembership">Roles</h3>
     <div class="mvcMembership-allRoles">
-        @if (Model.Roles.Count() > 0)
+        @if (Model.Roles != null && Model.Roles.Count() > 0)
         {
             <ul class="mvcMembership">
                 @foreach (var role in Model.Roles)
                 {
                     <li>
                         @Html.ActionLink(role, "Role", new { roleName = role })
-                        @using (Html.BeginForm("DeleteRole", "UserAdmin", new { roleName = role }))
+                        @using (Html.BeginForm("DeleteRole", "User", new { roleName = role }))
                         {
                             @Html.ValidationSummary(true)
-                            <input type="submit" value="Delete" />
+                            <input type="submit" value="刪除此角色" />
                         }
                     </li>
                 }
@@ -104,16 +104,16 @@
         }
         else
         {
-            <p>No roles have been created.</p>
+            <p>尚未建立任何的角色</p>
         }
 
-        @using (Html.BeginForm("CreateRole", "UserAdmin"))
+        @using (Html.BeginForm("CreateRole", "User"))
         {
             @Html.ValidationSummary(true)
             <fieldset>
                 <label for="id">Role:</label>
                 @Html.TextBox("id")
-                <input type="submit" value="Create Role" />
+                <input type="submit" value="建立新角色" />
             </fieldset>
         }
     </div>

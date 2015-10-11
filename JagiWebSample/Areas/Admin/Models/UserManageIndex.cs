@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace JagiWebSample.Areas.Admin.Models
 {
-    public class UserManageIndex
+    public class UserIndexView
     {
         public string Search { get; set; }
         public IEnumerable<ApplicationUser> Users { get; set; }
