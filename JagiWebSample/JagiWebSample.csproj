@@ -45,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -187,9 +191,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
-    <Compile Include="Areas\Admin\Models\CreateUserView.cs" />
-    <Compile Include="Areas\Admin\Models\DetailsViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\UserIndexView.cs" />
+    <Compile Include="Areas\Admin\Models\CodeDetail.cs" />
+    <Compile Include="Areas\Admin\Models\CodeFile.cs" />
+    <Compile Include="Areas\Admin\Models\CodeFileEditView.cs" />
+    <Compile Include="Areas\Admin\Models\DataContext.cs" />
+    <Compile Include="Areas\Admin\Models\UserAdminViewModel\CreateUserView.cs" />
+    <Compile Include="Areas\Admin\Models\UserAdminViewModel\DetailsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\UserAdminViewModel\UserIndexView.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AngularTestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -280,6 +288,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\CodeDetails\" />
     <Folder Include="Views\AngularTest\" />
   </ItemGroup>
   <ItemGroup>
