@@ -1,0 +1,10 @@
+﻿@{
+    string success = TempData["SuccessMessage"] == null ? null : TempData["SuccessMessage"].ToString();
+}
+
+@if (!String.IsNullOrEmpty(success))
+{
+    <div class="alert alert-success">
+        <p> @TempData["SuccessMessage"] </p>
+    </div>
+}

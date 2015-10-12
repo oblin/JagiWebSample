@@ -1,5 +1,4 @@
-﻿using Jagi.Crypto;
-using Jagi.Utility;
+﻿using Jagi.Utility;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

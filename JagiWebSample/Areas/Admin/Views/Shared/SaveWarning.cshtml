@@ -1,0 +1,21 @@
+﻿@{
+    var warning = TempData["WarningMessage"] == null ? null : TempData["WarningMessage"].ToString().Split('\n');
+}
+
+@if (warning != null)
+{
+    <div class="alert alert-warning">
+        <p><b>@warning[0]</b></p>
+        <ul>
+            @for (int i = 1; i < warning.Length; i++)
+            {
+                string message = warning[i];
+                if (!string.IsNullOrEmpty(message))
+                {
+                    <li> @warning[i] </li>
+                }
+            }
+        </ul>
+    </div>
+}
+

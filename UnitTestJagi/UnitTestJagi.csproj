@@ -172,6 +172,7 @@
     <Compile Include="BetterJsonResultTest.cs" />
     <Compile Include="CryptoTest.cs" />
     <Compile Include="TestController.cs" />
+    <Compile Include="EmailTest.cs" />
     <Compile Include="UserControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>

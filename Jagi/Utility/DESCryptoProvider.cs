@@ -4,7 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Jagi.Crypto
+namespace Jagi.Utility
 {
     /// <summary>
     /// 必須要指定 CryptoSetting，或者給予加解密的值，缺點：不安全，並且 KEY & IV只能八碼　（６４ｂｉｔ）

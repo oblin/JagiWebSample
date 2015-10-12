@@ -2,10 +2,11 @@
 @model JagiWebSample.Areas.Admin.Models.UserIndexView
 @{
     ViewBag.Text = "使用者帳號管理";
-    IEnumerable<ApplicationUser> onlineUsers = Model.OnlineUsers;    
+    IEnumerable<ApplicationUser> onlineUsers = Model.OnlineUsers;
 }
 
-<h2>Index</h2>
+@{Html.RenderPartial("SaveSuccess");}
+@{Html.RenderPartial("SaveWarning");}
 
 @if (!Model.IsRolesEnabled)
 {

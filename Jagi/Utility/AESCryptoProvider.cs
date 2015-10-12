@@ -4,7 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Jagi.Crypto
+namespace Jagi.Utility
 {
     /// <summary>
     /// 必須要指定 CryptoSetting，或者給予加解密的值，密碼可為任意長度，建議至少長度為16以上的字串

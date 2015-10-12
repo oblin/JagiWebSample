@@ -1,0 +1,73 @@
+﻿@model JagiWebSample.Areas.Admin.Models.DetailsViewModel
+@{
+    ViewBag.Title = "使用者明細資料： " + Model.DisplayName;
+}
+@{Html.RenderPartial("SaveSuccess");}
+@{Html.RenderPartial("SaveWarning");}
+
+<h2 class="mvcMembership">使用者明細資料： @Model.DisplayName [@Model.Status]</h2>
+
+<ul class="mvcMembership-tabs">
+    <li>Details</li>
+    <li>@Html.ActionLink("Password", "Password", "User", new { id = Model.User.Id }, null)</li>
+    <li>@Html.ActionLink("Roles", "UsersRoles", "User", new { id = Model.User.Id }, null)</li>
+</ul>
+
+<h3 class="mvcMembership">Account</h3>
+<div class="mvcMembership-account">
+    <dl class="mvcMembership">
+        <dt>User Name:</dt>
+        <dd>@Model.User.UserName</dd>
+        <dt>Email Address:</dt>
+        <dd><a href="mailto:@Model.User.Email">@Model.User.Email</a></dd>
+        @if (Model.User.LastActivityDate == null)
+        {
+            <dt>Last Active:</dt>
+            <dd><em>Never</em></dd>
+            <dt>Last Login:</dt>
+            <dd><em>Never</em></dd>
+        }
+        else
+        {
+            <dt>Last Active:</dt>
+            <dd>@((DateTime)Model.User.LastActivityDate)</dd>
+            <dt>Last Login:</dt>
+            <dd>@((DateTime)Model.User.LastActivityDate)</dd>
+        }
+    </dl>
+
+    @using (Html.BeginForm("ChangeApproval", "User", new { id = Model.User.Id }))
+    {
+        @Html.Hidden("isApproved", !Model.User.IsApproved)
+        <input type="submit" value='@(Model.User.IsApproved ? "Unapprove" : "Approve") Account' />
+    }
+    @using (Html.BeginForm("DeleteUser", "User", new { userName = Model.User.UserName }))
+    {
+        <input type="submit" value="Delete Account" />
+    }
+
+</div>
+
+<h3 class="mvcMembership">Email Address & Comments</h3>
+<div class="mvcMembership-emailAndComments">
+    @using (Html.BeginForm("ChangeMail", "User", new { id = Model.User.Id }))
+    {
+        <fieldset>
+            <p>
+                <label for="email">Email Address:</label>
+                @Html.TextBox("email", Model.User.Email)
+            </p>
+            <p>
+                <label for="email">Email Title:</label>
+                @Html.TextBox("title", "修改預設 EMail")
+            </p>
+            <p>
+                <label for="comments">傳送訊息:</label>
+                @Html.TextArea("comments", new { style = "width: 250px; height: 100px;" })
+            </p>
+            <input type="submit" value="修改EMAIL帳號並傳送訊息" />
+        </fieldset>
+    }
+</div>
+<hr />
+@Html.ActionLink("回到使用者列表", "Index", "User", new { search = string.Empty }, null)

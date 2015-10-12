@@ -1,5 +1,5 @@
 ﻿
-namespace Jagi.Crypto
+namespace Jagi.Utility
 {
     public class CryptoSetting
     {
