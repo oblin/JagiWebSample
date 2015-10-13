@@ -1,4 +1,5 @@
-﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
+﻿@using JagiWebSample.Areas.Admin.Controllers
+@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
 @{
     ViewBag.Title = "代碼檔案維護";
 }
@@ -16,6 +17,7 @@
 <script src="~/app/app.js"></script>
 <script src="~/app/AdminCodes/codeController.js"></script>
     <script type="text/javascript">
-        window.app.constant("codes", @Html.JsonFor(Model));
+        window.app.constant("model", @Html.JsonFor(Model));
+        var url = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Index()))';
     </script>
 }
