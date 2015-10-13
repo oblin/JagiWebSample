@@ -1,0 +1,151 @@
+﻿@model JagiWebSample.Areas.Admin.Models.CodeFilesEditView
+
+<h3>代碼檔編輯</h3>
+<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="hasCurrent()" ng-cloak>
+    <p>
+        <button class="btn btn-primary" ng-click="save(current)" ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)">
+            存檔 <span class="glyphicon glyphicon-save"></span>
+        </button>
+        <button class="btn btn-warning" ng-click="cancel()" ng-disabled="!codeFileForm.$dirty">
+            取消 <span class="glyphicon glyphicon-export"></span>
+        </button>
+        <button class="btn btn-success" ng-click="create()" ng-disabled="current.Id === 0">
+            新增 <span class="glyphicon glyphicon-open"></span>
+        </button>
+        <button class="btn btn-danger DeleteBtn" ng-click="delete(current)">
+            刪除 <span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </p>
+    @*<p>Form dirty is: {{codeFileForm.$dirty}}</p>
+        <p>Form pristine is: {{codeFileForm.$pristine}}</p>
+        <p>codeFileForm.current_charNumber.$dirty is: {{codeFileForm.current_charNumber.$dirty}}</p>
+        <p>codeFileForm.current_charNumber.$valid is: {{codeFileForm.current_charNumber.$valid}}</p>
+        <p>codeFileForm.current_charNumber.$error.range is: {{codeFileForm.current_charNumber.$error.range}}</p>
+        <p>codeFileForm.$valid is: {{codeFileForm.$valid}}</p>*@
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.ItemType)</label>
+            <div class="col-md-7">
+                <input class="form-control" ng-model="current.ItemType" />
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.TypeName)</label>
+            <div class="col-md-7">
+                <input class="form-control" name="current_TypeName" ng-model="current.TypeName"
+                       required ng-maxlength="20" />
+                <span class="text-danger" ng-show="codeFileForm.current_TypeName.$dirty
+                      && codeFileForm.current_TypeName.$error.required">
+                    此為必須輸入欄位
+                </span>
+                <span class="text-danger" ng-show="codeFileForm.current_TypeName.$dirty
+                      && codeFileForm.current_TypeName.$error.maxlength">
+                    超過最大長度 20 個字
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.Desc)</label>
+            <div class="col-md-7">
+                <input class="form-control" ng-model="current.Desc" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.ParentType)</label>
+            <div class="col-md-7">
+                <input class="form-control" ng-model="current.ParentType" />
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.ParentCode)</label>
+            <div class="col-md-7">
+                <input class="form-control text-danger" ng-model="current.ParentCode" />
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.DisplayNameFor(m => m.CharNumber)
+            <div class="col-md-7">
+                <input type="number" class="form-control" name="current_CharNumber" ng-model="current.CharNumber"
+                       min="0" max="5" jg-range='1,3' jg-integer />
+                <span class="text-danger" ng-show="codeFileForm.current_CharNumber.$dirty
+                      && codeFileForm.current_CharNumber.$error.number">
+                    不是合法的數字
+                </span>
+                <span class="text-danger" ng-show="codeFileForm.current_CharNumber.$dirty
+                      && codeFileForm.current_CharNumber.$error.min">
+                    不可以小於 0
+                </span>
+                <span class="text-danger" ng-show="codeFileForm.current_CharNumber.$dirty
+                      && codeFileForm.current_CharNumber.$error.max">
+                    不可以大於 5
+                </span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table table-condensed table-hover" ng-show="current.Id !== 0">
+    <tr>
+        <th>
+            代碼
+        </th>
+        <th>
+            代碼名稱
+        </th>
+        <th>
+            <button class="btn btn-success" ng-click="editDetail()" data-toggle="modal" data-target="#detailModal">新增代碼</button>
+        </th>
+    </tr>
+    <tbody ng-cloak>
+        <tr data-ng-repeat="item in details">
+            <td>{{item.ItemCode}}</td>
+            <td>{{item.Desc}}</td>
+            <td>
+                <button class="btn btn-info" ng-click="editDetail(item)" data-toggle="modal" data-target="#detailModal">編輯</button>
+                <button class="btn btn-danger DeleteBtn" ng-click="deleteDetail(item)">刪除</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" ng-click="cancelDetail()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="detailModalLabel">編輯代碼資料</h4>
+            </div>
+            <div class="modal-body">
+                <form class="angular-input-form" name="codeDetailForm">
+                    <div class="form-group">
+                        <label>代碼</label>
+                        <input type="text" class="form-control" ng-model="detail.ItemCode"
+                               name="detail_ItemCode" ng-maxlength="8" required />
+                        <span class="text-danger" ng-show="codeDetailForm.detail_ItemCode.$dirty
+                      && codeDetailForm.detail_ItemCode.$error.required">
+                            Required!
+                        </span>
+                        <span class="text-danger" ng-show="codeDetailForm.detail_ItemCode.$dirty
+                      && codeDetailForm.detail_ItemCode.$error.maxlength">
+                            超過最大長度 8 個字
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label>代碼名稱</label>
+                        <input type="text" class="form-control" ng-model="detail.Desc" required />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" ng-click="cancelDetail()">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveDetail(detail)"
+                        ng-disabled="!(codeDetailForm.$dirty && codeDetailForm.$valid)">
+                    存檔
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

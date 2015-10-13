@@ -1,0 +1,54 @@
+﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
+
+<div class="row" style="margin-top: 5px;">
+    <div class="col-sm-2">
+        <button class="btn btn-sm" type="button" ng-click="prevPage()" ng-disabled="pagedList.currentPage == 1 || hadBeenModified()" style="margin-left: -10px">
+            <span class="glyphicon glyphicon-chevron-left"></span>上一頁
+        </button>
+    </div>
+    @*<div class="col-sm-7">
+        <div class="input-group-sm">
+            <input type="text" class="form-control" ng-blur="goPage()" ng-model="pagedList.currentPage" ng-disabled="hadBeenModified()">
+            <span class="input-group-addon">共: {{pagedList.count}} 頁</span>
+        </div>
+    </div>*@
+    <div class="col-sm-5">
+        <select class="form-control input-sm" ng-model="pagedList.pageCount" ng-change="searching()"
+                ng-options="item for item in [5, 10, 15, 20]" ng-disabled="hadBeenModified()"></select>
+    </div>
+    <div class="col-sm-2">
+        <button class="btn btn-sm" type="button" ng-click="nextPage()"
+                ng-disabled="pagedList.currentPage == pagedList.count || hadBeenModified()">
+            <span class="glyphicon glyphicon-chevron-right"></span>下一頁
+        </button>
+    </div>
+</div>
+<div class="input-group" style="width: 90%">
+    <input type="text" class="form-control" ng-model="search" ng-keyup="searching()" ng-disabled="hadBeenModified()">
+    <span class="input-group-btn">
+        <button class="btn btn-info" type="button" ng-click="searching()" ng-disabled="hadBeenModified()">
+            搜尋&nbsp;<span class="glyphicon glyphicon-search"></span>
+        </button>
+    </span>
+</div>
+
+<table class="table table-condensed table-hover" id="tblCodeList">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ItemType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ParentType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ParentCode)
+        </th>
+    </tr>
+    <tbody ng-cloak>
+        <tr ng-repeat="item in pagedList.list" ng-class="selected(item)" ng-click="select(item)">
+            <td>{{item.ItemType}}</td>
+            <td>{{item.ParentType}}</td>
+            <td>{{item.ParentCode}}</td>
+        </tr>
+    </tbody>
+</table>

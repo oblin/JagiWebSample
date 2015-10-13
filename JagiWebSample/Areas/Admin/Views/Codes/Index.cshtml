@@ -1,0 +1,21 @@
+﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
+@{
+    ViewBag.Title = "代碼檔案維護";
+}
+
+<div ng-app="app" ng-controller="codeController as vm">
+    <div class="col-md-3">@Html.Partial("_CodeList")</div>
+    <div class="col-md-9">
+        <div id="partialCodeEdit">
+            @Html.Partial("_CodeFile")
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/app/app.js"></script>
+<script src="~/app/AdminCodes/codeController.js"></script>
+    <script type="text/javascript">
+        window.app.constant("codes", @Html.JsonFor(Model));
+    </script>
+}

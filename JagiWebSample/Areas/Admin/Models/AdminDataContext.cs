@@ -6,11 +6,11 @@ using System.Web;
 
 namespace JagiWebSample.Areas.Admin.Models
 {
-    public class DataContext : DbContext
+    public class AdminDataContext : DbContext
     {
-        public DataContext() : base("DefaultConnection")
+        public AdminDataContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<DataContext>(null);
+            Database.SetInitializer<AdminDataContext>(null);
         }
 
         public DbSet<CodeFile> CodeFiles { get; set; }
