@@ -1,5 +1,4 @@
-﻿@using JagiWebSample.Areas.Admin.Controllers
-@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
+﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
 @{
     ViewBag.Title = "代碼檔案維護";
 }
@@ -8,16 +7,19 @@
     <div class="col-md-3">@Html.Partial("_CodeList")</div>
     <div class="col-md-9">
         <div id="partialCodeEdit">
-            @Html.Partial("_CodeFile")
+            @*@Html.Partial("_CodeFile")*@
+            <code-edit code="current" />
         </div>
     </div>
 </div>
 
 @section Scripts{
 <script src="~/app/app.js"></script>
+<script src="~/app/alerts.js"></script>
+<script src="~/app/inputDirective.js"></script>
 <script src="~/app/AdminCodes/codeController.js"></script>
     <script type="text/javascript">
         window.app.constant("model", @Html.JsonFor(Model));
-        var url = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Index()))';
+        var url = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Index()))';        
     </script>
 }

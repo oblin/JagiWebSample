@@ -1,4 +1,6 @@
-﻿using JagiWebSample.Areas.Admin.Models;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using JagiWebSample.Areas.Admin.Models;
 using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
@@ -14,7 +16,9 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var result = _context.CodeFiles.ProjectTo<CodeFilesEditView>();
+
+            return View(result);
         }
     }
 }

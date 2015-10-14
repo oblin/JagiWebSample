@@ -13,3 +13,10 @@
     margin-left: 5px;
     margin-right: -15px;
 }
+
+/* Table actived */
+.table > tbody > tr.active > td, tr.active > td {
+    background-color: #0094ff;
+    font-weight: bold;
+    color: aliceblue;
+}
