@@ -13,11 +13,13 @@ namespace Jagi.Mvc.Angular
     {
         protected readonly HtmlHelper _helper;
         private readonly string _expressionPrefix;
+        private readonly FormGroupLayout _layout;
 
-        public AngularModelHelper(HtmlHelper helper, string expressionPrefix)
+        public AngularModelHelper(HtmlHelper helper, string expressionPrefix, FormGroupLayout layout = null)
         {
             _helper = helper;
             _expressionPrefix = expressionPrefix;
+            _layout = layout;
         }
 
         /// <summary>
@@ -58,10 +60,12 @@ namespace Jagi.Mvc.Angular
                 _helper, variableName, propertyExpression);
         }
 
-        public HtmlTag AngularLabelFor<TProp>(Expression<Func<TModel, TProp>> property)
+        public HtmlTag AngularLabelFor<TProp>(Expression<Func<TModel, TProp>> property, FormGroupLayout layout = null)
         {
             AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
-            return ngControl.GetLabel();
+            if (layout == null)
+                layout = _layout;
+            return ngControl.GetLabel(layout);
         }
 
         public HtmlTag AngularEditorFor<TProp>(Expression<Func<TModel, TProp>> property,
@@ -99,8 +103,12 @@ namespace Jagi.Mvc.Angular
             Dictionary<string, string> attrs = null,
             Dictionary<string, string> options = null,
             string value = null,
-            string[] values = null)
+            string[] values = null,
+            int? formGroupGrid = null,
+            FormGroupLayout layout = null)
         {
+            layout = layout ?? _layout;
+            formGroupGrid = formGroupGrid ?? (layout != null ? layout.FormGrid : null);
             AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
 
             string name = ngControl.GetName();
@@ -109,8 +117,14 @@ namespace Jagi.Mvc.Angular
                 .AddClasses("form-group", "has-feedback")
                 .Attr("form-group-validation", name);
 
+            if (formGroupGrid != null)
+                formGroup.AddClass("col-sm-" + formGroupGrid.ToString());
+
             HtmlTag label = null;
             HtmlTag input = AngularEditorFor(property, type, attr, attrs, options, value);
+
+            if (input.HasAttr("required"))
+                formGroup.AddClass("required");
 
             string checkOrRadioType = string.Empty;
             if (type == FormGroupType.Checkbox || input.Attr("type") == "checkbox")
@@ -122,6 +136,10 @@ namespace Jagi.Mvc.Angular
             {
                 // Default for type="text" and textarea
                 label = AngularLabelFor(property);
+                if (layout != null )
+                {
+                    input = AppendLayoutInputDiv(layout, input);
+                }
                 return formGroup.Append(label).Append(input);
             }
             else
@@ -141,6 +159,14 @@ namespace Jagi.Mvc.Angular
                 }
                 return formGroup;
             }
+        }
+
+        private static HtmlTag AppendLayoutInputDiv(FormGroupLayout layout, HtmlTag input)
+        {
+            var layoutDiv = new HtmlTag("div");
+            layoutDiv.AddClass("col-sm-" + layout.InputGrid);
+            input = layoutDiv.Append(input);
+            return input;
         }
 
         private static HtmlTag AppendCheckboxOrRadio(HtmlTag formGroup, HtmlTag input, string type)

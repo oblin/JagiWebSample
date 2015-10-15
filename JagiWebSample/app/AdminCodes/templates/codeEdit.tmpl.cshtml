@@ -1,87 +1,40 @@
 ﻿@model JagiWebSample.Areas.Admin.Models.CodeFilesEditView
 
-<h3>代碼檔編輯</h3>
-<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="hasCurrent()" ng-cloak>
+@{
+    var code = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 4));
+}
+
+<h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
+<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current" ng-disabled="vm.saving" ng-cloak>
     <p>
-        <button class="btn btn-primary" ng-click="save(current)" ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)">
+        <button class="btn btn-primary" ng-click="vm.save(vm.current)"
+                ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)">
             存檔 <span class="glyphicon glyphicon-save"></span>
         </button>
-        <button class="btn btn-warning" ng-click="cancel()" ng-disabled="!codeFileForm.$dirty">
+        <button class="btn btn-warning" ng-click="vm.cancel()" ng-disabled="!codeFileForm.$dirty">
             取消 <span class="glyphicon glyphicon-export"></span>
         </button>
-        <button class="btn btn-success" ng-click="create()" ng-disabled="current.Id === 0">
+        <button class="btn btn-success" ng-click="vm.create()" ng-disabled="vm.current.Id === 0">
             新增 <span class="glyphicon glyphicon-open"></span>
         </button>
-        <button class="btn btn-danger DeleteBtn" ng-click="delete(current)">
+        <button class="btn btn-danger DeleteBtn" ng-click="vm.delete(vm.current)">
             刪除 <span class="glyphicon glyphicon-trash"></span>
         </button>
     </p>
 
     <div class="row">
-        <div class="form-group col-md-4">
-            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.ItemType)</label>
-            <div class="col-md-7">
-                <input class="form-control" ng-model="current.ItemType" />
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.TypeName)</label>
-            <div class="col-md-7">
-                <input class="form-control" name="current_TypeName" ng-model="current.TypeName"
-                       required ng-maxlength="20" />
-                <span class="text-danger" ng-show="codeFileForm.current_TypeName.$dirty
-                      && codeFileForm.current_TypeName.$error.required">
-                    此為必須輸入欄位
-                </span>
-                <span class="text-danger" ng-show="codeFileForm.current_TypeName.$dirty
-                      && codeFileForm.current_TypeName.$error.maxlength">
-                    超過最大長度 20 個字
-                </span>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.Desc)</label>
-            <div class="col-md-7">
-                <input class="form-control" ng-model="current.Desc" />
-            </div>
-        </div>
+        @code.FormGroupFor(m => m.ItemType)
+        @code.FormGroupFor(m => m.TypeName)
+        @code.FormGroupFor(m => m.Desc)
     </div>
     <div class="row">
-        <div class="form-group col-md-4">
-            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.ParentType)</label>
-            <div class="col-md-7">
-                <input class="form-control" ng-model="current.ParentType" />
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            <label class="control-label col-md-5">@Html.DisplayNameFor(m => m.ParentCode)</label>
-            <div class="col-md-7">
-                <input class="form-control text-danger" ng-model="current.ParentCode" />
-            </div>
-        </div>
-        <div class="form-group col-md-4">
-            @Html.DisplayNameFor(m => m.CharNumber)
-            <div class="col-md-7">
-                <input type="number" class="form-control" name="current_CharNumber" ng-model="current.CharNumber"
-                       min="0" max="5" jg-range='1,3' jg-integer />
-                <span class="text-danger" ng-show="codeFileForm.current_CharNumber.$dirty
-                      && codeFileForm.current_CharNumber.$error.number">
-                    不是合法的數字
-                </span>
-                <span class="text-danger" ng-show="codeFileForm.current_CharNumber.$dirty
-                      && codeFileForm.current_CharNumber.$error.min">
-                    不可以小於 0
-                </span>
-                <span class="text-danger" ng-show="codeFileForm.current_CharNumber.$dirty
-                      && codeFileForm.current_CharNumber.$error.max">
-                    不可以大於 5
-                </span>
-            </div>
-        </div>
+        @code.FormGroupFor(m => m.ParentType)
+        @code.FormGroupFor(m => m.ParentCode)
+        @code.FormGroupFor(m => m.CharNumber)
     </div>
 </form>
 
-<table class="table table-condensed table-hover" ng-show="current.Id !== 0">
+<table class="table table-condensed table-hover" ng-show="vm.current.Id !== 0">
     <tr>
         <th>
             代碼

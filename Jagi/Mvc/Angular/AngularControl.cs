@@ -33,7 +33,7 @@ namespace Jagi.Mvc.Angular
             return this.Name;
         }
 
-        public virtual HtmlTag GetLabel()
+        public virtual HtmlTag GetLabel(FormGroupLayout layout)
         {
             CheckInitializedCorrection();
             var labelText = _metadata.DisplayName ?? this.Name.Humanize(LetterCasing.Title);
@@ -42,6 +42,9 @@ namespace Jagi.Mvc.Angular
                 .AddClass("control-label")
                 .Attr("for", this.Name)
                 .Text(labelText);
+
+            if (layout != null)
+                label.AddClass(GetLabelLayout(layout));
 
             return label;
         }
@@ -221,10 +224,17 @@ namespace Jagi.Mvc.Angular
             if (string.IsNullOrEmpty(this.Name))
                 throw new NotImplementedException("this.Name can not be null or empty string");
         }
+
+        private string GetLabelLayout(FormGroupLayout layout)
+        {
+            var gridNumber = layout.LabelGrid;
+            return "col-sm-" + gridNumber.ToString();
+        }
     }
 
     /// <summary>
     /// 作為 AngularHtmlTag 的 Factory，讓 Client 端可以使用 ServiceLocator 指定要實作的項目
+    /// 可以使用 Unity 設定 AngularHtmlTag 的 Deriven Class，如果沒有，必須要設定 new AngularHtmlTag()
     /// </summary>
     public class AngularHtmlTagFactory
     {

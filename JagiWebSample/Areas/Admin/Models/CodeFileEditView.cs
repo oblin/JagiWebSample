@@ -1,6 +1,7 @@
 ﻿using Jagi.Mapping;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace JagiWebSample.Areas.Admin.Models
 {
@@ -13,9 +14,9 @@ namespace JagiWebSample.Areas.Admin.Models
     public class CodeFilesEditView : IMapFromCustomized
     {
         public int Id { get; set; }
-        [DisplayName("代號類別")]
+        [Required, DisplayName("代號類別")]
         public string ItemType { get; set; }
-        [DisplayName("類別名稱")]
+        [Required, DisplayName("類別名稱")]
         public string TypeName { get; set; }
         [DisplayName("代號說明1")]
         public string Desc { get; set; }

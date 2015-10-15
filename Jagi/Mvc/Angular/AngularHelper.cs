@@ -24,9 +24,9 @@ namespace Jagi.Mvc.Angular
             _htmlHelper = helper;
         }
 
-        public AngularModelHelper<TModel> ModelFor(string expressionPrefix)
+        public AngularModelHelper<TModel> ModelFor(string expressionPrefix, FormGroupLayout layout = null)
         {
-            return new AngularModelHelper<TModel>(_htmlHelper, expressionPrefix);
+            return new AngularModelHelper<TModel>(_htmlHelper, expressionPrefix, layout);
         }
 
         public HtmlTag FormForModel(string expressionPrefix)

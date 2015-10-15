@@ -20,3 +20,12 @@
     font-weight: bold;
     color: aliceblue;
 }
+
+.form-group.required .control-label { 
+   color:blue;
+}
+.form-group.required .control-label:after { 
+   content:"*";
+   color:red;
+   margin-right: -6px;
+}

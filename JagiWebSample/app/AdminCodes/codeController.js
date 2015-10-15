@@ -14,8 +14,10 @@
         vm.prevPage = prevPage;
         vm.goPage = goPage;
         vm.searching = searching;
+        vm.addItem = addItem;
+
         // control list selection
-        vm.current;
+        vm.current = model[0];
         vm.selected = selected;
         vm.select = select;
 
@@ -35,13 +37,21 @@
             vm.pagedList.list = list.slice((page - 1) * pageCount, page * pageCount);
         }
 
+        function addItem(item) {
+            //vm.current = item;
+            //vm.search = "";
+            //vm.pagedList.list.push(item);
+            //var index = _.indexOf(list, item);
+            //$scope.pagedList.currentPage = Math.ceil(index / $scope.pagedList.pageCount);
+        }
+
         /**
          * 檢查 Form inputs 是否有被變更，如果有，則不允許點選上、下頁等功能
-         * TODO: 嘗試使用 show-error ng-directive 處理? 
+         *  vm.current.isDirty 是由 child-scope 設定（codeEditDirective.js 中，觀察 form.$dirty 變化）
          */
         function hadBeenModified() {
-            if (vm.codeFileForm && vm.codeFileForm.$dirty)
-                return true;
+            if (vm.current.isDirty)
+                return vm.current.isDirty;
             return false;
         }
 

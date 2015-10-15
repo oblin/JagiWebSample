@@ -104,6 +104,13 @@ namespace UnitTestJagi
             var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
 
             var htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Default).ToString();
+
+            /// Result:
+            /// <div form-group-validation="Text" class="form-group has-feedback">
+            ///     <label for="Text" class="control-label">Text</label>
+            ///     <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="text" class="form-control" />
+            /// </div>
+
             Assert.IsTrue(htmlString.Contains("label for=\"Text\" class=\"control-label\">"));
             Assert.IsTrue(htmlString.Contains("<input"));
             Assert.IsTrue(htmlString.Contains("ng-model=\"text\""));
@@ -111,6 +118,83 @@ namespace UnitTestJagi
             Assert.IsTrue(htmlString.Contains("type=\"text\""));
             Assert.IsTrue(htmlString.Contains("placeholder=\"請輸入任意文字...\""));
             Assert.IsTrue(htmlString.Contains("class=\"form-control\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_WithLabelInputGrid()
+        {
+            var grid = new FormGroupLayout(5, 7);
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty, grid);
+
+            var htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Default).ToString();
+
+            /// Result:
+            /// <div form-group-validation="Text" class="form-group has-feedback">
+            ///     <label for="Text" class="control-label col-sm-5">Text</label>
+            ///     <div class="col-sm-7">
+            ///     <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="text" class="form-control" />
+            ///     </div>
+            /// </div>
+
+            Assert.IsTrue(htmlString.Contains("label for=\"Text\" class=\"control-label col-sm-5\">"));
+            Assert.IsTrue(htmlString.Contains("<div class=\"col-sm-7\">"));
+            Assert.IsTrue(htmlString.Contains("ng-model=\"text\""));
+            Assert.IsTrue(htmlString.Contains("name=\"Text\""));
+            Assert.IsTrue(htmlString.Contains("type=\"text\""));
+            Assert.IsTrue(htmlString.Contains("placeholder=\"請輸入任意文字...\""));
+            Assert.IsTrue(htmlString.Contains("class=\"form-control\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_Required()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty);
+
+            var htmlString = sampleModel.FormGroupFor(x => x.Number).ToString();
+
+            /// Result:
+            /// <div form-group-validation="Text" class="form-group has-feedback required">
+            ///     <label for="Text" class="control-label col-sm-5">Text</label>
+            ///     <div class="col-sm-7">
+            ///     <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="text" class="form-control" />
+            ///     </div>
+            /// </div>
+
+            Assert.IsTrue(htmlString.Contains("<div form-group-validation=\"Number\" class=\"form-group has-feedback required\">"));
+        }
+
+        [TestMethod]
+        public void Test_Angular_FormGroupFor_WithLabelInput_AndFormGrid()
+        {
+            var grid = new FormGroupLayout(5, 7,4 );
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty, grid);
+
+            var htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Default).ToString();
+
+            /// Result:
+            /// <div form-group-validation="Text" class="form-group has-feedback col-sm-4">
+            ///     <label for="Text" class="control-label col-sm-5">Text</label>
+            ///     <div class="col-sm-7">
+            ///     <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="text" class="form-control" />
+            ///     </div>
+            /// </div>
+
+            Assert.IsTrue(htmlString.Contains("<div form-group-validation=\"Text\" class=\"form-group has-feedback col-sm-4\">"));
+            Assert.IsTrue(htmlString.Contains("label for=\"Text\" class=\"control-label col-sm-5\">"));
+            Assert.IsTrue(htmlString.Contains("<div class=\"col-sm-7\">"));
+            Assert.IsTrue(htmlString.Contains("ng-model=\"text\""));
+            Assert.IsTrue(htmlString.Contains("name=\"Text\""));
+            Assert.IsTrue(htmlString.Contains("type=\"text\""));
+            Assert.IsTrue(htmlString.Contains("placeholder=\"請輸入任意文字...\""));
+            Assert.IsTrue(htmlString.Contains("class=\"form-control\""));
+
+            htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Default, formGroupGrid: 6).ToString();
+            Assert.IsTrue(htmlString.Contains("<div form-group-validation=\"Text\" class=\"form-group has-feedback col-sm-6\">"));
+
+            grid = new FormGroupLayout(5, 7);
+            sampleModel = sampleHtmlHelper.Angular().ModelFor(string.Empty, grid);
+            htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Default, formGroupGrid: 5).ToString();
+            Assert.IsTrue(htmlString.Contains("<div form-group-validation=\"Text\" class=\"form-group has-feedback col-sm-5\">"));
         }
 
         [TestMethod]
@@ -257,6 +341,15 @@ namespace UnitTestJagi
             var htmlString = sampleModel.AngularLabelFor(x => x.IsChinese).ToString();
 
             Assert.AreEqual("<label for=\"IsChinese\" class=\"control-label\">Is Chinese</label>", htmlString);
+        }
+
+        [TestMethod]
+        public void Test_Angular_EditorFor()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");
+            var htmlString = sampleModel.AngularEditorFor(x => x.Text).ToString();
+            // result: <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="vm.text" class="form-control" />
+            Assert.IsTrue(htmlString.Contains("type=\"text\" name=\"Text\" ng-model=\"vm.text\" class=\"form-control\""));
         }
 
         private Dictionary<string, string> SetAttrs()

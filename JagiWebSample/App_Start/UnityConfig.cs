@@ -4,6 +4,7 @@ using Microsoft.Practices.Unity.Configuration;
 using Jagi.Utility;
 using Microsoft.Practices.ServiceLocation;
 using JagiWebSample.Areas.Admin.Models;
+using Jagi.Mvc.Angular;
 
 namespace JagiWebSample.App_Start
 {
@@ -43,6 +44,7 @@ namespace JagiWebSample.App_Start
             EmailSetting setting = new EmailSetting { Email = "redmine.excelsior@gmail.com", Password = "490910490910" };
 
             container.RegisterInstance(typeof(EmailSetting), setting);
+            container.RegisterInstance(typeof(AngularHtmlTag), new AngularHtmlTag());
             UnityServiceLocator locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);
         }

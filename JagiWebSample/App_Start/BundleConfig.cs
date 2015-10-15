@@ -34,6 +34,7 @@ namespace JagiWebSample
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/MvcMembership.css",
+                      "~/fonts/font-awesome/css/font-awesome.css",
                       "~/Content/site.css"));
         }
     }
