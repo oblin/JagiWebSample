@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
@@ -41,6 +42,17 @@ namespace JagiWebSample.Areas.Admin.Controllers
             _context.SaveChanges();
 
             return BetterJson(Mapper.Map<CodeFilesEditView>(target));
+        }
+
+        [HttpGet]
+        public JsonResult Details(int id)
+        {
+            var code = _context.CodeFiles.Find(id);
+            var result = Mapper.Map<IEnumerable<CodeDetailEditView>>(code.CodeDetails);
+            if (result == null)
+                return JsonSuccess(new List<CodeDetailEditView>());
+
+            return JsonSuccess(result);
         }
     }
 }

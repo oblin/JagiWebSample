@@ -21,17 +21,27 @@
         var backup;
 
         vm.options = $scope.options;
+        vm.details = [];
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
             if (vm.current != value) {
                 vm.current = value;
+                codeService.details(value.id)
+                    .success(function (details) {
+                        vm.details = details;
+                    })
                 backup = angular.copy(value);
                 $scope.codeFileForm.$setPristine();
                 $scope.codeFileForm.$setUntouched();
             }
         })
 
+        /**
+         * 當 form inputs 改變時候，設定 $parent.vm.current.isDirty
+         * 讓 parent controller 可以判斷是否有被修改，進行如避免操作等行為設定
+         * @param newValue 透過 $watch codeFileForm.$dirty 判斷任一input有被修改
+         */
         $scope.$watch('codeFileForm.$dirty', function (newValue) {
             $scope.$parent.vm.current.isDirty = newValue;
         })
@@ -84,6 +94,7 @@
             $scope.codeFileForm.$setPristine();
             $scope.codeFileForm.$setUntouched();
             $scope.$parent.vm.current.isDirty = false;
+
         }
     }
 })();

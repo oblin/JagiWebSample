@@ -8,7 +8,7 @@
         return {
             update: update,
             add: add,
-            //loadDetails: loadDetails
+            details: loadDetails
         };
 
         function add(code) {
@@ -20,6 +20,10 @@
                 .success(function (data) {
                     angular.extend(code, data);
                 });
+        }
+
+        function loadDetails(id) {
+            return $http.get('/Admin/Codes/Details/' + id);
         }
     }
 })();

@@ -241,6 +241,7 @@
     <Content Include="app\FormGroupValidationDirective.js" />
     <Content Include="app\inputDirective.js" />
     <Content Include="app\InputValidationIconsDirective.js" />
+    <Content Include="app\preventDefault.js" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml">
       <SubType>Code</SubType>
     </Content>

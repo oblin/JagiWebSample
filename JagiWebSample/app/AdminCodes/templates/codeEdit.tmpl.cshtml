@@ -5,9 +5,13 @@
 }
 
 <h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
-<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current" ng-disabled="vm.saving" ng-cloak>
+@*<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
+    ng-submit="vm.save(vm.current)"
+    ng-disabled="vm.saving" ng-cloak>*@
+<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
+      ng-disabled="vm.saving" ng-cloak>
     <p>
-        <button class="btn btn-primary" ng-click="vm.save(vm.current)"
+        <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
                 ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)">
             存檔 <span class="glyphicon glyphicon-save"></span>
         </button>
@@ -47,12 +51,12 @@
         </th>
     </tr>
     <tbody ng-cloak>
-        <tr data-ng-repeat="item in details">
-            <td>{{item.ItemCode}}</td>
-            <td>{{item.Desc}}</td>
+        <tr data-ng-repeat="item in vm.details">
+            <td>{{item.itemCode}}</td>
+            <td>{{item.desc}}</td>
             <td>
-                <button class="btn btn-info" ng-click="editDetail(item)" data-toggle="modal" data-target="#detailModal">編輯</button>
-                <button class="btn btn-danger DeleteBtn" ng-click="deleteDetail(item)">刪除</button>
+                <button class="btn btn-info" ng-click="vm.editDetail(item)" data-toggle="modal" data-target="#detailModal">編輯</button>
+                <button class="btn btn-danger deleteBtn" ng-click="vm.deleteDetail(item)">刪除</button>
             </td>
         </tr>
     </tbody>
