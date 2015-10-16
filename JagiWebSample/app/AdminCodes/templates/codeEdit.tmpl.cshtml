@@ -12,11 +12,12 @@
       ng-disabled="vm.saving" ng-cloak>
     <p>
         <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
-                ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)">
+                ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)" icon="fa-save"> 
             存檔 <span class="glyphicon glyphicon-save"></span>
         </button>
-        <button class="btn btn-warning" ng-click="vm.cancel()" ng-disabled="!codeFileForm.$dirty">
-            取消 <span class="glyphicon glyphicon-export"></span>
+        <button class="btn btn-warning" ng-click="vm.cancel()" 
+                ng-disabled="!codeFileForm.$dirty" icon-left="fa-undo">
+            取消 
         </button>
         <button class="btn btn-success" ng-click="vm.create()" ng-disabled="vm.current.Id === 0">
             新增 <span class="glyphicon glyphicon-open"></span>
@@ -47,7 +48,7 @@
             代碼名稱
         </th>
         <th>
-            <button class="btn btn-success" ng-click="editDetail()" data-toggle="modal" data-target="#detailModal">新增代碼</button>
+            <button class="btn btn-success" ng-click="vm.addDetail()" data-toggle="modal" data-target="#detailModal">新增代碼</button>
         </th>
     </tr>
     <tbody ng-cloak>
@@ -55,14 +56,14 @@
             <td>{{item.itemCode}}</td>
             <td>{{item.desc}}</td>
             <td>
-                <button class="btn btn-info" ng-click="vm.editDetail(item)" data-toggle="modal" data-target="#detailModal">編輯</button>
+                <button class="btn btn-info" ng-click="vm.editDetail(item)">編輯</button>
                 <button class="btn btn-danger deleteBtn" ng-click="vm.deleteDetail(item)">刪除</button>
             </td>
         </tr>
     </tbody>
 </table>
 
-<!-- Modal -->
+<!-- Modal
 <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -101,3 +102,4 @@
         </div>
     </div>
 </div>
+ -->

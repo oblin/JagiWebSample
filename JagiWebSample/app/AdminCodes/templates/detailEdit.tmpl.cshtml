@@ -1,0 +1,25 @@
+﻿@model JagiWebSample.Areas.Admin.Models.CodeDetailEditView
+@{
+    var detail = Html.Angular().ModelFor("vm.detail");
+}
+
+<form novalidate name="detailForm" class="angular-input-form">
+    <fieldset ng-disabled="vm.saving">
+        <div class="modal-header">
+            <h3 class="modal-title">編輯代碼資料<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
+        </div>
+        <div class="modal-body">
+            @detail.FormGroupFor(m => m.ItemCode)
+            @detail.FormGroupFor(m => m.Desc)
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="$parent.$dismiss()" icon="fa-undo">
+                 取消
+            </button>
+            <button type="button" class="btn btn-primary"
+                    ng-click="detailForm.$valid && vm.save(detail)" icon="fa-save">
+                 存檔
+            </button>
+        </div>
+    </fieldset>
+</form>

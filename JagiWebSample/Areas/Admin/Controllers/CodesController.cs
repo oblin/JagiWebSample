@@ -19,7 +19,6 @@ namespace JagiWebSample.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var result = _context.CodeFiles.ProjectTo<CodeFilesEditView>();
-
             return View(result);
         }
 
@@ -31,6 +30,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
             _context.SaveChanges();
 
+            System.Threading.Thread.Sleep(5000);
             return BetterJson(target);
         }
 
@@ -53,6 +53,18 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 return JsonSuccess(new List<CodeDetailEditView>());
 
             return JsonSuccess(result);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateDetail(CodeDetailEditView model)
+        {
+            var detail = _context.CodeDetails.Find(model.Id);
+            Mapper.Map(model, detail);
+
+            _context.SaveChanges();
+
+            return JsonSuccess(Mapper.Map<CodeDetailEditView>(detail));
+
         }
     }
 }

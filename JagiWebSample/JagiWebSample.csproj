@@ -234,14 +234,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\adminCodes\codeController.js" />
+    <Content Include="app\adminCodes\codeDetailDirective.js" />
     <Content Include="app\adminCodes\codeEditDirective.js" />
     <Content Include="app\adminCodes\codeService.js" />
     <Content Include="app\alerts.js" />
     <Content Include="app\app.js" />
     <Content Include="app\FormGroupValidationDirective.js" />
+    <Content Include="app\iconDirective.js" />
     <Content Include="app\inputDirective.js" />
     <Content Include="app\InputValidationIconsDirective.js" />
     <Content Include="app\preventDefault.js" />
+    <Content Include="app\waitModalDirective.js" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -292,6 +295,7 @@
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="app\adminCodes\templates\detailEdit.tmpl.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\JavaScript.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

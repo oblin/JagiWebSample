@@ -14,9 +14,9 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService', 'alerts'];
+    controller.$inject = ['$scope', 'codeService', '$modal', 'alerts'];
 
-    function controller($scope, codeService, alerts) {
+    function controller($scope, codeService, $modal, alerts) {
         var vm = this;
         var backup;
 
@@ -45,11 +45,14 @@
         $scope.$watch('codeFileForm.$dirty', function (newValue) {
             $scope.$parent.vm.current.isDirty = newValue;
         })
-
+        // 處理 codeFile 的 CRUD
         vm.save = save;
         vm.saving = false;
         vm.create = create;
         vm.cancel = cancel;
+        // 處理 codeDetail 
+        vm.addDetail = addDetail;
+        vm.editDetail = editDetail;
 
         function save(item) {
             vm.saving = true;
@@ -95,6 +98,22 @@
             $scope.codeFileForm.$setUntouched();
             $scope.$parent.vm.current.isDirty = false;
 
+        }
+
+        function addDetail() {
+            $modal.open({
+                template: '<code-detail parent="parent" />',
+                backdrop: false,
+                scope: angular.extend($scope.$new(true), { parent: vm.current })
+            });
+        }
+
+        function editDetail(item) {
+            $modal.open({
+                template: '<code-detail parent="parent" detail="detail" />',
+                backdrop: false,
+                scope: angular.extend($scope.$new(true), { parent: vm.current, detail: item })
+            });
         }
     }
 })();

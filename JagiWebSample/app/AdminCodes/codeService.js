@@ -8,7 +8,8 @@
         return {
             update: update,
             add: add,
-            details: loadDetails
+            details: loadDetails,
+            saveDetail: saveDetail
         };
 
         function add(code) {
@@ -24,6 +25,13 @@
 
         function loadDetails(id) {
             return $http.get('/Admin/Codes/Details/' + id);
+        }
+
+        function saveDetail(updatedDetail, existDetail) {
+            return $http.post('/Admin/Codes/UpdateDetail', updatedDetail)
+                .success(function (data) {
+                    angular.extend(existDetail, data);
+                });
         }
     }
 })();
