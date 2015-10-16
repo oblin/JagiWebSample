@@ -8,7 +8,7 @@
     <div class="col-md-9">
         <div id="partialCodeEdit">
             @*@Html.Partial("_CodeFile")*@
-            <code-edit options></code-edit>
+            <code-edit options update-current="vm.updateCurrent(item)"></code-edit>
         </div>
     </div>
     <wait-modal />

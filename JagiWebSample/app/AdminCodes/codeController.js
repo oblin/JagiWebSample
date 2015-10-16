@@ -6,43 +6,37 @@
 
     function codeController(model, alerts) {
         var vm = this;
-        vm.search;
+        vm.list = model;
         // control paging
         vm.pagedList = { list: [], count: 0, currentPage: 1, pageCount: 10 };
         vm.hadBeenModified = hadBeenModified;
         vm.nextPage = nextPage;
         vm.prevPage = prevPage;
         vm.goPage = goPage;
+
+        vm.search;
         vm.searching = searching;
-        vm.addItem = addItem;
 
         // control list selection
         vm.current = model[0];
         vm.selected = selected;
         vm.select = select;
+        vm.updateCurrent = updateCurrent;
 
-        setPagedList(model);
+        setPagedList(vm.list, 1);
 
         /**
          * 將傳入的 list 轉成 page list
          * @param array list 
          */
-        function setPagedList(list) {
+        function setPagedList(list, page) {
             var pagedList = vm.pagedList;
             var pageCount = pagedList.pageCount;
-            var page = (pagedList.currentPage - 1) * pageCount > list.length ? 1 : pagedList.currentPage;
+            page = page || ((pagedList.currentPage - 1) * pageCount > list.length ? 1 : pagedList.currentPage);
             vm.pagedList.count = Math.ceil(list.length / pageCount);
             vm.pagedList.currentPage = page;
 
             vm.pagedList.list = list.slice((page - 1) * pageCount, page * pageCount);
-        }
-
-        function addItem(item) {
-            //vm.current = item;
-            //vm.search = "";
-            //vm.pagedList.list.push(item);
-            //var index = _.indexOf(list, item);
-            //$scope.pagedList.currentPage = Math.ceil(index / $scope.pagedList.pageCount);
         }
 
         /**
@@ -123,6 +117,12 @@
             }
 
             vm.current = item;
+        }
+
+        function updateCurrent(item) {
+            vm.current = item;
+            vm.list.unshift(item);
+            setPagedList(vm.list, 1);
         }
     }
 })();

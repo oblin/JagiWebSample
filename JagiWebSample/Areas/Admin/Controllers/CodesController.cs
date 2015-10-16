@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
 {
+    [OutputCache(Duration = 0)]
     public class CodesController : JagiControllerBase
     {
         private AdminDataContext _context;
@@ -23,22 +24,20 @@ namespace JagiWebSample.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(CodeFilesEditView model)
+        public JsonResult Save(CodeFilesEditView model)
         {
-            var target = _context.CodeFiles.Find(model.Id);
-            Mapper.Map(model, target);
+            CodeFile target;
+            if (model.Id == 0)
+            {
+                target = Mapper.Map<CodeFile>(model);
+                _context.CodeFiles.Add(target);
+            }
+            else
+            {
+                target = _context.CodeFiles.Find(model.Id);
+                Mapper.Map(model, target);
+            }
 
-            _context.SaveChanges();
-
-            System.Threading.Thread.Sleep(5000);
-            return BetterJson(target);
-        }
-
-        [HttpPost]
-        public JsonResult Add(CodeFilesEditView model)
-        {
-            var target = Mapper.Map<CodeFile>(model);
-            _context.CodeFiles.Add(target);
             _context.SaveChanges();
 
             return BetterJson(Mapper.Map<CodeFilesEditView>(target));
@@ -56,15 +55,34 @@ namespace JagiWebSample.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDetail(CodeDetailEditView model)
+        public JsonResult SaveDetail(CodeDetailEditView model)
         {
-            var detail = _context.CodeDetails.Find(model.Id);
-            Mapper.Map(model, detail);
+            CodeDetail detail;
+            if (model.Id == 0)
+            {
+                detail = Mapper.Map<CodeDetail>(model);
+                _context.CodeDetails.Add(detail);
+            }
+            else
+            {
+                detail = _context.CodeDetails.Find(model.Id);
+                Mapper.Map(model, detail);
+            }
 
             _context.SaveChanges();
 
             return JsonSuccess(Mapper.Map<CodeDetailEditView>(detail));
+        }
 
+        [HttpPost]
+        public JsonResult DeleteDetail(int id)
+        {
+            var detail = _context.CodeDetails.Find(id);
+            _context.CodeDetails.Remove(detail);
+
+            _context.SaveChanges();
+
+            return JsonSuccess();
         }
     }
 }

@@ -6,7 +6,8 @@
     function codeEdit() {
         return {
             scope: {
-                options: '='        // parent scope 設定並傳入的參數
+                options: '=',        // parent scope 設定並傳入的參數
+                updateCurrent: "&"
             },
             templateUrl: '/adminCodes/template/codeEdit.tmpl.cshtml',
             controller: controller,
@@ -20,18 +21,29 @@
         var vm = this;
         var backup;
 
-        vm.options = $scope.options;
-        vm.details = [];
+        vm.options = $scope.options;    // reserved, not use
+        vm.parent;                      // $parent 選擇的代碼  
+        vm.current;                     // 目前正在編輯的代碼
+        vm.details = [];                // details for table list
+
+        // 處理 codeFile 的 CRUD
+        vm.save = save;
+        vm.saving = false;
+        vm.create = create;
+        vm.cancel = cancel;
+        // 處理 codeDetail 
+        vm.detail = detail;
+        vm.deleteDetail = deleteDetail;
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
-            if (vm.current != value) {
-                vm.current = value;
+            if (vm.parent != value) {
+                vm.parent = value;
                 codeService.details(value.id)
                     .success(function (details) {
                         vm.details = details;
                     })
-                backup = angular.copy(value);
+                vm.current = angular.copy(value);
                 $scope.codeFileForm.$setPristine();
                 $scope.codeFileForm.$setUntouched();
             }
@@ -45,36 +57,23 @@
         $scope.$watch('codeFileForm.$dirty', function (newValue) {
             $scope.$parent.vm.current.isDirty = newValue;
         })
-        // 處理 codeFile 的 CRUD
-        vm.save = save;
-        vm.saving = false;
-        vm.create = create;
-        vm.cancel = cancel;
-        // 處理 codeDetail 
-        vm.addDetail = addDetail;
-        vm.editDetail = editDetail;
 
         function save(item) {
             vm.saving = true;
-            if (item.id && item.id > 0) {
-                codeService.update(item)
-                    .error(function (data) {
-                        alerts.ajaxError(data);
-                    })
-                    .finally(function () {
-                        vm.saving = false;
-                        reset();
-                    });
-            } else {
-                codeService.add(item)
-                    .success(function (data) {
-                        $scope.$parent.vm.pagedList.list.unshift(data);
-                    })
-                    .finally(function () {
-                        vm.saving = false;
-                        reset();
-                    });
-            }
+            codeService.save(item, (function () {
+                if (item.id == 0)
+                    return {};
+                return vm.parent;
+            })())
+                .success(function (data) {
+                    if (item.id == 0) {
+                        $scope.updateCurrent({ item: data });
+                    }
+                })
+                .finally(function () {
+                    vm.saving = false;
+                    reset();
+                });
         }
 
         function create() {
@@ -100,20 +99,27 @@
 
         }
 
-        function addDetail() {
+        function detail(item) {
+            if (item == null)
+                item = { id: 0 };
             $modal.open({
-                template: '<code-detail parent="parent" />',
+                template: '<code-detail parent="parent" detail="detail" list="list" />',
                 backdrop: false,
-                scope: angular.extend($scope.$new(true), { parent: vm.current })
+                scope: angular.extend($scope.$new(true), { parent: vm.current, detail: item, list: vm.details })
             });
         }
 
-        function editDetail(item) {
-            $modal.open({
-                template: '<code-detail parent="parent" detail="detail" />',
-                backdrop: false,
-                scope: angular.extend($scope.$new(true), { parent: vm.current, detail: item })
-            });
+        function deleteDetail(item) {
+            if (item == null || item.id == 0)
+                return;
+            vm.saving = true;
+            codeService.deleteDetail(item.id)
+                .success(function () {
+                    vm.details.splice(vm.details.indexOf(item), 1);
+                })
+                .finally(function () {
+                    vm.saving = false;
+                });
         }
     }
 })();

@@ -5,9 +5,6 @@
 }
 
 <h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
-@*<form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
-    ng-submit="vm.save(vm.current)"
-    ng-disabled="vm.saving" ng-cloak>*@
 <form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
       ng-disabled="vm.saving" ng-cloak>
     <p>
@@ -48,7 +45,7 @@
             代碼名稱
         </th>
         <th>
-            <button class="btn btn-success" ng-click="vm.addDetail()" data-toggle="modal" data-target="#detailModal">新增代碼</button>
+            <button class="btn btn-success" ng-click="vm.detail()" data-toggle="modal" data-target="#detailModal">新增代碼</button>
         </th>
     </tr>
     <tbody ng-cloak>
@@ -56,50 +53,9 @@
             <td>{{item.itemCode}}</td>
             <td>{{item.desc}}</td>
             <td>
-                <button class="btn btn-info" ng-click="vm.editDetail(item)">編輯</button>
+                <button class="btn btn-info" ng-click="vm.detail(item)">編輯</button>
                 <button class="btn btn-danger deleteBtn" ng-click="vm.deleteDetail(item)">刪除</button>
             </td>
         </tr>
     </tbody>
 </table>
-
-<!-- Modal
-<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" ng-click="cancelDetail()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="detailModalLabel">編輯代碼資料</h4>
-            </div>
-            <div class="modal-body">
-                <form class="angular-input-form" name="codeDetailForm">
-                    <div class="form-group">
-                        <label>代碼</label>
-                        <input type="text" class="form-control" ng-model="detail.ItemCode"
-                               name="detail_ItemCode" ng-maxlength="8" required />
-                        <span class="text-danger" ng-show="codeDetailForm.detail_ItemCode.$dirty
-                      && codeDetailForm.detail_ItemCode.$error.required">
-                            Required!
-                        </span>
-                        <span class="text-danger" ng-show="codeDetailForm.detail_ItemCode.$dirty
-                      && codeDetailForm.detail_ItemCode.$error.maxlength">
-                            超過最大長度 8 個字
-                        </span>
-                    </div>
-                    <div class="form-group">
-                        <label>代碼名稱</label>
-                        <input type="text" class="form-control" ng-model="detail.Desc" required />
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal" ng-click="cancelDetail()">取消</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveDetail(detail)"
-                        ng-disabled="!(codeDetailForm.$dirty && codeDetailForm.$valid)">
-                    存檔
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
- -->

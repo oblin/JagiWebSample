@@ -7,7 +7,8 @@
         return {
             scope: {
                 detail: '=',
-                parent: '='
+                parent: '=',
+                list: '='
             },
             templateUrl: '/adminCodes/template/detailEdit.tmpl.cshtml',
             controller: controller,
@@ -19,18 +20,30 @@
     function controller($scope, codeService) {
         var vm = this;
         vm.detail = angular.copy($scope.detail);
+        if (vm.detail.id == 0)
+            vm.detail.codeFileID = $scope.parent.id;
+
         vm.errorMessage;
+        vm.saving = false;
         vm.save = save;
 
         function save(item) {
+            vm.saving = true;
             codeService.saveDetail(vm.detail, $scope.detail)
                 .success(function () {
                     // close the modal
                     $scope.$parent.$close();
+                    if (vm.detail.id == 0) {
+                        // 處理新增，將回傳的加入到 list 中
+                        $scope.list.push($scope.detail);
+                    }
                 })
                 .error(function (data) {
                     vm.errorMessage = data;
-                });
+                })
+                .finally(function(){
+                    vm.saving = false;
+                })
         }
     }
 })();

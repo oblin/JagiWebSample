@@ -1,25 +1,24 @@
 ﻿(function () {
     'use strict';
     window.app.factory('codeService', codeService);
-    codeService.$inject = ['$http', 'model'];
+    codeService.$inject = ['$http', 'model', 'alerts'];
 
-    function codeService($http, model) {
+    function codeService($http, model, alerts) {
         var details = [];
         return {
-            update: update,
-            add: add,
+            save: save,
             details: loadDetails,
-            saveDetail: saveDetail
+            saveDetail: saveDetail,
+            deleteDetail: deleteDetail
         };
 
-        function add(code) {
-            return $http.post('/Admin/Codes/Add', code);
-        }
-
-        function update(code) {
-            return $http.post('/Admin/Codes/Update', code)
+        function save(code, existCode) {
+            return $http.post('/Admin/Codes/Save', code)
                 .success(function (data) {
-                    angular.extend(code, data);
+                    angular.extend(existCode, data);
+                })
+                .error(function (data) {
+                    alerts.ajaxError(data);
                 });
         }
 
@@ -28,9 +27,19 @@
         }
 
         function saveDetail(updatedDetail, existDetail) {
-            return $http.post('/Admin/Codes/UpdateDetail', updatedDetail)
+            return $http.post('/Admin/Codes/SaveDetail', updatedDetail)
                 .success(function (data) {
                     angular.extend(existDetail, data);
+                })
+                .error(function (data) {
+                    alerts.ajaxError(data);
+                });
+        }
+
+        function deleteDetail(id) {
+            return $http.post('/Admin/Codes/DeleteDetail/' + id)
+                .error(function (data) {
+                    alerts.ajaxError(data);
                 });
         }
     }
