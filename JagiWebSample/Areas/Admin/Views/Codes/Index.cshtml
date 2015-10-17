@@ -8,21 +8,23 @@
     <div class="col-md-9">
         <div id="partialCodeEdit">
             @*@Html.Partial("_CodeFile")*@
-            <code-edit options update-current="vm.updateCurrent(item)"></code-edit>
+            <code-edit options update-current="vm.updateCurrentToList(item)" delete-current="vm.removeCurrentFromList(item)"></code-edit>
         </div>
     </div>
     <wait-modal />
 </div>
 
 @section Scripts{
+    <script src="~/app/ArrayExtensions.js"></script>
     <script src="~/app/app.js"></script>
     <script src="~/app/alerts.js"></script>
     <script src="~/app/inputDirective.js"></script>
     <script src="~/app/preventDefault.js"></script>
     <script src="~/app/iconDirective.js"></script>
+<script src="~/app/deleteConfirmDirective.js"></script>
     <script src="~/app/InputValidationIconsDirective.js"></script>
     <script src="~/app/FormGroupValidationDirective.js"></script>
-<script src="~/app/waitModalDirective.js"></script>
+    <script src="~/app/waitModalDirective.js"></script>
     <script src="~/app/adminCodes/codeDetailDirective.js"></script>
     <script src="~/app/adminCodes/codeEditDirective.js"></script>
     <script src="~/app/adminCodes/codeService.js"></script>

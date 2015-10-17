@@ -21,7 +21,8 @@
         vm.current = model[0];
         vm.selected = selected;
         vm.select = select;
-        vm.updateCurrent = updateCurrent;
+        vm.updateCurrentToList = updateCurrentToList;
+        vm.removeCurrentFromList = removeCurrentFromList;
 
         setPagedList(vm.list, 1);
 
@@ -119,10 +120,17 @@
             vm.current = item;
         }
 
-        function updateCurrent(item) {
+        function updateCurrentToList(item) {
             vm.current = item;
             vm.list.unshift(item);
             setPagedList(vm.list, 1);
+        }
+
+        function removeCurrentFromList(item) {
+            var idx = vm.list.getIndexById(item.id);
+            vm.list.splice(idx, 1);
+            vm.current = vm.list[idx];
+            setPagedList(vm.list);
         }
     }
 })();

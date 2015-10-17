@@ -9,18 +9,21 @@
       ng-disabled="vm.saving" ng-cloak>
     <p>
         <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
-                ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)" icon="fa-save"> 
-            存檔 <span class="glyphicon glyphicon-save"></span>
+                ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)" icon="fa-save">
+            存檔
         </button>
-        <button class="btn btn-warning" ng-click="vm.cancel()" 
-                ng-disabled="!codeFileForm.$dirty" icon-left="fa-undo">
-            取消 
+        <button class="btn btn-warning" ng-click="vm.cancel()"
+                ng-disabled="vm.current.id === 0 ? false : !codeFileForm.$dirty " icon="fa-undo">
+            取消
         </button>
-        <button class="btn btn-success" ng-click="vm.create()" ng-disabled="vm.current.Id === 0">
-            新增 <span class="glyphicon glyphicon-open"></span>
+        <button class="btn btn-success" ng-click="vm.create()" ng-disabled="vm.current.id === 0"
+                icon="fa-plus-circle">
+            新增 
         </button>
-        <button class="btn btn-danger DeleteBtn" ng-click="vm.delete(vm.current)">
-            刪除 <span class="glyphicon glyphicon-trash"></span>
+        <button class="btn btn-danger deleteBtn"
+                icon="fa-trash" prevent-default 
+                click-confirm="vm.delete(item)" item="vm.current">
+            刪除
         </button>
     </p>
 
@@ -45,7 +48,9 @@
             代碼名稱
         </th>
         <th>
-            <button class="btn btn-success" ng-click="vm.detail()" data-toggle="modal" data-target="#detailModal">新增代碼</button>
+            <button class="btn btn-success" ng-click="vm.detail()" icon="fa-plus-circle">
+                新增代碼
+            </button>
         </th>
     </tr>
     <tbody ng-cloak>
@@ -53,8 +58,15 @@
             <td>{{item.itemCode}}</td>
             <td>{{item.desc}}</td>
             <td>
-                <button class="btn btn-info" ng-click="vm.detail(item)">編輯</button>
-                <button class="btn btn-danger deleteBtn" ng-click="vm.deleteDetail(item)">刪除</button>
+                <button class="btn btn-info" ng-click="vm.detail(item)" icon="fa-edit">
+                    編輯
+                </button>
+                <button class="btn btn-danger" icon="fa-trash"
+                        click-confirm="vm.deleteDetail(item)"
+                        confirm-message="確定要刪除這筆 code detail 的資料嗎？"
+                         item="item">
+                    刪除
+                </button>
             </td>
         </tr>
     </tbody>

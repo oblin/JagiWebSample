@@ -7,7 +7,8 @@
         return {
             scope: {
                 options: '=',        // parent scope 設定並傳入的參數
-                updateCurrent: "&"
+                updateCurrent: "&",
+                deleteCurrent: '&'
             },
             templateUrl: '/adminCodes/template/codeEdit.tmpl.cshtml',
             controller: controller,
@@ -19,7 +20,6 @@
 
     function controller($scope, codeService, $modal, alerts) {
         var vm = this;
-        var backup;
 
         vm.options = $scope.options;    // reserved, not use
         vm.parent;                      // $parent 選擇的代碼  
@@ -30,6 +30,7 @@
         vm.save = save;
         vm.saving = false;
         vm.create = create;
+        vm.delete = deleteCode;
         vm.cancel = cancel;
         // 處理 codeDetail 
         vm.detail = detail;
@@ -58,6 +59,11 @@
             $scope.$parent.vm.current.isDirty = newValue;
         })
 
+        /**
+         * 提供新增或修改的存檔；其中，新增時候必須要將項目加入到 parent list 中，使用 updateCurrent() 
+         * 讓 parent controller 中的 vm.current & list 都可以同時增加
+         * @param item
+         */
         function save(item) {
             vm.saving = true;
             codeService.save(item, (function () {
@@ -80,15 +86,27 @@
             vm.current = { id: 0 };
         }
 
+        function deleteCode(item) {
+            if (!item || item.id == 0)
+                return;
+            vm.saving = true;
+            codeService.deleteCode(item.id)
+                .success(function () {
+                    $scope.deleteCurrent({ item: item });
+                })
+                .finally(function () {
+                    vm.saving = false;
+                });
+        }
+
         /**
-         * 使用 angular.extend() copy backup object to $scope.$parent.vm.current 
+         * 使用 angular.extend() copy vm.parent object to $scope.$parent.vm.current 
          * 讓 two-way binding 可以正確產生
          * 另外使用 $scope.$apply() 才會造成 $scope.$watch('codeFileForm.$dirty') 正確被觸發，否則
          * 不會引起 angular 的內部 event
          */
         function cancel() {
-            vm.current = backup;
-            angular.extend($scope.$parent.vm.current, backup);
+            vm.current = vm.parent;
             reset();
         }
 

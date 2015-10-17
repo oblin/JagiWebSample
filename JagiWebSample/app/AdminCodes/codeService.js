@@ -8,6 +8,7 @@
         return {
             save: save,
             details: loadDetails,
+            deleteCode: deleteCode,
             saveDetail: saveDetail,
             deleteDetail: deleteDetail
         };
@@ -17,6 +18,13 @@
                 .success(function (data) {
                     angular.extend(existCode, data);
                 })
+                .error(function (data) {
+                    alerts.ajaxError(data);
+                });
+        }
+
+        function deleteCode(id) {
+            return $http.post('/Admin/Codes/DeleteCode/' + id)
                 .error(function (data) {
                     alerts.ajaxError(data);
                 });

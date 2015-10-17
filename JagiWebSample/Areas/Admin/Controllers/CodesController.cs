@@ -43,6 +43,19 @@ namespace JagiWebSample.Areas.Admin.Controllers
             return BetterJson(Mapper.Map<CodeFilesEditView>(target));
         }
 
+        [HttpPost]
+        public JsonResult DeleteCode(int id)
+        {
+            var code = _context.CodeFiles.Find(id);
+            if (code == null)
+                return JsonError("刪除資料失敗，找不到資料");
+
+            _context.CodeFiles.Remove(code);
+            _context.SaveChanges();
+
+            return JsonSuccess();
+        }
+
         [HttpGet]
         public JsonResult Details(int id)
         {

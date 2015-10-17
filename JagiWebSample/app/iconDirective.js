@@ -6,11 +6,12 @@
     function icon() {
         return {
             restrict: 'A',
-            scope: {
-                icon: '@'
-            },
+            // 移除，以避免造成其他 directive: asking for new/isolated scope issue
+            //scope: {
+            //    icon: '@'
+            //},
             link: function (scope, elem, attrs) {
-                var iconTmpl = '<i class="fa ' + scope.icon + '"></i>'
+                var iconTmpl = '<i class="fa ' + attrs.icon + '"></i>'
                 elem.append(iconTmpl);
             }
         }
@@ -19,11 +20,11 @@
     function iconLeft() {
         return {
             restrict: 'A',
-            scope: {
-                iconLeft: '@'
-            },
+            //scope: {
+            //    iconLeft: '@'
+            //},
             link: function (scope, elem, attrs) {
-                var iconTmpl = '<i class="fa ' + scope.iconLeft + '"></i>'
+                var iconTmpl = '<i class="fa ' + attrs.iconLeft + '"></i>'
                 elem.prepend(iconTmpl);
             }
         }

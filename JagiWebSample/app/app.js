@@ -27,11 +27,3 @@
         });
     });
 })();
-
-$(function () {
-    $('.deleteBtn').on('click', function () {
-        if (!confirm("確定要刪除此筆資料？")) {
-            return false;
-        }
-    });
-});
