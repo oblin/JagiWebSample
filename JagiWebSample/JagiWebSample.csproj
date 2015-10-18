@@ -237,17 +237,17 @@
     <Content Include="app\adminCodes\codeDetailDirective.js" />
     <Content Include="app\adminCodes\codeEditDirective.js" />
     <Content Include="app\adminCodes\codeService.js" />
-    <Content Include="app\alerts.js" />
+    <Content Include="app\utility\alerts.js" />
     <Content Include="app\app.js" />
-    <Content Include="app\ArrayExtensions.js" />
-    <Content Include="app\deleteConfirmDirective.js" />
-    <Content Include="app\deleteModal.html" />
-    <Content Include="app\FormGroupValidationDirective.js" />
-    <Content Include="app\iconDirective.js" />
-    <Content Include="app\inputDirective.js" />
-    <Content Include="app\InputValidationIconsDirective.js" />
-    <Content Include="app\preventDefault.js" />
-    <Content Include="app\waitModalDirective.js" />
+    <Content Include="app\utility\ArrayExtensions.js" />
+    <Content Include="app\directives\deleteConfirmDirective.js" />
+    <Content Include="app\directives\deleteModal.html" />
+    <Content Include="app\directives\FormGroupValidationDirective.js" />
+    <Content Include="app\directives\iconDirective.js" />
+    <Content Include="app\directives\inputDirective.js" />
+    <Content Include="app\directives\InputValidationIconsDirective.js" />
+    <Content Include="app\directives\preventDefault.js" />
+    <Content Include="app\directives\waitModalDirective.js" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml">
       <SubType>Code</SubType>
     </Content>
