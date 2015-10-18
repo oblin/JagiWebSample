@@ -51,5 +51,25 @@ namespace Jagi.Mvc
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return result;
         }
+
+        /// <summary>
+        /// 處理 Exceptions 回傳 string message，這當 MVC 轉 JsonResult 時候很重要
+        /// 因為不會有任何的錯誤訊息
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="codetoExecute">Function method</param>
+        /// <returns>會將物件轉成 BetterJsonResult object</returns>
+        protected BetterJsonResult ExecuteExceptionHandler<T>(Func<T> codetoExecute)
+        {
+            try
+            {
+                T result = codetoExecute.Invoke();
+                return JsonSuccess(result);
+            }
+            catch (Exception ex)
+            {
+                return JsonError(ex.Message);
+            }
+        }
     }
 }

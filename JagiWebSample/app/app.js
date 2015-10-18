@@ -1,4 +1,14 @@
 ﻿(function () {
+    // using to be called whenever on handle error occurs
+    window.onerror = function (message) {
+        if (window.alerts) {
+            window.alerts.error("發生錯誤，請重新載入頁面後重新操作");
+        } else {
+            console.log("into alert");
+            alert("發生無法解決的問題，請關閉瀏覽器後再次操作！");
+        }
+    }
+    
     app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'loadingService']);
 
     app.config(function ($httpProvider) {

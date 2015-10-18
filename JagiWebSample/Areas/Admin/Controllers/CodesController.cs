@@ -38,9 +38,12 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 Mapper.Map(model, target);
             }
 
-            _context.SaveChanges();
+            return ExecuteExceptionHandler(() =>
+            {
+                _context.SaveChanges();
 
-            return BetterJson(Mapper.Map<CodeFilesEditView>(target));
+                return Mapper.Map<CodeFilesEditView>(target);
+            });
         }
 
         [HttpPost]
