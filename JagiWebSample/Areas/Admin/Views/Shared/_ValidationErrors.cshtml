@@ -1,0 +1,7 @@
+﻿<div ng-show="viewModelHelper.modelIsValid == false" class="alert alert-danger">
+    <h4 class="alert-heading">資料輸入錯誤!</h4>
+    <ul data-ng-repeat="e in viewModelHelper.modelErrors">
+        <li>{{ e }}</li>
+    </ul>
+</div>
+

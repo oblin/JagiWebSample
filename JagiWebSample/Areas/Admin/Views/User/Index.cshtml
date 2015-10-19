@@ -2,6 +2,7 @@
 @model JagiWebSample.Areas.Admin.Models.UserIndexView
 @{
     ViewBag.Text = "使用者帳號管理";
+    ViewBag.Name = "User";
     IEnumerable<ApplicationUser> onlineUsers = Model.OnlineUsers;
 }
 

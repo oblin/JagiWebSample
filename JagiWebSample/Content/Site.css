@@ -42,3 +42,8 @@
 .top-modal.modal + .modal-backdrop {
     z-index: 1060;
 }
+
+/* 提供給 bootstrap ui 使用，讓 modal 可以往下降 */
+.modal-margin-vertical {
+    margin-top: 20%;
+}

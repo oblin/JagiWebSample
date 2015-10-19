@@ -16,7 +16,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
         {
             _context = context;
         }
-
+        
         public ActionResult Index()
         {
             var result = _context.CodeFiles.ProjectTo<CodeFilesEditView>();

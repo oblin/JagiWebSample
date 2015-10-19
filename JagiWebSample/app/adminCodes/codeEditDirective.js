@@ -16,9 +16,10 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService', '$modal', 'alerts'];
+    controller.$inject = ['$scope', 'codeService', '$modal', 'viewModelHelper', 'validator', 'alerts'];
 
-    function controller($scope, codeService, $modal, alerts) {
+    function controller($scope, codeService, $modal, viewModelHelper, validator, alerts) {
+        $scope.viewModelHelper = viewModelHelper;
         var vm = this;
 
         vm.options = $scope.options;    // reserved, not use
@@ -35,6 +36,10 @@
         // 處理 codeDetail 
         vm.detail = detail;
         vm.deleteDetail = deleteDetail;
+
+        // 處理 validation rules
+        var codeRules = [];
+        setupRules();
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
@@ -65,6 +70,13 @@
          * @param item
          */
         function save(item) {
+            validator.ValidateModel(item, codeRules);
+            viewModelHelper.modelIsValid = item.isValid;
+            if (!item.isValid) {
+                viewModelHelper.modelErrors = item.errors;
+                return;
+            }
+
             vm.saving = true;
             codeService.save(item, (function () {
                 if (item.id == 0)
@@ -83,7 +95,7 @@
         }
 
         function create() {
-            vm.current = { id: 0 };
+            vm.current = { id: 0, itemType: '', typeName: '' };
         }
 
         function deleteCode(item) {
@@ -138,6 +150,40 @@
                 .finally(function () {
                     vm.saving = false;
                 });
+        }
+
+        function setupRules() {
+            var rules = [
+                {
+                    PropertyName: "itemType",
+                    Rules: [
+                        { required: { message: "Item Type 欄位必須要輸入" } },
+                        { minLength: { message: "Item Type 欄位最少必須要有 4 位", params: 4 } },
+                        { maxLength: { message: "Item Type 欄位最大不能超過 6 位", params: 6 } },
+                    ]
+                },
+                {
+                    PropertyName: "typeName",
+                    Rules: [
+                        { required: { message: "Type Name 欄位必須要輸入" } },
+                    ]
+                },
+            ];
+
+            codeRules.push(new validator.PropertyRule("itemType",
+                {
+                    required: { message: "Item Type 欄位必須要輸入" },
+                    minLength: { message: "Item Type 欄位最少必須要有 4 位", params: 4 },
+                    maxLength: { message: "Item Type 欄位最大不能超過 6 位", params: 6 },
+                }))
+            codeRules.push(new validator.PropertyRule("typeName",
+                {
+                    required: { message: "Type Name 欄位必須要輸入" },
+                }))
+            codeRules.push(new validator.PropertyRule("charNumber",
+                {
+                    required: { message: "代碼位數 欄位必須要輸入" },
+                }))
         }
     }
 })();

@@ -237,10 +237,11 @@
     <Content Include="app\adminCodes\codeDetailDirective.js" />
     <Content Include="app\adminCodes\codeEditDirective.js" />
     <Content Include="app\adminCodes\codeService.js" />
+    <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\utility\alerts.js" />
     <Content Include="app\app.js" />
     <Content Include="app\utility\ArrayExtensions.js" />
-    <Content Include="app\directives\deleteConfirmDirective.js" />
+    <Content Include="app\directives\clickConfirm.js" />
     <Content Include="app\directives\deleteModal.html" />
     <Content Include="app\directives\FormGroupValidationDirective.js" />
     <Content Include="app\directives\iconDirective.js" />
@@ -248,6 +249,7 @@
     <Content Include="app\directives\InputValidationIconsDirective.js" />
     <Content Include="app\directives\preventDefault.js" />
     <Content Include="app\directives\waitModalDirective.js" />
+    <Content Include="app\utility\common.js" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -255,6 +257,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\MvcMembership.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
+    <Content Include="Content\ui-grid.css" />
+    <Content Include="Content\ui-grid.min.css" />
+    <Content Include="Content\ui-grid.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome\css\font-awesome.css" />
     <Content Include="fonts\font-awesome\css\font-awesome.min.css" />
@@ -299,6 +304,11 @@
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="app\adminCodes\templates\detailEdit.tmpl.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_TopBar.cshtml" />
+    <Content Include="Content\ui-grid.woff" />
+    <Content Include="Content\ui-grid.ttf" />
+    <Content Include="Content\ui-grid.eot" />
+    <Content Include="Areas\Admin\Views\Shared\_ValidationErrors.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\JavaScript.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -311,6 +321,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ui-grid.js" />
+    <Content Include="Scripts\ui-grid.min.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js" />
     <Content Include="Scripts\_references.js" />

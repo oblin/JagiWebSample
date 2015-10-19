@@ -108,6 +108,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mvc\Angular\GridTag.cs" />
     <Compile Include="Utility\AESCryptoProvider.cs" />
     <Compile Include="Utility\DESCryptoProvider.cs" />
     <Compile Include="Utility\CryptoSetting.cs" />

@@ -3,13 +3,13 @@
 @{
     var code = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 4));
 }
-
 <h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
 <form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
       ng-disabled="vm.saving" ng-cloak>
+    @Html.Partial("~/Areas/Admin/Views/Shared/_ValidationErrors.cshtml")
     <p>
         <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
-                ng-disabled="!(codeFileForm.$dirty && codeFileForm.$valid)" icon="fa-save">
+                ng-disabled="!codeFileForm.$dirty" icon="fa-save">
             存檔
         </button>
         <button class="btn btn-warning" ng-click="vm.cancel()"

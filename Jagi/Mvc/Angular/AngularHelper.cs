@@ -1,4 +1,5 @@
 ﻿using HtmlTags;
+using Microsoft.Web.Mvc;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -65,6 +66,14 @@ namespace Jagi.Mvc.Angular
 
             //x => x.PropName
             return Expression.Lambda(funcType, property, parameter);
+        }
+
+        public GridTag GridFor<TController>(Expression<Action<TController>> targetAction)
+            where TController : Controller
+        {
+            var dataUrl = _htmlHelper.BuildUrlFromExpression(targetAction);
+
+            return new GridTag(dataUrl);
         }
     }
 }

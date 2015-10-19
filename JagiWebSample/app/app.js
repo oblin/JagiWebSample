@@ -9,7 +9,7 @@
         }
     }
     
-    app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'loadingService']);
+    app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'loadingService', 'common']);
 
     app.config(function ($httpProvider) {
         $httpProvider.interceptors.push('httpInterceptor');

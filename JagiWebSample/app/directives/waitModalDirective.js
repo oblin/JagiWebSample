@@ -8,7 +8,7 @@
             restrict: "E",
             replace: true,
             template:
-            '<div class="modal top-modal" id="loading" tabindex="10" role="dialog"' +
+            '<div class="modal top-modal modal-margin-vertical" id="loading" tabindex="10" role="dialog"' +
                 'aria-labelledby="loadingLabel" aria-hidden="true">' +
             '<div class="modal-dialog" role="document">' +
                 '<div class="modal-content">' +

@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace JagiWebSample
 {
@@ -24,17 +23,19 @@ namespace JagiWebSample
                         "~/Scripts/underscore.js",
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-route.js",
+                        "~/Scripts/ui-grid.js",
                         "~/Scripts/angular-ui/ui-bootstrap-tpls.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                     "~/app/utility/ArrayExtensions.js",
+                    "~/app/utility/common.js",
                     "~/app/app.js",
                     "~/app/utility/alerts.js",
                     "~/app/directives/inputDirective.js",
                     "~/app/directives/preventDefault.js",
                     "~/app/directives/iconDirective.js",
-                    "~/app/directives/deleteConfirmDirective.js",
+                    "~/app/directives/clickConfirm.js",
                     "~/app/directives/InputValidationIconsDirective.js",
                     "~/app/directives/FormGroupValidationDirective.js",
                     "~/app/directives/waitModalDirective.js"

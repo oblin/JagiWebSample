@@ -37,7 +37,8 @@
 
                     var modalInstance = $modal.open({
                         template: modalHtml,
-                        controller: ModalInstanceCtrl
+                        controller: ModalInstanceCtrl,
+                        windowClass: 'modal-margin-vertical'
                     });
                     modalInstance.result.then(function () {
                         scope.clickConfirm({ item: scope.item }); //raise an error : $digest already in progress
