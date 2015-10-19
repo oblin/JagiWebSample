@@ -52,6 +52,11 @@ namespace Jagi.Mvc.Angular
         public virtual HtmlTag GetInput(FormGroupType type, string value,
             Dictionary<string, string> selectOptions = null)
         {
+            if (_metadata.PropertyName.EndsWith("Date", StringComparison.OrdinalIgnoreCase))
+            {
+                return GetDateInputTag();
+            }
+
             var inputTag = GetInputTag(type);
 
             HtmlTag input = null;
@@ -207,6 +212,30 @@ namespace Jagi.Mvc.Angular
             input.Attr("type", inputType);
 
             return;
+        }
+
+        protected virtual HtmlTag GetDateInputTag()
+        {
+            var tag = new HtmlTag("div");
+            tag.AddClass("input-group");
+            var input = new HtmlTag("input");
+            input.AddClass("form-control")
+                 .Attr("name", this.Name)
+                 .Attr("ng-model", this.Expression)
+                 .Attr("type", "text")
+                 .Attr("datepicker-popup", "yyyy/MM/dd")
+                 .Attr("is-open", "dateStatus.opened");
+
+            ApplyValidationToInput(input);
+
+            var span = new HtmlTag("span").AddClass("input-group-btn");
+            var button = new HtmlTag("button")
+                .Attr("type", "button")
+                .AddClasses("btn", "btn-default")
+                .Attr("ng-click", "dateStatus.opened = true")
+                .Attr("icon", "fa-calendar");
+            span.Append(button);
+            return tag.Append(input).Append(span);
         }
 
         private string GetNumberClass(FormGroupType type)

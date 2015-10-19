@@ -16,9 +16,9 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService', '$modal', 'viewModelHelper', 'validator', 'alerts'];
+    controller.$inject = ['$scope', 'codeService', 'modelValidations', 'modelValidations2', '$modal', 'viewModelHelper', 'validator', 'alerts'];
 
-    function controller($scope, codeService, $modal, viewModelHelper, validator, alerts) {
+    function controller($scope, codeService, modelValidations, modelValidations2, $modal, viewModelHelper, validator, alerts) {
         $scope.viewModelHelper = viewModelHelper;
         var vm = this;
 
@@ -155,32 +155,32 @@
         function setupRules() {
             var rules = [
                 {
-                    PropertyName: "itemType",
-                    Rules: [
+                    propertyName: "itemType",
+                    rules: [
                         { required: { message: "Item Type 欄位必須要輸入" } },
-                        { minLength: { message: "Item Type 欄位最少必須要有 4 位", params: 4 } },
-                        { maxLength: { message: "Item Type 欄位最大不能超過 6 位", params: 6 } },
+                        { minLength: { message: "Item Type 欄位最少必須要有 4 位", parameters: 4 } },
+                        { maxLength: { message: "Item Type 欄位最大不能超過 6 位", parameters: 6 } },
                     ]
                 },
                 {
-                    PropertyName: "typeName",
-                    Rules: [
+                    propertyName: "typeName",
+                    rules: [
                         { required: { message: "Type Name 欄位必須要輸入" } },
                     ]
                 },
             ];
 
-            codeRules.push(new validator.PropertyRule("itemType",
+            codeRules.push(new validator.propertyRule("itemType",
                 {
                     required: { message: "Item Type 欄位必須要輸入" },
-                    minLength: { message: "Item Type 欄位最少必須要有 4 位", params: 4 },
-                    maxLength: { message: "Item Type 欄位最大不能超過 6 位", params: 6 },
+                    minLength: { message: "Item Type 欄位最少必須要有 4 位", parameters: 4 },
+                    maxLength: { message: "Item Type 欄位最大不能超過 6 位", parameters: 6 },
                 }))
-            codeRules.push(new validator.PropertyRule("typeName",
+            codeRules.push(new validator.propertyRule("typeName",
                 {
                     required: { message: "Type Name 欄位必須要輸入" },
                 }))
-            codeRules.push(new validator.PropertyRule("charNumber",
+            codeRules.push(new validator.propertyRule("charNumber",
                 {
                     required: { message: "代碼位數 欄位必須要輸入" },
                 }))

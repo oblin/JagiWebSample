@@ -78,9 +78,12 @@ namespace Jagi.Mvc.Angular
             AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
             HtmlTag input = ngControl.GetInput(type, value, options);
 
-            ngControl.ApplyValidationToInput(input);
+            if (input.IsInputElement())
+            {
+                ngControl.ApplyValidationToInput(input);
 
-            ngControl.ApplyCustomizedAttributes(input, attr, attrs);
+                ngControl.ApplyCustomizedAttributes(input, attr, attrs);
+            }
 
             return input;
         }

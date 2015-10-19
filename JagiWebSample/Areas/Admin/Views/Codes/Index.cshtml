@@ -1,7 +1,9 @@
-﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
+﻿@using Jagi.Mvc
+@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
 @{
     ViewBag.Title = "代碼檔案維護";
     ViewBag.Name = "Codes";
+    var validations = Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>();
 }
 
 <div ng-app="app" ng-controller="codeController as vm">
@@ -32,6 +34,8 @@
     <script src="~/app/adminCodes/codeController.js"></script>
     <script type="text/javascript">
         window.app.constant("model", @Html.JsonFor(Model));
+        window.app.constant("modelValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>()));
+        window.app.constant("modelValidations2", @validations);
         var url = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Index()))';
     </script>
 }

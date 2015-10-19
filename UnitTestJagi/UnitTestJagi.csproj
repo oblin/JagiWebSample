@@ -173,6 +173,7 @@
     <Compile Include="CryptoTest.cs" />
     <Compile Include="TestController.cs" />
     <Compile Include="EmailTest.cs" />
+    <Compile Include="MetadataTest.cs" />
     <Compile Include="UserControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>

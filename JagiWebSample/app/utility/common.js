@@ -1,4 +1,9 @@
-﻿(function () {
+﻿/**
+ * 提供所有 app.js 使用，主要提供以下兩個 service:
+ * 1. viewModelHelper: 作為 http.get & http.post 的服務，包含處理錯誤訊息等，並搭配 _ValidationErrors.cshtml 顯示
+ * 2. validator: 提供前端一次性的判斷所有輸入欄位是否有錯誤（主要用在 save 時候）
+ */
+(function () {
     common = angular.module('common', []);
 
     common.factory('viewModelHelper', function ($http, $q) {
@@ -64,52 +69,52 @@
     common.factory('validator', function () {
         var self = this;
 
-        self.PropertyRule = function (propertyName, rules) {
+        self.propertyRule = function (propertyName, rules) {
             var self = this;
-            self.PropertyName = propertyName;
-            self.Rules = rules;
+            self.propertyName = propertyName;
+            self.rules = rules;
         };
 
-        self.ValidateModel = function (model, allPropertyRules) {
+        self.ValidateModel = function (model, allPropertyrules) {
             var errors = [];
             var props = Object.keys(model);
-            for (var i = 0; i < allPropertyRules.length; i++) {
+            for (var i = 0; i < allPropertyrules.length; i++) {
                 // 檢查必要欄位，但 model 並未包含
-                var rule = allPropertyRules[i];
-                if (rule.Rules["required"])
-                    if (props.indexOf(rule.PropertyName) < 0)
-                        errors.push(getMessage(rule.PropertyName, "required", rule.Rules["required"].message));
+                var propRule = allPropertyrules[i];
+                if (propRule.rules["required"])
+                    if (props.indexOf(propRule.propertyName) < 0)
+                        errors.push(getMessage(propRule.propertyName, "required", propRule.rules["required"].message));
             }
 
             for (var i = 0; i < props.length; i++) {
                 var prop = props[i];
-                for (var j = 0; j < allPropertyRules.length; j++) {
-                    var propertyRule = allPropertyRules[j];
-                    if (prop == propertyRule.PropertyName) {
-                        var propertyRules = propertyRule.Rules;
+                for (var j = 0; j < allPropertyrules.length; j++) {
+                    var propertyRule = allPropertyrules[j];
+                    if (prop == propertyRule.propertyName) {
+                        var propertyrules = propertyRule.rules;
 
-                        var propertyRuleProps = Object.keys(propertyRules);
+                        var propertyRuleProps = Object.keys(propertyrules);
                         for (var k = 0; k < propertyRuleProps.length; k++) {
                             var propertyRuleProp = propertyRuleProps[k];
                             if (propertyRuleProp != 'custom') {
                                 var rule = rules[propertyRuleProp];
                                 var params = null;
-                                if (propertyRules[propertyRuleProp].hasOwnProperty('params'))
-                                    params = propertyRules[propertyRuleProp].params;
+                                if (propertyrules[propertyRuleProp].hasOwnProperty('parameters'))
+                                    params = propertyrules[propertyRuleProp].parameters;
                                 var validationResult = rule.validator(model[prop], params);
                                 if (!validationResult) {
                                     errors.push(getMessage(prop, propertyRuleProp, rule.message));
                                 }
                             }
                             else {
-                                var validator = propertyRules.custom.validator;
+                                var validator = propertyrules.custom.validator;
                                 var value = null;
-                                if (propertyRules.custom.hasOwnProperty('params')) {
-                                    value = propertyRules.custom.params;
+                                if (propertyrules.custom.hasOwnProperty('parameters')) {
+                                    value = propertyrules.custom.parameters;
                                 }
                                 var result = validator(model[prop], value());
                                 if (result != true) {
-                                    errors.push(getMessage(prop, propertyRules.custom, 'Invalid value.'));
+                                    errors.push(getMessage(prop, propertyrules.custom, 'Invalid value.'));
                                 }
                             }
                         }

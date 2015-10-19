@@ -49,4 +49,20 @@ namespace UnitTestJagi
         public string Text { get; set; }
         public string StartDate { get; set; }
     }
+
+    public class SampleValidation
+    {
+        [Display(Name ="數字")]
+        public int Number { get; set; }
+        [Display(Prompt = "請輸入任意文字...", Name = "文本"), Required(ErrorMessage = "請輸入數字"), StringLength(5)]
+        public string Text { get; set; }
+        [Display(Name ="限制長度"), StringLength(maximumLength: 10, MinimumLength = 4)]
+        public string LimitTest { get; set; }
+        public bool IsChinese { get; set; }
+        public DateTime StartDate { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string EndDate { get; set; }
+        public int? NullableInt { get; set; }
+        public Decimal FloatingPoint { get; set; }
+    }
 }

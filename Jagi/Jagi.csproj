@@ -72,6 +72,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core">
       <Private>True</Private>
     </Reference>
@@ -109,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mvc\Angular\GridTag.cs" />
+    <Compile Include="Mvc\MetadataHelper.cs" />
     <Compile Include="Utility\AESCryptoProvider.cs" />
     <Compile Include="Utility\DESCryptoProvider.cs" />
     <Compile Include="Utility\CryptoSetting.cs" />

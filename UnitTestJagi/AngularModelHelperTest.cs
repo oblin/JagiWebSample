@@ -352,6 +352,24 @@ namespace UnitTestJagi
             Assert.IsTrue(htmlString.Contains("type=\"text\" name=\"Text\" ng-model=\"vm.text\" class=\"form-control\""));
         }
 
+        [TestMethod]
+        public void Test_Angular_EditorFor_Date()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");
+            var htmlString = sampleModel.AngularEditorFor(x => x.StartDate).ToString();
+            /// <div class="input-group">
+            /// 	<input type = "text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="editableEmployee.dateHired" is-open="status.opened" current-text="今天" clear-text="清除" close-text="關閉" />
+            /// 	<span class="input-group-btn">
+            /// 		<button type = "button" class="btn btn-default" ng-click="openCalendar()"><i class="glyphicon glyphicon-calendar"></i></button>
+            /// 	</span>                       
+            /// </div>
+            Assert.IsTrue(htmlString.Contains("<div class=\"input-group\">"));
+            Assert.IsTrue(htmlString.Contains("datepicker-popup=\"yyyy/MM/dd\""));
+            Assert.IsTrue(htmlString.Contains("is-open=\"dateStatus.opened\""));
+            Assert.IsTrue(htmlString.Contains("<span class=\"input-group-btn\">"));
+            Assert.IsTrue(htmlString.Contains("ng-click=\"dateStatus.opened = true\""));
+        }
+
         private Dictionary<string, string> SetAttrs()
         {
             Dictionary<string, string> attrs = new Dictionary<string, string>();
