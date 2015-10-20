@@ -1,6 +1,7 @@
 ﻿using Jagi.Helpers;
 using Microsoft.Practices.ServiceLocation;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 
@@ -30,11 +31,12 @@ namespace Jagi.Mvc.Angular
             ngControl.Metadata = metadata;
             ngControl.Name = ExpressionHelper.GetExpressionText(property);
             ngControl.Expression = property.ExpressionForInternal(expressionPrefix);
+            ngControl.Validations = GetPropertyValidations<TModel>(metadata.PropertyName);
 
             return ngControl;
         }
 
-        public static AngularValidations GetValidator<TModel>()
+        public static AngularValidations GetValidator()
         {
             AngularValidations ngValidations = null;
             if (ServiceLocator.IsLocationProviderSet)
@@ -43,6 +45,14 @@ namespace Jagi.Mvc.Angular
                 ngValidations = new AngularValidations();
 
             return ngValidations;
+        }
+
+        private static PropertyRule GetPropertyValidations<TModel>(string propertyName)
+        {
+            var validators = GetValidator();
+            var validator = validators.GetPropertyValidators<TModel>(propertyName);
+
+            return validator;
         }
     }
 }

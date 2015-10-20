@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
 using System.Collections.Generic;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
@@ -91,9 +92,10 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 Mapper.Map(model, detail);
             }
 
-            _context.SaveChanges();
-
-            return JsonSuccess(Mapper.Map<CodeDetailEditView>(detail));
+            return ExecuteExceptionHandler(() => {
+                _context.SaveChanges();
+                return JsonSuccess(Mapper.Map<CodeDetailEditView>(detail));
+            });
         }
 
         [HttpPost]

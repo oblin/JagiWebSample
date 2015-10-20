@@ -47,6 +47,22 @@ namespace Jagi.Mvc
         /// <returns></returns>
         public IHtmlString ValidationsFor<TModel>(HtmlHelper helper, bool isCamelCase = true)
         {
+            var propRules = GetValidators<TModel>(null, isCamelCase);
+            return helper.Raw(Helpers.JsonHelper.ToJson(propRules));
+        }
+
+        public PropertyRule GetPropertyValidators<TModel>(string propertyName)
+        {
+            var propRules = GetValidators<TModel>(propertyName);
+
+            if (propRules.Count > 1)
+                throw new Exception("Error, 不能有超過一個以上的 property name: {0} validation 有 {1} 個".FormatWith(propertyName, propRules.Count));
+
+            return propRules.FirstOrDefault();
+        }
+
+        public List<PropertyRule> GetValidators<TModel>(string propertyName = null, bool isCamelCase = true)
+        {
             List<PropertyRule> propRules = new List<PropertyRule>();
             string result = string.Empty;
             foreach (var prop in typeof(TModel)
@@ -55,8 +71,10 @@ namespace Jagi.Mvc
                 if (prop.GetCustomAttributes().OfType<HiddenInputAttribute>().Any()) continue;
 
                 _metadata = GetMetadata<TModel>(prop);
-
                 string propName = _metadata.PropertyName;
+                if (!string.IsNullOrEmpty(propertyName) && propName != propertyName)
+                    continue;
+
                 if (isCamelCase)
                     propName = Helpers.JsonHelper.ConvertToCamelCase(propName);
 
@@ -75,7 +93,7 @@ namespace Jagi.Mvc
                     propRules.Add(propRule);
             }
 
-            return helper.Raw(Helpers.JsonHelper.ToJson(propRules));
+            return propRules;
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using HtmlTags;
+﻿using Humanizer;
+using HtmlTags;
 using Humanizer;
 using Jagi.Helpers;
 using System;
@@ -16,6 +17,7 @@ namespace Jagi.Mvc.Angular
         public ModelMetadata Metadata { get { return _metadata; } internal set { _metadata = value; } }
         public string Name { get; internal set; }
         public string Expression { get; internal set; }
+        public PropertyRule Validations { get; internal set; }
 
         public AngularHtmlTag()
         {
@@ -94,6 +96,18 @@ namespace Jagi.Mvc.Angular
 
             if (this.Metadata.DataTypeName == "PhoneNumber")
                 input.Attr("pattern", @"[\ 0-9()-]+");
+
+            if (this.Validations != null && this.Validations.Rules.Count > 0)
+            {
+                foreach(var rule in this.Validations.Rules)
+                {
+                    if (rule.Key == "required")
+                        continue;
+                    var value = rule.Value.parameters;
+                    var key = "ng-" + rule.Key.ToLower();
+                    input.Attr(key, value);
+                }
+            }
         }
 
         public virtual void ApplyCustomizedAttributes(HtmlTag input, string attr, Dictionary<string, string> attrs = null)
@@ -197,6 +211,8 @@ namespace Jagi.Mvc.Angular
             if (inputType == "text" && _metadata.ModelType == typeof(bool))
             {
                 inputType = "checkbox";
+            } else if (inputType == "text" && _metadata.ModelType.IsNumericOrNull()){
+                inputType = "number";
             }
 
             if (inputType == "radio" || inputType == "checkbox")

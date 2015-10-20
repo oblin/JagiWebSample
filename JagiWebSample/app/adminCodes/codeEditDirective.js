@@ -16,9 +16,9 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService', 'model', '$modal', 'dataService', 'validator', 'alerts'];
+    controller.$inject = ['$scope', 'model', '$modal', 'dataService', 'validator', 'alerts'];
 
-    function controller($scope, codeService, model, $modal, dataService, validator, alerts) {
+    function controller($scope, model, $modal, dataService, validator, alerts) {
         var vm = this;
 
         vm.options = $scope.options;    // reserved, not use
@@ -29,7 +29,6 @@
         // 處理 codeFile 的 CRUD
         vm.modelStatus = dataService;
         vm.save = save;
-        vm.saving = false;
         vm.create = create;
         vm.delete = deleteCode;
         vm.cancel = cancel;
@@ -48,10 +47,6 @@
                     function (response) {
                         vm.details = response.data;
                     });
-                //codeService.details(value.id)
-                //    .success(function (details) {
-                //        vm.details = details;
-                //    })
                 vm.current = angular.copy(value);
                 $scope.codeFileForm.$setPristine();
                 $scope.codeFileForm.$setUntouched();
@@ -80,21 +75,20 @@
                 return;
             }
 
-            vm.saving = true;
-            codeService.save(item, (function () {
-                if (item.id == 0)
-                    return {};
-                return vm.parent;
-            })())
-                .success(function (data) {
+            dataService.post(model.saveCodeUrl, item,
+                function (response) {
+                    if (item.id != 0)
+                        angular.extend(vm.parent, response.data);
                     if (item.id == 0) {
-                        $scope.updateCurrent({ item: data });
+                        $scope.updateCurrent({ item: response.data });
                     }
-                })
-                .finally(function () {
-                    vm.saving = false;
+                }, null,
+                function () {
+                    if (!dataService.isValid)
+                        angular.extend(vm.current, vm.parent);
                     reset();
-                });
+                }
+            );
         }
 
         function create() {
@@ -104,14 +98,9 @@
         function deleteCode(item) {
             if (!item || item.id == 0)
                 return;
-            vm.saving = true;
-            codeService.deleteCode(item.id)
-                .success(function () {
-                    $scope.deleteCurrent({ item: item });
-                })
-                .finally(function () {
-                    vm.saving = false;
-                });
+
+            dataService.post(model.deleteCodeUrl + item.id, null,
+                function () { $scope.deleteCurrent({ item: item }); });
         }
 
         /**
@@ -145,50 +134,8 @@
         function deleteDetail(item) {
             if (item == null || item.id == 0)
                 return;
-            vm.saving = true;
-            codeService.deleteDetail(item.id)
-                .success(function () {
-                    vm.details.splice(vm.details.indexOf(item), 1);
-                })
-                .finally(function () {
-                    vm.saving = false;
-                });
-        }
-
-        function setupRules() {
-            var rules = [
-                {
-                    propertyName: "itemType",
-                    rules: [
-                        { required: { message: "Item Type 欄位必須要輸入" } },
-                        { minLength: { message: "Item Type 欄位最少必須要有 4 位", parameters: 4 } },
-                        { maxLength: { message: "Item Type 欄位最大不能超過 6 位", parameters: 6 } },
-                    ]
-                },
-                {
-                    propertyName: "typeName",
-                    rules: [
-                        { required: { message: "Type Name 欄位必須要輸入" } },
-                    ]
-                },
-            ];
-
-            codeRules.push(new validator.propertyRule("itemType",
-                {
-                    required: { message: "Item Type 欄位必須要輸入" },
-                    minLength: { message: "Item Type 欄位最少必須要有 4 位", parameters: 4 },
-                    maxLength: { message: "Item Type 欄位最大不能超過 6 位", parameters: 6 },
-                }))
-            codeRules.push(new validator.propertyRule("typeName",
-                {
-                    required: { message: "Type Name 欄位必須要輸入" },
-                }))
-            codeRules.push(new validator.propertyRule("charNumber",
-                {
-                    required: { message: "代碼位數 欄位必須要輸入" },
-                }))
-
-            codeRules = codeValidations;
+            dataService.post(model.deleteDetailUrl + item.id, null,
+                function () { vm.details.splice(vm.details.indexOf(item), 1); });
         }
     }
 })();

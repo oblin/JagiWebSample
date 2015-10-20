@@ -16,15 +16,14 @@
         }
     }
 
-    controller.$inject = ['$scope', 'model', 'validator', 'dataService', 'codeService'];
-    function controller($scope, model, validator,dataService, codeService) {
+    controller.$inject = ['$scope', 'model', 'validator', 'dataService'];
+    function controller($scope, model, validator,dataService) {
         var vm = this;
         vm.detail = angular.copy($scope.detail);
         if (vm.detail.id == 0)
             vm.detail.codeFileID = $scope.parent.id;
 
         vm.modelStatus = dataService;
-        vm.saving = false;
         vm.save = save;
         vm.cancel = cancel;
 
@@ -36,8 +35,6 @@
                 return;
             }
 
-            vm.saving = true;
-
             dataService.post(model.detailSaveUrl, vm.detail,
                 function (response) {
                     angular.extend($scope.detail, response.data);
@@ -45,9 +42,6 @@
                     if (vm.detail.id == 0) {
                         $scope.list.push($scope.detail);    // 處理新增，將回傳的加入到 list 中
                     }
-                }, null,
-                function () {
-                    vm.saving = false;
                 }
             );
         }

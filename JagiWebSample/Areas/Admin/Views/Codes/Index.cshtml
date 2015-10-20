@@ -38,6 +38,11 @@
         var detailSaveUrl = '@(Html.BuildUrlFromExpression<CodesController>(c => c.SaveDetail(null)))';
         var getCodeUrl  = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Details(0)))';
         getCodeUrl = getCodeUrl.substring(0, getCodeUrl.length - 1);
+        var saveCodeUrl = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Save(null)))';
+        var deleteCodeUrl= '@(Html.BuildUrlFromExpression<CodesController>(c => c.DeleteCode(0)))';
+        deleteCodeUrl = deleteCodeUrl.substring(0, deleteCodeUrl.length - 1);   // 移除 ~/0 最後一個 0，由 controller 指定
+        var deleteDetailUrl= '@(Html.BuildUrlFromExpression<CodesController>(c => c.DeleteDetail(0)))';
+        deleteDetailUrl = deleteDetailUrl.substring(0, deleteDetailUrl.length - 1);   // 移除 ~/0 最後一個 0，由 controller 指定
 
         var codeValidations = @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>());
         var detailValidations = @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>());
@@ -47,8 +52,10 @@
             "codeValidations": codeValidations,
             "detailValidations": detailValidations,
             "detailSaveUrl": detailSaveUrl,
-            "getCodeUrl": getCodeUrl
-        }
-    );
+            "getCodeUrl": getCodeUrl,
+            "saveCodeUrl": saveCodeUrl,
+            "deleteCodeUrl": deleteCodeUrl,
+            "deleteDetailUrl": deleteDetailUrl
+        });
     </script>
 }

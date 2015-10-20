@@ -18,7 +18,7 @@ namespace Jagi.Mvc.Angular
 
         public static IHtmlString ValidationsFor<TModel>(this HtmlHelper helper)
         {
-            var angularValidations = AngularHtmlFactory.GetValidator<TModel>();
+            var angularValidations = AngularHtmlFactory.GetValidator();
             return angularValidations.ValidationsFor<TModel>(helper);
         }
     }

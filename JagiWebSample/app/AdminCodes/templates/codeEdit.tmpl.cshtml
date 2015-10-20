@@ -3,7 +3,7 @@
 @{
     var code = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 4));
 }
-<h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
+<h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.modelStatus.isLoading" style="color:green"></i></h3>
 <form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
       ng-disabled="vm.saving" ng-cloak>
     <show-errors model-status="vm.modelStatus"></show-errors>

@@ -7,7 +7,7 @@
         return {
             require: '^form',
             scope: {
-                field: '='
+                field: '=',
             },
             template:
 				'<span ng-show="vm.canBeValidated() && vm.isValid()" ' +

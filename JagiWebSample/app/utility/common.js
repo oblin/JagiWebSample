@@ -44,10 +44,10 @@
             $http.post(uri, data)
                 .then(function (result) {
                     success(result);
-                    if (always != null)
-                        always();
                     self.isValid = true;
                     self.isLoading = false;
+                    if (always != null)
+                        always();
                 }, function (result) {
                     if (failure == null) {
                         if (result.status != 406)
@@ -58,6 +58,7 @@
                     }
                     else
                         failure(result);
+
                     if (always != null)
                         always();
                     isLoading = false;

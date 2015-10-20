@@ -353,6 +353,34 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
+        public void Test_Angular_EditorFor_Number()
+        {
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");
+            var htmlString = sampleModel.AngularEditorFor(x => x.Number).ToString();            
+            Assert.IsTrue(htmlString.Contains("type=\"number\" name=\"Number\""));
+
+            htmlString = sampleModel.AngularEditorFor(x => x.NullableInt).ToString();
+            Assert.IsTrue(htmlString.Contains("type=\"number\" name=\"NullableInt\""));
+        }
+
+        [TestMethod]
+        public void Test_Angular_EditorFor_Validation()
+        {
+            var sampleHtmlHelper = mvc.CreateHtmlHelper<SampleValidation>();
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");
+            var htmlString = sampleModel.AngularEditorFor(x => x.Text).ToString();
+            // result: <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="vm.text" class="form-control" />
+            Assert.IsTrue(htmlString.Contains("ng-maxlength=\"5\""));
+            Assert.IsTrue(htmlString.Contains("required"));
+
+            htmlString = sampleModel.AngularEditorFor(x => x.LimitTest).ToString();
+            // result: <input placeholder="請輸入任意文字..." type="text" name="Text" ng-model="vm.text" class="form-control" />
+            Assert.IsTrue(htmlString.Contains("ng-maxlength=\"10\""));
+            Assert.IsTrue(htmlString.Contains("ng-minlength=\"4\""));
+            Assert.IsFalse(htmlString.Contains("required"));
+        }
+
+        [TestMethod]
         public void Test_Angular_EditorFor_Date()
         {
             var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");

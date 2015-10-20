@@ -38,7 +38,7 @@ namespace JagiWebSample.Areas.Admin.Models
 
         [Required]
         [DisplayName("代碼位數")]
-        public int CHAR_NUM { get; set; }
+        public int? CHAR_NUM { get; set; }
 
         public virtual IList<CodeDetail> CodeDetails { get; set; }
 
