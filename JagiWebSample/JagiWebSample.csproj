@@ -238,6 +238,7 @@
     <Content Include="app\adminCodes\codeEditDirective.js" />
     <Content Include="app\adminCodes\codeService.js" />
     <Content Include="app\directives\mvcGridDirective.js" />
+    <Content Include="app\directives\showErrorsDirective.js" />
     <Content Include="app\utility\alerts.js" />
     <Content Include="app\app.js" />
     <Content Include="app\utility\ArrayExtensions.js" />

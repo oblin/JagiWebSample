@@ -16,9 +16,9 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService', 'modelValidations', 'modelValidations2', '$modal', 'viewModelHelper', 'validator', 'alerts'];
+    controller.$inject = ['$scope', 'codeService', 'codeValidations', '$modal', 'viewModelHelper', 'validator', 'alerts'];
 
-    function controller($scope, codeService, modelValidations, modelValidations2, $modal, viewModelHelper, validator, alerts) {
+    function controller($scope, codeService, codeValidations, $modal, viewModelHelper, validator, alerts) {
         $scope.viewModelHelper = viewModelHelper;
         var vm = this;
 
@@ -38,8 +38,7 @@
         vm.deleteDetail = deleteDetail;
 
         // 處理 validation rules
-        var codeRules = [];
-        setupRules();
+        var codeRules = codeValidations;
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
@@ -184,6 +183,8 @@
                 {
                     required: { message: "代碼位數 欄位必須要輸入" },
                 }))
+
+            codeRules = codeValidations;
         }
     }
 })();

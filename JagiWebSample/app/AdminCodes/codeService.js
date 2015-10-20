@@ -38,9 +38,6 @@
             return $http.post('/Admin/Codes/SaveDetail', updatedDetail)
                 .success(function (data) {
                     angular.extend(existDetail, data);
-                })
-                .error(function (data) {
-                    alerts.ajaxError(data);
                 });
         }
 

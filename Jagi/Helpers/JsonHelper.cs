@@ -86,7 +86,7 @@ namespace Jagi.Helpers
         }
 
         //Borrowed from JSON.NET. Turns a single name into camel case.
-        private static string ConvertToCamelCase(string s)
+        public static string ConvertToCamelCase(string s)
         {
             if (string.IsNullOrEmpty(s))
                 return s;

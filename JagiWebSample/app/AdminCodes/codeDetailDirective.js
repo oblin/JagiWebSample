@@ -16,8 +16,8 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService'];
-    function controller($scope, codeService) {
+    controller.$inject = ['$scope', 'detailValidations', 'validator', 'codeService'];
+    function controller($scope, detailValidations, validator, codeService) {
         var vm = this;
         vm.detail = angular.copy($scope.detail);
         if (vm.detail.id == 0)
@@ -27,7 +27,13 @@
         vm.saving = false;
         vm.save = save;
 
-        function save(item) {
+        function save() {
+            validator.ValidateModel(vm.detail, detailValidations);
+            if (!vm.detail.isValid) {
+                vm.errorMessage = vm.detail.errors;
+                return;
+            }
+
             vm.saving = true;
             codeService.saveDetail(vm.detail, $scope.detail)
                 .success(function () {
@@ -39,7 +45,7 @@
                     }
                 })
                 .error(function (data) {
-                    vm.errorMessage = data;
+                    vm.errorMessage = data.errorMessages;
                 })
                 .finally(function(){
                     vm.saving = false;

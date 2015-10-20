@@ -33,6 +33,7 @@ namespace JagiWebSample
                     "~/app/app.js",
                     "~/app/utility/alerts.js",
                     "~/app/directives/inputDirective.js",
+                    "~/app/directives/showErrorsDirective.js",
                     "~/app/directives/preventDefault.js",
                     "~/app/directives/iconDirective.js",
                     "~/app/directives/clickConfirm.js",

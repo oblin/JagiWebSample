@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Models
 {
@@ -14,7 +15,7 @@ namespace JagiWebSample.Areas.Admin.Models
     public class CodeFilesEditView : IMapFromCustomized
     {
         public int Id { get; set; }
-        [Required, DisplayName("代號類別")]
+        [Required, DisplayName("代號類別"), StringLength(20, MinimumLength=4)]
         public string ItemType { get; set; }
         [Required, DisplayName("類別名稱")]
         public string TypeName { get; set; }
@@ -44,8 +45,11 @@ namespace JagiWebSample.Areas.Admin.Models
     public class CodeDetailEditView : IMapFromCustomized
     {
         public int Id { get; set; }
+        [HiddenInput]
         public int CodeFileID { get; set; }
+        [Required, StringLength(20, MinimumLength=4)]
         public string ItemCode { get; set; }
+        [Required]
         public string Desc { get; set; }
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)

@@ -26,6 +26,9 @@ namespace JagiWebSample.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult Save(CodeFilesEditView model)
         {
+            if (!ModelState.IsValid)
+                return JsonValidationError();
+
             CodeFile target;
             if (model.Id == 0)
             {
@@ -73,6 +76,9 @@ namespace JagiWebSample.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult SaveDetail(CodeDetailEditView model)
         {
+            if (!ModelState.IsValid)
+                return JsonValidationError();
+
             CodeDetail detail;
             if (model.Id == 0)
             {

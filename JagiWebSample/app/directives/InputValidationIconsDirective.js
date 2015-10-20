@@ -31,8 +31,8 @@
         vm.isValid = isValid;
 
         function canBeValidated() {
-            if (!$scope.form[vm.field].$dirty)
-                return false;
+            //if (!$scope.form[vm.field].$dirty)
+            //    return false;
             return ($scope.form[vm.field].$touched || $scope.form.$submitted);
         }
 

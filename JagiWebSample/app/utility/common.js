@@ -103,7 +103,8 @@
                                     params = propertyrules[propertyRuleProp].parameters;
                                 var validationResult = rule.validator(model[prop], params);
                                 if (!validationResult) {
-                                    errors.push(getMessage(prop, propertyRuleProp, rule.message));
+                                    var message = getMessage(prop, propertyRule.rules[propertyRuleProp], rule.message);
+                                    errors.push(getMessage(prop, propertyRuleProp, message));
                                 }
                             }
                             else {

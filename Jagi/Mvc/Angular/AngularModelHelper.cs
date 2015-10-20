@@ -62,7 +62,7 @@ namespace Jagi.Mvc.Angular
 
         public HtmlTag AngularLabelFor<TProp>(Expression<Func<TModel, TProp>> property, FormGroupLayout layout = null)
         {
-            AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
+            AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
             if (layout == null)
                 layout = _layout;
             return ngControl.GetLabel(layout);
@@ -75,7 +75,7 @@ namespace Jagi.Mvc.Angular
             Dictionary<string, string> options = null,
             string value = null)
         {
-            AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
+            AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
             HtmlTag input = ngControl.GetInput(type, value, options);
 
             if (input.IsInputElement())
@@ -112,7 +112,7 @@ namespace Jagi.Mvc.Angular
         {
             layout = layout ?? _layout;
             formGroupGrid = formGroupGrid ?? (layout != null ? layout.FormGrid : null);
-            AngularHtmlTag ngControl = AngularHtmlTagFactory.Get(property, _expressionPrefix);
+            AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
 
             string name = ngControl.GetName();
 

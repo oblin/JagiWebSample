@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Jagi.Mvc.Angular
@@ -13,6 +14,12 @@ namespace Jagi.Mvc.Angular
         public static AngularHelper<TModel> Angular<TModel>(this HtmlHelper<TModel> helper)
         {
             return new AngularHelper<TModel>(helper);
+        }
+
+        public static IHtmlString ValidationsFor<TModel>(this HtmlHelper helper)
+        {
+            var angularValidations = AngularHtmlFactory.GetValidator<TModel>();
+            return angularValidations.ValidationsFor<TModel>(helper);
         }
     }
 

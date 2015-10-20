@@ -1,5 +1,4 @@
-﻿@using Jagi.Mvc
-@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
+﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>
 @{
     ViewBag.Title = "代碼檔案維護";
     ViewBag.Name = "Codes";
@@ -19,23 +18,23 @@
 
 @section Scripts{
     @*<script src="~/app/ArrayExtensions.js"></script>
-    <script src="~/app/app.js"></script>
-    <script src="~/app/alerts.js"></script>
-    <script src="~/app/inputDirective.js"></script>
-    <script src="~/app/preventDefault.js"></script>
-    <script src="~/app/iconDirective.js"></script>
-    <script src="~/app/deleteConfirmDirective.js"></script>
-    <script src="~/app/InputValidationIconsDirective.js"></script>
-    <script src="~/app/FormGroupValidationDirective.js"></script>
-    <script src="~/app/waitModalDirective.js"></script>*@
+        <script src="~/app/app.js"></script>
+        <script src="~/app/alerts.js"></script>
+        <script src="~/app/inputDirective.js"></script>
+        <script src="~/app/preventDefault.js"></script>
+        <script src="~/app/iconDirective.js"></script>
+        <script src="~/app/deleteConfirmDirective.js"></script>
+        <script src="~/app/InputValidationIconsDirective.js"></script>
+        <script src="~/app/FormGroupValidationDirective.js"></script>
+        <script src="~/app/waitModalDirective.js"></script>*@
     <script src="~/app/adminCodes/codeDetailDirective.js"></script>
     <script src="~/app/adminCodes/codeEditDirective.js"></script>
     <script src="~/app/adminCodes/codeService.js"></script>
     <script src="~/app/adminCodes/codeController.js"></script>
     <script type="text/javascript">
         window.app.constant("model", @Html.JsonFor(Model));
-        window.app.constant("modelValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>()));
-        window.app.constant("modelValidations2", @validations);
+        window.app.constant("codeValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>()));
+        window.app.constant("detailValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>()));
         var url = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Index()))';
     </script>
 }

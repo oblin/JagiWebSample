@@ -1,10 +1,8 @@
 ﻿using HtmlTags;
 using Humanizer;
 using Jagi.Helpers;
-using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 
 namespace Jagi.Mvc.Angular
@@ -258,35 +256,6 @@ namespace Jagi.Mvc.Angular
         {
             var gridNumber = layout.LabelGrid;
             return "col-sm-" + gridNumber.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 作為 AngularHtmlTag 的 Factory，讓 Client 端可以使用 ServiceLocator 指定要實作的項目
-    /// 可以使用 Unity 設定 AngularHtmlTag 的 Deriven Class，如果沒有，必須要設定 new AngularHtmlTag()
-    /// </summary>
-    public class AngularHtmlTagFactory
-    {
-        public static AngularHtmlTag Get<TModel, TProp>(
-            Expression<Func<TModel, TProp>> property,
-            string expressionPrefix)
-        {
-            AngularHtmlTag ngControl = null;
-            if (ServiceLocator.IsLocationProviderSet)
-            {
-                ngControl = ServiceLocator.Current.GetInstance<AngularHtmlTag>();
-            }
-            if (ngControl == null)
-                // Use Default Settings
-                ngControl = new AngularHtmlTag();
-
-            var metadata = ModelMetadata.FromLambdaExpression(property, new ViewDataDictionary<TModel>());
-
-            ngControl.Metadata = metadata;
-            ngControl.Name = ExpressionHelper.GetExpressionText(property);
-            ngControl.Expression = property.ExpressionForInternal(expressionPrefix);
-
-            return ngControl;
         }
     }
 }

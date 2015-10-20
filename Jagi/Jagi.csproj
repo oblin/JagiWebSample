@@ -111,8 +111,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mvc\Angular\AngularHtmlFactory.cs" />
     <Compile Include="Mvc\Angular\GridTag.cs" />
-    <Compile Include="Mvc\MetadataHelper.cs" />
+    <Compile Include="Mvc\AngularValidations.cs" />
     <Compile Include="Utility\AESCryptoProvider.cs" />
     <Compile Include="Utility\DESCryptoProvider.cs" />
     <Compile Include="Utility\CryptoSetting.cs" />
