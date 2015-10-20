@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Jagi.Mvc
@@ -22,6 +23,7 @@ namespace Jagi.Mvc
         protected BetterJsonResult JsonValidationError()
         {
             var result = new BetterJsonResult();
+            result.ErrorStatus = HttpStatusCode.NotAcceptable;
             foreach (var validationError in ModelState.Values.SelectMany(s => s.Errors))
             {
                 result.AddError(validationError.ErrorMessage);
@@ -33,6 +35,7 @@ namespace Jagi.Mvc
         protected BetterJsonResult JsonError(string errorMessage)
         {
             var result = new BetterJsonResult();
+            result.ErrorStatus = HttpStatusCode.NotAcceptable;
             result.AddError(errorMessage);
 
             return result;

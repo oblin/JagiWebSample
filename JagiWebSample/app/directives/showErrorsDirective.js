@@ -7,13 +7,13 @@
         return {
             restrict: "E",
             scope: {
-                errors: '='
+                modelStatus: '='
             },
             replace: true,
             template:
-                '<div ng-show="errors && errors.length > 0" class="alert alert-danger">' +
+                '<div ng-show="modelStatus.isValid == false" class="alert alert-danger">' +
                 '    <h4 class="alert-heading">資料輸入錯誤!</h4>                      ' +
-                '    <ul data-ng-repeat="e in errors">                                 ' +
+                '    <ul data-ng-repeat="e in modelStatus.errors">                                 ' +
                 '        <li>{{ e }}</li>                                              ' +
                 '    </ul>                                                             ' +
                 '</div>                                                                '

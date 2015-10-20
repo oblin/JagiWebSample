@@ -6,7 +6,7 @@
 
     function codeController(model, alerts) {
         var vm = this;
-        vm.list = model;
+        vm.list = model.data;
         // control paging
         vm.pagedList = { list: [], count: 0, currentPage: 1, pageCount: 10 };
         vm.hadBeenModified = hadBeenModified;
@@ -18,7 +18,7 @@
         vm.searching = searching;
 
         // control list selection
-        vm.current = model[0];
+        vm.current = vm.list[0];
         vm.selected = selected;
         vm.select = select;
         vm.updateCurrentToList = updateCurrentToList;
@@ -88,8 +88,8 @@
 
             if (searchWord.length > 0) {
                 var searchList = [];
-                for (var i = 0; i < model.length; i++) {
-                    var item = model[i];
+                for (var i = 0; i < vm.list.length; i++) {
+                    var item = vm.list[i];
                     if (item.itemType.length > 0 ? item.itemType.toUpperCase().indexOf(searchWord) > -1 : false
                         || item.typeName.length > 0 ? item.typeName.toUpperCase().indexOf(searchWord) > -1 : false
                         || item.parentCode.length > 0 ? item.parentCode.toUpperCase().indexOf(searchWord) > -1 : false)
@@ -97,7 +97,7 @@
                 }
                 setPagedList(searchList);
             } else {
-                setPagedList(model);
+                setPagedList(vm.list);
             }
         }
 

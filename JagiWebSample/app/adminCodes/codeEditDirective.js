@@ -16,10 +16,9 @@
         }
     }
 
-    controller.$inject = ['$scope', 'codeService', 'codeValidations', '$modal', 'viewModelHelper', 'validator', 'alerts'];
+    controller.$inject = ['$scope', 'codeService', 'model', '$modal', 'dataService', 'validator', 'alerts'];
 
-    function controller($scope, codeService, codeValidations, $modal, viewModelHelper, validator, alerts) {
-        $scope.viewModelHelper = viewModelHelper;
+    function controller($scope, codeService, model, $modal, dataService, validator, alerts) {
         var vm = this;
 
         vm.options = $scope.options;    // reserved, not use
@@ -28,6 +27,7 @@
         vm.details = [];                // details for table list
 
         // 處理 codeFile 的 CRUD
+        vm.modelStatus = dataService;
         vm.save = save;
         vm.saving = false;
         vm.create = create;
@@ -38,16 +38,20 @@
         vm.deleteDetail = deleteDetail;
 
         // 處理 validation rules
-        var codeRules = codeValidations;
+        var codeRules = model.codeValidations;
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
             if (vm.parent != value) {
                 vm.parent = value;
-                codeService.details(value.id)
-                    .success(function (details) {
-                        vm.details = details;
-                    })
+                dataService.get(model.getCodeUrl + value.id, null,
+                    function (response) {
+                        vm.details = response.data;
+                    });
+                //codeService.details(value.id)
+                //    .success(function (details) {
+                //        vm.details = details;
+                //    })
                 vm.current = angular.copy(value);
                 $scope.codeFileForm.$setPristine();
                 $scope.codeFileForm.$setUntouched();
@@ -70,9 +74,9 @@
          */
         function save(item) {
             validator.ValidateModel(item, codeRules);
-            viewModelHelper.modelIsValid = item.isValid;
+            vm.modelStatus.isValid = item.isValid;
             if (!item.isValid) {
-                viewModelHelper.modelErrors = item.errors;
+                vm.modelStatus.errors = item.errors;
                 return;
             }
 

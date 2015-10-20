@@ -47,9 +47,9 @@ namespace JagiWebSample.Areas.Admin.Models
         public int Id { get; set; }
         [HiddenInput]
         public int CodeFileID { get; set; }
-        [Required, StringLength(20, MinimumLength=4)]
+        [Required, StringLength(8)]
         public string ItemCode { get; set; }
-        [Required]
+        [Required, StringLength(50)]
         public string Desc { get; set; }
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)

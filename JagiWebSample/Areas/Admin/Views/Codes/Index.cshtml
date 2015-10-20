@@ -32,9 +32,23 @@
     <script src="~/app/adminCodes/codeService.js"></script>
     <script src="~/app/adminCodes/codeController.js"></script>
     <script type="text/javascript">
-        window.app.constant("model", @Html.JsonFor(Model));
+        @*window.app.constant("model", @Html.JsonFor(Model));
         window.app.constant("codeValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>()));
-        window.app.constant("detailValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>()));
-        var url = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Index()))';
+        window.app.constant("detailValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>()));*@
+        var detailSaveUrl = '@(Html.BuildUrlFromExpression<CodesController>(c => c.SaveDetail(null)))';
+        var getCodeUrl  = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Details(0)))';
+        getCodeUrl = getCodeUrl.substring(0, getCodeUrl.length - 1);
+
+        var codeValidations = @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>());
+        var detailValidations = @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>());
+
+        window.app.constant("model", {
+            "data": @Html.JsonFor(Model),
+            "codeValidations": codeValidations,
+            "detailValidations": detailValidations,
+            "detailSaveUrl": detailSaveUrl,
+            "getCodeUrl": getCodeUrl
+        }
+    );
     </script>
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,6 +11,9 @@ namespace Jagi.Mvc
     public class BetterJsonResult : JsonResult
     {
         public IList<string> ErrorMessages { get; private set; }
+
+        private HttpStatusCode _errorStatus = HttpStatusCode.BadRequest;
+        public HttpStatusCode ErrorStatus { get { return _errorStatus; } set { _errorStatus = value; } }
 
         public BetterJsonResult()
         {
@@ -61,7 +65,7 @@ namespace Jagi.Mvc
                     ErrorMessages = ErrorMessages.ToArray()
                 };
 
-                response.StatusCode = 400;
+                response.StatusCode = (int)this.ErrorStatus;
             }
 
             if (Data == null) return;

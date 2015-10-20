@@ -6,7 +6,7 @@
 <h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.saving" style="color:green"></i></h3>
 <form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
       ng-disabled="vm.saving" ng-cloak>
-    @Html.Partial("~/Areas/Admin/Views/Shared/_ValidationErrors.cshtml")
+    <show-errors model-status="vm.modelStatus"></show-errors>
     <p>
         <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
                 ng-disabled="!codeFileForm.$dirty" icon="fa-save">
