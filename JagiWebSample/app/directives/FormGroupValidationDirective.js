@@ -9,9 +9,9 @@
             replace: true,
             transclude: true,
             template:
-				'<div class="has-feedback" ng-class="vm.getValidationClass()">' +
+				'<div class="has-feedback" ng-class="vm.getValidationClass()" uib-tooltip="{{vm.errorMessages}}">' +
 					'<ng-transclude></ng-transclude>' +
-					'<input-validation-icons field="vm.field" messages="{{vm.errorMessages}}"></input-validation-icons>' +
+					'<input-validation-icons field="vm.field" message="{{vm.errorMessages}}"></input-validation-icons>' +
 				'</div>',
             scope: {
                 field: '@formGroupValidation'
@@ -49,15 +49,16 @@
             var field = $scope.form[vm.field];
             var isValid = field.$valid;
             if (!isValid) {
-                vm.errorMessages = [];
+                var errorMessages = [];
                 var messageString = $("input[name='" + vm.field + "'").attr('message');
                 var messages = angular.fromJson(messageString);
                 var errors = Object.keys(field.$error);
                 for (var i = 0; i < errors.length; i++) {
                     var message = messages[errors[i]] ? messages[errors[i]].message : null;
                     if (message)
-                        vm.errorMessages.push(message);
+                        errorMessages.push(message);
                 }
+                vm.errorMessages = errorMessages.join('\n');
             }
             return isValid;
         }

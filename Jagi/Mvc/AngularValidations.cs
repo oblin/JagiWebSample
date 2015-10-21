@@ -22,13 +22,13 @@ namespace Jagi.Mvc
     public class AngularValidations
     {
         protected const string _requiredField = "required";
-        protected const string _requiredMessage = "欄位 【{0}】 必須要輸入";
+        protected const string _requiredMessage = "【{0}】必須要輸入";
 
         protected const string _minLengthField = "minlength";
-        protected const string _minLengthMessage = "欄位 【{0}】 最小必須要輸入 {1} 長度 ";
+        protected const string _minLengthMessage = "【{0}】最小長度為：{1}";
 
         protected const string _maxLengthField = "maxlength";
-        protected const string _maxLengthMessage = "欄位 【{0}】 最大長度不可超過 {1}";
+        protected const string _maxLengthMessage = "【{0}】最大長度不可超過：{1}";
 
         protected string _displayName;
         protected ModelMetadata _metadata;
