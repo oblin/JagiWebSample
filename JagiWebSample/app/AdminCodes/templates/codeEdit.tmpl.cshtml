@@ -5,7 +5,7 @@
 }
 <h3>代碼檔編輯<i class="fa fa-spinner fa-spin" ng-show="vm.modelStatus.isLoading" style="color:green"></i></h3>
 <form class="form-horizontal angular-input-form" name="codeFileForm" ng-show="vm.current"
-      ng-disabled="vm.saving" ng-cloak>
+      ng-disabled="vm.saving" validation-name="{{vm.validationName}}" ng-cloak>
     <show-errors model-status="vm.modelStatus"></show-errors>
     <p>
         <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
@@ -18,15 +18,14 @@
         </button>
         <button class="btn btn-success" ng-click="vm.create()" ng-disabled="vm.current.id === 0"
                 icon="fa-plus-circle">
-            新增 
+            新增
         </button>
         <button class="btn btn-danger deleteBtn"
-                icon="fa-trash" prevent-default 
+                icon="fa-trash" prevent-default
                 click-confirm="vm.delete(item)" item="vm.current">
             刪除
         </button>
     </p>
-
     <div class="row">
         @code.FormGroupFor(m => m.ItemType)
         @code.FormGroupFor(m => m.TypeName)

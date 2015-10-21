@@ -26,7 +26,7 @@ namespace JagiWebSample.Areas.Admin.Models
         [DisplayName("父項代碼")]
         public string ParentCode { get; set; }
         [DisplayName("代碼位數")]
-        public int? CharNumber { get; set; }
+        public int CharNumber { get; set; }
 
         public void CreateMappings(AutoMapper.IConfiguration configuration)
         {

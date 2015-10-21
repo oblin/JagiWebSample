@@ -26,9 +26,11 @@
         vm.modelStatus = dataService;
         vm.save = save;
         vm.cancel = cancel;
+        // 處理 validation rules，名稱不可變更，提供給 input directive 使用        
+        $scope.validations = model.codeValidations;
 
         function save() {
-            validator.ValidateModel(vm.detail, model.detailValidations);
+            validator.ValidateModel(vm.detail, $scope.validations);
             vm.modelStatus.isValid = vm.detail.isValid;
             if (!vm.detail.isValid) {
                 vm.modelStatus.errors = vm.detail.errors;

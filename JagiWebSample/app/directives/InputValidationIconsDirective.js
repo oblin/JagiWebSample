@@ -8,12 +8,14 @@
             require: '^form',
             scope: {
                 field: '=',
+                messages: '@'
             },
             template:
 				'<span ng-show="vm.canBeValidated() && vm.isValid()" ' +
 					'class="fa fa-lg fa-check-square form-control-feedback" style="margin-top: 6px; margin-right: -6px"></span>' +
 				'<span ng-show="vm.canBeValidated() && !vm.isValid()" ' +
-					'class="fa fa-lg fa-exclamation-triangle form-control-feedback" style="margin-top: 6px; margin-right: -6px"></span>',
+					'class="fa fa-lg fa-exclamation-triangle form-control-feedback" ' +                    
+                    'style="margin-top: 6px; margin-right: -6px"></span>',
             controller: controller,
             controllerAs: 'vm',
             link: function (scope, element, attrs, formCtrl) {

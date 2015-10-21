@@ -90,43 +90,56 @@
 
             for (var i = 0; i < props.length; i++) {
                 var prop = props[i];
-                for (var j = 0; j < allPropertyrules.length; j++) {
-                    var propertyRule = allPropertyrules[j];
-                    if (prop == propertyRule.propertyName) {
-                        var propertyrules = propertyRule.rules;
+                validateProperty(prop, model[prop], allPropertyrules, errors);
+            }
 
-                        var propertyRuleProps = Object.keys(propertyrules);
-                        for (var k = 0; k < propertyRuleProps.length; k++) {
-                            var propertyRuleProp = propertyRuleProps[k];
-                            if (propertyRuleProp != 'custom') {
-                                var rule = rules[propertyRuleProp];
-                                var params = null;
-                                if (propertyrules[propertyRuleProp].hasOwnProperty('parameters'))
-                                    params = propertyrules[propertyRuleProp].parameters;
-                                var validationResult = rule.validator(model[prop], params);
-                                if (!validationResult) {
-                                    var message = getMessage(prop, propertyRule.rules[propertyRuleProp], rule.message);
-                                    errors.push(getMessage(prop, propertyRuleProp, message));
-                                }
+            model['errors'] = errors;
+            model['isValid'] = (errors.length == 0);
+        }
+
+        self.ValidateField = function (prop, propValue, allPropertyrules) {
+            return validateProerty(prop, propValue, allPropertyrules);
+        }
+
+        var validateProperty = function (prop, propValue, allPropertyrules, errors) {
+            if (!errors)
+                errors = [];
+
+            for (var j = 0; j < allPropertyrules.length; j++) {
+                var propertyRule = allPropertyrules[j];
+                if (prop == propertyRule.propertyName) {
+                    var propertyrules = propertyRule.rules;
+
+                    var propertyRuleProps = Object.keys(propertyrules);
+                    for (var k = 0; k < propertyRuleProps.length; k++) {
+                        var propertyRuleProp = propertyRuleProps[k];
+                        if (propertyRuleProp != 'custom') {
+                            var rule = rules[propertyRuleProp];
+                            var params = null;
+                            if (propertyrules[propertyRuleProp].hasOwnProperty('parameters'))
+                                params = propertyrules[propertyRuleProp].parameters;
+                            var validationResult = rule.validator(propValue, params);
+                            if (!validationResult) {
+                                var message = getMessage(prop, propertyRule.rules[propertyRuleProp], rule.message);
+                                errors.push(getMessage(prop, propertyRuleProp, message));
                             }
-                            else {
-                                var validator = propertyrules.custom.validator;
-                                var value = null;
-                                if (propertyrules.custom.hasOwnProperty('parameters')) {
-                                    value = propertyrules.custom.parameters;
-                                }
-                                var result = validator(model[prop], value());
-                                if (result != true) {
-                                    errors.push(getMessage(prop, propertyrules.custom, 'Invalid value.'));
-                                }
+                        }
+                        else {
+                            var validator = propertyrules.custom.validator;
+                            var value = null;
+                            if (propertyrules.custom.hasOwnProperty('parameters')) {
+                                value = propertyrules.custom.parameters;
+                            }
+                            var result = validator(propValue, value());
+                            if (result != true) {
+                                errors.push(getMessage(prop, propertyrules.custom, 'Invalid value.'));
                             }
                         }
                     }
                 }
             }
 
-            model['errors'] = errors;
-            model['isValid'] = (errors.length == 0);
+            return errors;
         }
 
         var getMessage = function (prop, rule, defaultMessage) {
@@ -150,13 +163,13 @@
                 },
                 message: 'Value is required.'
             };
-            rules['minLength'] = {
+            rules['minlength'] = {
                 validator: function (value, params) {
-                    return !(value.trim().length < params);
+                    return value && !(value.trim().length < params);
                 },
                 message: 'Value does not meet minimum length.'
             };
-            rules['maxLength'] = {
+            rules['maxlength'] = {
                 validator: function (value, params) {
                     return !value || !(value.trim().length > params);
                 },

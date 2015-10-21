@@ -1,6 +1,5 @@
 ﻿using Humanizer;
 using HtmlTags;
-using Humanizer;
 using Jagi.Helpers;
 using System;
 using System.Collections.Generic;
@@ -107,6 +106,8 @@ namespace Jagi.Mvc.Angular
                     var key = "ng-" + rule.Key.ToLower();
                     input.Attr(key, value);
                 }
+                string messages =this.Validations.Rules.ToJson(); 
+                input.Attr("message", messages);
             }
         }
 

@@ -11,7 +11,7 @@
             template:
 				'<div class="has-feedback" ng-class="vm.getValidationClass()">' +
 					'<ng-transclude></ng-transclude>' +
-					'<input-validation-icons field="vm.field"></input-validation-icons>' +
+					'<input-validation-icons field="vm.field" messages="{{vm.errorMessages}}"></input-validation-icons>' +
 				'</div>',
             scope: {
                 field: '@formGroupValidation'
@@ -46,7 +46,20 @@
         }
 
         function isValid() {
-            return $scope.form[vm.field].$valid;
+            var field = $scope.form[vm.field];
+            var isValid = field.$valid;
+            if (!isValid) {
+                vm.errorMessages = [];
+                var messageString = $("input[name='" + vm.field + "'").attr('message');
+                var messages = angular.fromJson(messageString);
+                var errors = Object.keys(field.$error);
+                for (var i = 0; i < errors.length; i++) {
+                    var message = messages[errors[i]] ? messages[errors[i]].message : null;
+                    if (message)
+                        vm.errorMessages.push(message);
+                }
+            }
+            return isValid;
         }
     }
 

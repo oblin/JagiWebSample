@@ -36,8 +36,9 @@
         vm.detail = detail;
         vm.deleteDetail = deleteDetail;
 
-        // 處理 validation rules
-        var codeRules = model.codeValidations;
+        // 處理 validation rules，名稱不可變更，提供給 input directive 使用        
+        vm.validationName = "codeValidations";
+        $scope.validations = model.codeValidations;
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
@@ -68,7 +69,7 @@
          * @param item
          */
         function save(item) {
-            validator.ValidateModel(item, codeRules);
+            validator.ValidateModel(item, $scope.validations);
             vm.modelStatus.isValid = item.isValid;
             if (!item.isValid) {
                 vm.modelStatus.errors = item.errors;
@@ -121,13 +122,20 @@
 
         }
 
+        /**
+         * 呼叫 detail modal 並將目前 scope 的內容傳入：
+         *  parent: 代表 detail modal 的 parent，因此是目前的 vm.current
+         *  detail: 代表目前選擇的 detail item  
+         * @param item 使用者點選的 detail item
+         */
         function detail(item) {
             if (item == null)
                 item = { id: 0 };
             $modal.open({
                 template: '<code-detail parent="parent" detail="detail" list="list" />',
                 backdrop: false,
-                scope: angular.extend($scope.$new(true), { parent: vm.current, detail: item, list: vm.details })
+                scope: angular.extend($scope.$new(true),
+                    { parent: vm.current, detail: item, list: vm.details })
             });
         }
 
