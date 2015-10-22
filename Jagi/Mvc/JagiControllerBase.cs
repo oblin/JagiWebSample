@@ -20,24 +20,35 @@ namespace Jagi.Mvc
             return ControllerExtensions.RedirectToAction(this, action);
         }
 
-        protected BetterJsonResult JsonValidationError()
+        /// <summary>
+        /// 當 ModelStatus.IsValid = false 時候，可以自動處理 ModelStatus.Errors 將之轉成錯誤訊息回傳
+        /// </summary>
+        /// <param name="errorCode">指定的 status code, 不傳入值預設為 406</param>
+        /// <returns></returns>
+        protected virtual BetterJsonResult JsonValidationError(int? errorCode = null)
         {
             var result = new BetterJsonResult();
-            result.ErrorStatus = HttpStatusCode.NotAcceptable;
             foreach (var validationError in ModelState.Values.SelectMany(s => s.Errors))
             {
                 result.AddError(validationError.ErrorMessage);
             }
 
+            Response.StatusCode = ConvertToHttpStatusCode(errorCode);
             return result;
         }
 
-        protected BetterJsonResult JsonError(string errorMessage)
+        /// <summary>
+        /// 處理錯誤訊息回傳，可以指定 HttpStatusCode，如果不指定，預設為 406 NotAcceptable
+        /// </summary>
+        /// <param name="errorMessage">需要回傳的錯誤訊息</param>
+        /// <param name="errorCode">指定的 status code,不傳入值預設為 406</param>
+        /// <returns></returns>
+        protected BetterJsonResult JsonError(string errorMessage, int? errorCode = null)
         {
             var result = new BetterJsonResult();
-            result.ErrorStatus = HttpStatusCode.NotAcceptable;
             result.AddError(errorMessage);
 
+            Response.StatusCode = ConvertToHttpStatusCode(errorCode);
             return result;
         }
 
@@ -45,6 +56,8 @@ namespace Jagi.Mvc
         {
             var result = new BetterJsonResult<T> { Data = data };
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            Response.StatusCode = (int)HttpStatusCode.OK;
             return result;
         }
 
@@ -52,6 +65,8 @@ namespace Jagi.Mvc
         {
             var result = new BetterJsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
+            Response.StatusCode = (int)HttpStatusCode.OK;
             return result;
         }
 
@@ -61,18 +76,32 @@ namespace Jagi.Mvc
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="codetoExecute">Function method</param>
+        /// <param name="errorCode">指定的 status code, 不傳入值預設為 406</param>
         /// <returns>會將物件轉成 BetterJsonResult object</returns>
-        protected BetterJsonResult ExecuteExceptionHandler<T>(Func<T> codetoExecute)
+        protected BetterJsonResult GetJsonResult<T>(Func<T> codetoExecute, int? errorCode = null)
         {
             try
-            {
+            {                
                 T result = codetoExecute.Invoke();
                 return JsonSuccess(result);
             }
             catch (Exception ex)
             {
-                return JsonError(ex.Message);
+                return JsonError(ex.Message, errorCode);
             }
+        }
+
+        private int ConvertToHttpStatusCode(int? errorCode)
+        {
+            HttpStatusCode result;
+            if (errorCode != null && Enum.IsDefined(typeof(HttpStatusCode), errorCode))
+            {
+                if (!Enum.TryParse(errorCode.ToString(), out result))
+                    result = HttpStatusCode.NotAcceptable;
+            }
+            else
+                result = HttpStatusCode.NotAcceptable;
+            return (int)result;
         }
     }
 }

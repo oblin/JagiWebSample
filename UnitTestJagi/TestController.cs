@@ -1,5 +1,6 @@
 ﻿using Jagi.Helpers;
 using Jagi.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -39,6 +40,20 @@ namespace UnitTestJagi
         {
             var samples = SetupSamples();
             return BetterJson(samples);
+        }
+
+        public JsonResult GetJsonSuccess()
+        {
+            return JsonSuccess(SetupSample());
+        }
+
+        public JsonResult GetJsonError()
+        {
+            return GetJsonResult(() =>
+            {
+                throw new Exception("Error!");
+                return new Sample();
+            });
         }
 
         private Sample SetupSample()

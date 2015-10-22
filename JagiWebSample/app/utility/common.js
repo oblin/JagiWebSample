@@ -50,9 +50,10 @@
                         always();
                 }, function (result) {
                     if (failure == null) {
-                        if (result.status != 406)
+                        if (result.status != 406 || result.status != 409) 
                             self.errors = [result.status + ':' + result.statusText + ' - ' + result.data.Message];
                         else
+                            // 處理 406 & 409 的伺服器會回傳 errorMessages 的訊息
                             self.errors = result.data.errorMessages;
                         self.isValid = false;
                     }
