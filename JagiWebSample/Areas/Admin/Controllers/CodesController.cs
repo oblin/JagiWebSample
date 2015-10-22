@@ -42,7 +42,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 Mapper.Map(model, target);
             }
 
-            return ExecuteExceptionHandler(() =>
+            return GetJsonResult(() =>
             {
                 _context.SaveChanges();
 
@@ -92,7 +92,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 Mapper.Map(model, detail);
             }
 
-            return ExecuteExceptionHandler(() => {
+            return GetJsonResult(() => {
                 _context.SaveChanges();
                 return JsonSuccess(Mapper.Map<CodeDetailEditView>(detail));
             });

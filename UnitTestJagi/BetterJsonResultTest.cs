@@ -64,6 +64,7 @@ namespace UnitTestJagi
             var result = controller.GetStandardJson();
 
             var response = controller.ControllerContext.HttpContext.Response;
+            Assert.AreEqual(0, response.StatusCode);
             string responseWrite = string.Empty;
             response.Write(Arg.Do<string>(x => responseWrite = x));
 
@@ -137,6 +138,30 @@ namespace UnitTestJagi
             var resultObjects = JsonConvert.DeserializeObject<List<dynamic>>(responseWrite);
             Assert.AreEqual("Abc", (string)resultObjects[0].text);
             Assert.AreEqual(11, (int)resultObjects[0].number);
+        }
+
+        [TestMethod]
+        public void Test_Better_JsonSuccess()
+        {
+            SetupRequestCollection();
+
+            var controller = SetupController();
+            var result = controller.GetJsonSuccess();
+
+            var response = controller.ControllerContext.HttpContext.Response;
+            Assert.AreEqual(200, response.StatusCode);
+        }
+
+        [TestMethod]
+        public void Test_Better_JsonError()
+        {
+            SetupRequestCollection();
+
+            var controller = SetupController();
+            var result = controller.GetJsonError();
+
+            var response = controller.ControllerContext.HttpContext.Response;
+            Assert.AreEqual(406, response.StatusCode);
         }
     }
 }

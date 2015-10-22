@@ -210,6 +210,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CodesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\CodeDetail.cs" />
     <Compile Include="Areas\Admin\Models\CodeFile.cs" />

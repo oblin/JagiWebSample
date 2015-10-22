@@ -12,9 +12,6 @@ namespace Jagi.Mvc
     {
         public IList<string> ErrorMessages { get; private set; }
 
-        private HttpStatusCode _errorStatus = HttpStatusCode.BadRequest;
-        public HttpStatusCode ErrorStatus { get { return _errorStatus; } set { _errorStatus = value; } }
-
         public BetterJsonResult()
         {
             ErrorMessages = new List<string>();
@@ -64,8 +61,8 @@ namespace Jagi.Mvc
                     ErrorMessage = string.Join("\n", ErrorMessages),
                     ErrorMessages = ErrorMessages.ToArray()
                 };
-
-                response.StatusCode = (int)this.ErrorStatus;
+                if (response.StatusCode == 0)
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
 
             if (Data == null) return;
