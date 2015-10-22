@@ -211,11 +211,15 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CodesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\SchemaController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
-    <Compile Include="Areas\Admin\Models\CodeDetail.cs" />
-    <Compile Include="Areas\Admin\Models\CodeFile.cs" />
-    <Compile Include="Areas\Admin\Models\CodeFileEditView.cs" />
+    <Compile Include="Areas\Admin\Models\CodeDetails\CodeDetail.cs" />
+    <Compile Include="Areas\Admin\Models\CodeDetails\CodeFile.cs" />
+    <Compile Include="Areas\Admin\Models\CodeDetails\CodeFileEditView.cs" />
     <Compile Include="Areas\Admin\Models\AdminDataContext.cs" />
+    <Compile Include="Areas\Admin\Models\SchemaColumnsView.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchema.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchemaEditView.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\CreateUserView.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\DetailsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\UserIndexView.cs" />
@@ -311,6 +315,9 @@
     <Content Include="Content\ui-grid.ttf" />
     <Content Include="Content\ui-grid.eot" />
     <Content Include="Areas\Admin\Views\Shared\_ValidationErrors.cshtml" />
+    <Content Include="Areas\Admin\Views\Schema\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Schema\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Alerts.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\JavaScript.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -368,7 +375,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\CodeDetails\" />
     <Folder Include="Views\AngularTest\" />
     <Folder Include="Views\Template\" />
   </ItemGroup>

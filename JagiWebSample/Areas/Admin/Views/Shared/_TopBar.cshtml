@@ -8,7 +8,14 @@
                 <li class="@if (ViewBag.Name == "Codes")
                     {<text>active</text>}"><a href="@Url.Action("Index", "Codes")">代碼維護</a></li>
                 <li class="@if (ViewBag.Name == "User")
-                    {<text>active</text>}"><a href="@Url.Action("Index", "User")">使用者帳號維護</a></li>
+                    {<text>active</text>}"><a href="@Url.Action("Index", "User")">帳號維護</a></li>
+                <li class="dropdown @if (ViewBag.Name == "Schema") {<text>active</text>}">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">表格維護<b class="caret"></b></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a href="@Url.Action("Index", "Schema")">資料庫表格</a></li>
+                        <li><a href="@Url.Action("Index", "Columns")">Model Table Mapping</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li class="dropdown @if (ViewBag.Name == "Login") {<text>active</text>}">

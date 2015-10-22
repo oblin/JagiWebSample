@@ -1,10 +1,8 @@
 ﻿using Jagi.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
-using System.Linq;
-using System.Web;
+using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
 {
@@ -35,7 +33,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                                       validationError.PropertyName, validationError.ErrorMessage);
                     }
                 }
-                return JsonError(message, 409); 
+                return JsonError(message, 409);
             }
             catch (DbUpdateException updExc)
             {

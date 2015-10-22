@@ -1,0 +1,73 @@
+﻿@model IEnumerable<JagiWebSample.Areas.Admin.Models.SchemaColumnsView>
+
+@{
+    ViewBag.Title = "資料庫表格列表";
+    ViewBag.Name = "Schema";
+}
+
+<h2>資料表格欄位列表</h2>
+
+@using (Html.BeginForm("Details", "Schema", FormMethod.Post))
+{
+    @Html.Hidden("tableName", Model.FirstOrDefault().TABLE_NAME)
+    <input type="submit" value="建立或更新對應資料表格" class="btn btn-default" />
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TABLE_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.COLUMN_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DATA_TYPE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CHARACTER_MAXIMUM_LENGTH)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.COLUMN_DEFAULT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IS_NULLABLE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUMERIC_PRECISION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUMERIC_SCALE)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TABLE_NAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.COLUMN_NAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DATA_TYPE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CHARACTER_MAXIMUM_LENGTH)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.COLUMN_DEFAULT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IS_NULLABLE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUMERIC_PRECISION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUMERIC_SCALE)
+        </td>
+    </tr>
+}
+
+</table>

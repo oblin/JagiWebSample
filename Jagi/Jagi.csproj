@@ -111,6 +111,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\FieldType.cs" />
+    <Compile Include="Mvc\Alert.cs" />
+    <Compile Include="Mvc\AlertDecoratorResult.cs" />
+    <Compile Include="Mvc\AlertExtensions.cs" />
     <Compile Include="Mvc\Angular\AngularHtmlFactory.cs" />
     <Compile Include="Mvc\Angular\GridTag.cs" />
     <Compile Include="Mvc\AngularValidations.cs" />
