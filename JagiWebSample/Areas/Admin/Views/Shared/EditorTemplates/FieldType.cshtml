@@ -1,0 +1,13 @@
+﻿@using Jagi.Interface
+@model Jagi.Interface.FieldType
+
+@{
+    var options = Enum.GetValues(typeof(FieldType))
+        .Cast<FieldType>().Select(t => new SelectListItem
+        {
+            Text = t.ToString(),
+            Value = t.ToString(),
+            Selected = t == Model
+        }).ToList();
+}
+@Html.DropDownList("", options, new { @class = "form-control" })

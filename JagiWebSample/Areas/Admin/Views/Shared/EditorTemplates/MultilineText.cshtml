@@ -1,0 +1,6 @@
+﻿@model string
+@{
+    var rows = ViewData["rows"] ?? 7;
+}
+@Html.TextArea("", ViewData.TemplateInfo.FormattedModelValue.ToString(),
+    new { @class = "form-control", rows = rows })        

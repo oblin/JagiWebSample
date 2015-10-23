@@ -11,7 +11,8 @@
         vm.list = [];
         vm.change = getSchemaList;
 
-        getSchemaList();
+        if (vm.tableName)
+            getSchemaList(vm.tableName);
 
         function getSchemaList(tableName) {
             dataService.get(model.listUrl + tableName, null,

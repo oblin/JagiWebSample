@@ -1,0 +1,24 @@
+﻿@model string
+@{
+    var formattedModelValue = ViewData.TemplateInfo.FormattedModelValue;
+    object valueFor = null, valueForKey = null,  valueForValue = null, valueForTable = null;
+    ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.DATATYPE_NAME_VALUEFOR, out valueFor);
+    if (valueFor != null){
+        ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.DATATYPE_NAME_VALUEFORKEY, out valueForKey);
+        ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.DATATYPE_NAME_VALUEFORTABLE, out valueForTable);
+        ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.DATATYPE_NAME_VALUEFORVALUE, out valueForValue);
+    }
+}
+@if (valueFor != null && valueForKey != null)
+{
+    <input class="form-control" value-for-table="@valueForTable" value-for-keyfield="@valueForKey" 
+           value-for-field="@valueForValue" value-for="@valueFor" value="@formattedModelValue" />
+}
+else if (valueFor != null)
+{
+    @Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue, new { @class = "form-control", auto_value = @valueFor })
+}
+else
+{
+    @Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue, new { @class = "form-control" })
+}

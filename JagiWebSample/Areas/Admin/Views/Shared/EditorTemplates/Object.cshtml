@@ -1,0 +1,61 @@
+﻿@model dynamic
+@{
+    var columnWidth = Convert.ToInt16(ViewData["ColumnWidth"] ?? 3);
+    int labelWidth = Convert.ToInt16(ViewData["LabelWidth"]);
+    labelWidth = labelWidth == 0 ? 5 : labelWidth;
+
+    int controlWidth = Convert.ToInt16(ViewData["ControlWidth"]);
+    controlWidth = controlWidth == 0 ? 12 - labelWidth
+                        : controlWidth;
+
+    var properties = ViewData.ModelMetadata.Properties.Where(p => p.ShowForEdit).ToList();
+    // 先排除 HiddenInput
+    for (int i = properties.Count - 1; i >= 0; i--)
+    {
+        var prop = properties[i];
+        var isExcluded = Convert.ToBoolean(prop.AdditionalValues.Keys.Contains(ConstantString.EXCLUDED_ATTRIBUTE)
+                            ? prop.AdditionalValues[ConstantString.EXCLUDED_ATTRIBUTE] ?? false
+                            : false);
+        if (prop.TemplateHint == "HiddenInput")
+        {
+            @Html.Hidden(prop.PropertyName)
+            properties.RemoveAt(i);
+        }
+        if (isExcluded)
+        {
+            properties.RemoveAt(i);
+        }
+    }
+    int colInRow = 12 / columnWidth;
+
+    int count = 1;
+
+    <div class="row">
+        @foreach (var prop in properties)
+        {
+            object isNewline;
+            prop.AdditionalValues.TryGetValue(ConstantString.NEWLINE_ATTRIBUTE, out isNewline);
+            if (count > colInRow || isNewline != null)
+            {
+                count = 1;
+                @:</div> <div class="row">
+            }
+            count++;
+            var hasLabelHtmlAttributes = prop.AdditionalValues.Keys.Contains(ConstantString.LABEL_HTML_ATTRIBUTES);
+            <div class="form-group col-md-@columnWidth">
+                @if (hasLabelHtmlAttributes)
+                {
+                    @Html.BootstrapLabel(prop.PropertyName, prop.AdditionalValues[ConstantString.LABEL_HTML_ATTRIBUTES] as Dictionary<string, object>, labelWidth)
+                }
+                else
+                {
+                    @Html.BootstrapLabel(prop.PropertyName, labelWidth)
+                }
+                <div class="@ConstantString.GRID_COLUMN@controlWidth">
+                    @Html.Editor(prop.PropertyName)
+                    @Html.ValidationMessage(prop.PropertyName, new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+    </div>
+}

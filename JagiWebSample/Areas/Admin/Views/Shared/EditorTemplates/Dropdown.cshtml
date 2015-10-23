@@ -1,0 +1,39 @@
+﻿@model string
+@{
+    var codeMap = string.Empty;
+    object codeMapFor = null;
+    var options = new List<SelectListItem> { new SelectListItem { Value = string.Empty, Text = "無相關選項" } };
+    var isCodeMap = ViewData.ModelMetadata.AdditionalValues.Keys.Contains(ConstantString.ADDITIONAL_VALUES_CODEMAP)
+                 && ViewData.ModelMetadata.AdditionalValues.Keys.Contains(ConstantString.ADDITIONAL_VALUES_CODE_OPTIONS);
+    if (isCodeMap)
+    {
+        codeMap = ViewData.ModelMetadata.AdditionalValues[ConstantString.ADDITIONAL_VALUES_CODEMAP]
+                    .ToString();
+        options = ((IEnumerable<SelectListItem>)
+                    ViewData.ModelMetadata.AdditionalValues[ConstantString.ADDITIONAL_VALUES_CODE_OPTIONS])
+                    .ToList();
+        options.Insert(0, new SelectListItem
+        {
+            Value = "",
+            Text = "請選擇...",
+            Selected = string.IsNullOrEmpty(Model)
+        });
+        ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.ADDITIONAL_VALUES_CODEMAP_FOR, out codeMapFor);
+    }
+}
+@if (isCodeMap)
+{
+    if (codeMapFor != null)
+    {
+        @Html.DropDownList("", options, new { @class = "form-control", codemap_for = codeMapFor, codemap = codeMap })
+    }
+    else
+    {
+        @Html.DropDownList("", options, new { @class = "form-control", codemap = codeMap })
+    }
+}
+else
+{
+    @Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue,
+    new { @class = "form-control" })
+}

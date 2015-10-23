@@ -51,5 +51,14 @@ namespace JagiWebSample.Areas.Admin.Models
 
         [StringLength(200)]
         public string Tooltips { get; set; }
+
+        [StringLength(20)]
+        public string ValueforTable { get; set; }
+        [StringLength(20)]
+        public string ValueforKey { get; set; }
+        [StringLength(20)]
+        public string ValueforValue { get; set; }
+        [StringLength(20)]
+        public string Valuefor { get; set; }
     }
 }

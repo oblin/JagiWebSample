@@ -1,0 +1,13 @@
+﻿@model DateTime?
+
+<div class="input-group date">
+    @Html.TextBox("", Model.HasValue ?
+                        Model.Value == DateTime.MinValue ?
+                        string.Empty :
+                        Model.Value.ToString("d")
+                    : String.Empty,
+                new { @class = "form-control", placeholder = "日期格式： 1911/01/02" })
+    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </span>
+</div>

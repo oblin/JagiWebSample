@@ -1,0 +1,28 @@
+﻿@using Jagi.Mvc.Razor
+@model JagiWebSample.Areas.Admin.Models.TableSchemaEditView
+
+@{
+    ViewBag.Title = "資料表格編輯定義";
+    ViewBag.Name = "Schema";
+}
+
+<h3>編輯欄位設定</h3>
+
+@using (Html.BeginForm(routeValues: new { @class = "form-horizontal" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        <div class="col-md-10 button-block">
+            @Html.BootstrapSaveButton()
+            @Html.BootstrapCancelAction("Index", "Columns", new { id = Model.TableName })
+            @Html.BootstrapDeleteAction("Delete", "Columns", new { id = Model.Id })
+        </div>
+    </div>
+
+    @Html.EditorForModel(new LayoutSetting { ColumnWidth = 4 })
+
+}

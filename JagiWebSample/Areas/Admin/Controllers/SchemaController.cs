@@ -1,5 +1,5 @@
-﻿using Jagi.Interface;
-using Jagi.Helpers;
+﻿using Jagi.Helpers;
+using Jagi.Interface;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
 using System;
@@ -130,17 +130,23 @@ namespace JagiWebSample.Areas.Admin.Controllers
             {
                 case "NVARCHAR":
                     return FieldType.String;
+
                 case "DATETIME":
                     return FieldType.DateTime;
+
                 case "INT":
                     return FieldType.Int32;
+
                 case "BIT":
                     return FieldType.Boolean;
+
                 case "DECIMAL":
                 case "NUMERIC":
                     return FieldType.Decimal;
+
                 case "TIMESTAMP":
                     return FieldType.ByteArray;
+
                 default:
                     throw new InvalidCastException("無法轉換資料庫型態到對應的 FieldType，請重新定義");
             }

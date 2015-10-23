@@ -3,14 +3,15 @@
 @{
     ViewBag.Title = "資料表格顯示定義";
     ViewBag.Name = "Schema";
-    string url = Html.BuildUrlFromExpression<ColumnsController>(c => c.Create());
+    string createUrl = Html.BuildUrlFromExpression<ColumnsController>(c => c.Create());
     var schemaGroup = Html.Angular().ModelFor("vm");
+    var editUrl = Html.BuildUrlFromExpression<ColumnsController>(c => c.Edit(0));
 }
 
 <h2>資料表格顯示定義</h2>
 
 <div class="button-block">
-    <a class="btn btn-success" href="@url" icon="fa-plus-circle">新增欄位</a>
+    <a class="btn btn-success" href="@createUrl" icon="fa-plus-circle">新增欄位</a>
 </div>
 
 <div ng-controller="schemaController as vm" wait-modal>
@@ -54,25 +55,25 @@
         <tbody>
             <tr ng-repeat="item in vm.list">
                 <td>
-                    <a href="/Columns/Edit/{{item.Id}}">{{item.ColumnName}}</a>
+                    <a href="@editUrl{{item.id}}">{{item.columnName}}</a>
                 </td>
                 <td>
-                    {{item.DisplayName}}
+                    {{item.displayName}}
                 </td>
                 <td>
-                    {{item.DataType}}
+                    {{item.dataType}}
                 </td>
                 <td>
-                    {{item.DataTypeName}}
+                    {{item.dataTypeName}}
                 </td>
                 <td>
-                    {{item.DropdwonKey}}
+                    {{item.dropdwonKey}}
                 </td>
                 <td>
-                    <input type="checkbox" ng-checked="item.Nullable" disabled />
+                    <input type="checkbox" ng-checked="item.nullable" disabled />
                 </td>
                 <td>
-                    {{item.StringMaxLength}}
+                    {{item.stringMaxLength}}
                 </td>
             </tr>
         </tbody>

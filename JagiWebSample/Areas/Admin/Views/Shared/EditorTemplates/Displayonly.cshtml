@@ -1,0 +1,20 @@
+﻿@model dynamic
+@{
+    object valueFor = null;
+    ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.DATATYPE_NAME_VALUEFOR, out valueFor);
+
+    object dropdownVale;
+    ViewData.ModelMetadata.AdditionalValues.TryGetValue(ConstantString.ADDITIONAL_VALUES_CODE_VALUE, out dropdownVale);
+}
+
+@if (valueFor != null)
+{
+    <input class="form-control" disabled="disabled" auto-value="@valueFor" value="@ViewData.TemplateInfo.FormattedModelValue" />
+@Html.Hidden("", ViewData.TemplateInfo.FormattedModelValue, new { auto_value=@valueFor })
+}
+else
+{
+<input type="text" disabled="disabled" class="form-control"
+       value="@(dropdownVale ?? ViewData.TemplateInfo.FormattedModelValue)" />
+@Html.Hidden("", ViewData.TemplateInfo.FormattedModelValue)
+}

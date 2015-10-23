@@ -8,30 +8,56 @@ namespace JagiWebSample.Areas.Admin.Models
     {
         public int Id { get; set; }
 
-        [Required, StringLength(50)]
+        [Required, StringLength(50), Display(Name = " 資料表名稱")]
         public string TableName { get; set; }
 
-        [Required, StringLength(50)]
+        [Required, StringLength(50), Display(Name = "欄位名稱")]
         public string ColumnName { get; set; }
 
+        [Display(Name = "資料型態")]
         public FieldType DataType { get; set; }
+
+        [Display(Name = "對應型態 ")]
         public string DataTypeName { get; set; }
+
+        [Display(Name = "允許空值")]
         public bool Nullable { get; set; }
+
+        [Display(Name = "字串最大長度")]
         public int StringMaxLength { get; set; }
+
         public int Precision { get; set; }
         public int Scale { get; set; }
+        
+        [Display(Name = "顯示名稱")]
         public string DisplayName { get; set; }
         public string DisplayFormat { get; set; }
+
+        [Display(Name = "限制最小值")]
         public decimal? MinValue { get; set; }
+        [Display(Name = "限制最大值")]
         public decimal? MaxValue { get; set; }
         public decimal? WarningMinValue { get; set; }
         public decimal? WarningMaxValue { get; set; }
 
         public string Tooltips { get; set; }
         public string FromTable { get; set; }
+
+        [Display(Name = "Code File Key")]
         public string DropdwonKey { get; set; }
+        [Display(Name = "Code File Value")]
         public string DropdwonValue { get; set; }
+        [Display(Name = "對應 Parent Key")]
         public string DropdwonCascade { get; set; }
+
+        [StringLength(20), Display(Name = "對應資料表")]
+        public string ValueforTable { get; set; }
+        [StringLength(20), Display(Name = "對應KEY欄位")]
+        public string ValueforKey { get; set; }
+        [StringLength(20), Display(Name = "對應的 Value 欄位")]
+        public string ValueforValue { get; set; }
+        [StringLength(20), Display(Name = "自動帶出欄位名稱")]
+        public string Valuefor { get; set; }
     }
 
     /// <summary>

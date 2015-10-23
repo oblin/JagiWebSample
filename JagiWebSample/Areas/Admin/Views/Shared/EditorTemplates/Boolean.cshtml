@@ -1,0 +1,22 @@
+﻿@model bool?
+@{
+    var options = new List<SelectListItem> {
+                new SelectListItem { Text = "Not Set",
+                                     Value = String.Empty,
+                                     Selected = !Model.HasValue },
+                new SelectListItem { Text = "True",
+                                     Value = "true",
+                                     Selected = Model.HasValue && Model.Value },
+                new SelectListItem { Text = "False",
+                                     Value = "false",
+                                     Selected = Model.HasValue && !Model.Value },
+            };
+}
+@if (ViewData.ModelMetadata.IsNullableValueType)
+{
+    @Html.DropDownList("", options, new { @class = "form-control" })
+}
+else
+{
+    @Html.CheckBox("", Convert.ToBoolean(ViewData.TemplateInfo.FormattedModelValue))
+}

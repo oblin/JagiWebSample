@@ -6,7 +6,7 @@
 (function () {
     common = angular.module('common', []);
 
-    common.factory('dataService', function ($http, $q) {
+    common.factory('dataService', function ($http, $q, alerts) {
         var self = this;
 
         self.isValid = true;
@@ -53,6 +53,7 @@
             self.isValid = true;
             $http.post(uri, data)
                 .then(function (result) {
+                    alerts.success("存檔成功！");
                     success(result);
                     self.isValid = true;
                     self.isLoading = false;
