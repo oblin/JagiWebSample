@@ -111,7 +111,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\FieldType.cs" />
+    <Compile Include="Helpers\JHtmlHelper.cs" />
+    <Compile Include="Interface\Constants.cs" />
+    <Compile Include="Interface\FieldType.cs" />
     <Compile Include="Mvc\Alert.cs" />
     <Compile Include="Mvc\AlertDecoratorResult.cs" />
     <Compile Include="Mvc\AlertExtensions.cs" />
@@ -127,13 +129,13 @@
     <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
-    <Compile Include="Database\Entity.cs" />
-    <Compile Include="Database\IEntity.cs" />
+    <Compile Include="Interface\Entity.cs" />
+    <Compile Include="Interface\IEntity.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
     <Compile Include="Mapping\MappingBaseConfig.cs" />
     <Compile Include="Mapping\IMapFrom.cs" />
     <Compile Include="Mapping\IMapFromCustomized.cs" />
-    <Compile Include="Database\IVersionable.cs" />
+    <Compile Include="Interface\IVersionable.cs" />
     <Compile Include="Mapping\MapTypeConvert.cs" />
     <Compile Include="Mvc\Angular\AngularControl.cs" />
     <Compile Include="Mvc\Angular\AngularHelper.cs" />

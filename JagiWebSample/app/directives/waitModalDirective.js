@@ -3,11 +3,8 @@
 
     window.app.directive('waitModal', waitModal);
 
-    function waitModal() {
-        return {
-            restrict: "E",
-            replace: true,
-            template:
+    function waitModal($compile) {
+        var template =
             '<div class="modal top-modal modal-margin-vertical" id="loading" tabindex="10" role="dialog"' +
                 'aria-labelledby="loadingLabel" aria-hidden="true">' +
             '<div class="modal-dialog" role="document">' +
@@ -19,7 +16,17 @@
                     '</div>' +
                 '</div>' +
             '</div>' +
-            '</div>'
+            '</div>';
+
+        return {
+            restrict: "A, E",
+            replace: true,
+            link: function (scope, element, attrs) {
+                var modal = angular.element(template);
+                var linkFn = $compile(modal);
+                element.after(modal);
+                linkFn(scope);
+            }
         }
     }
 })()

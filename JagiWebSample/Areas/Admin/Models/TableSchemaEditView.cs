@@ -1,4 +1,4 @@
-﻿using Jagi.Database;
+﻿using Jagi.Interface;
 using Jagi.Mapping;
 using System.ComponentModel.DataAnnotations;
 

@@ -35,9 +35,19 @@ namespace UnitTestJagi
         protected TestController SetupController()
         {
             var routes = new RouteCollection();
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+            RouteData route = new RouteData();
+            route.Values.Add("controller", "Test");
+            route.Values.Add("action", "Link");
+            route.Values.Add("id", "null");
+
             var controller = new TestController();
-            controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
-            controller.Url = new UrlHelper(new RequestContext(context, new RouteData()), routes);
+            controller.ControllerContext = new ControllerContext(context, route, controller);
+            controller.Url = new UrlHelper(new RequestContext(context, route), routes);
 
             return controller;
         }
@@ -69,5 +79,6 @@ namespace UnitTestJagi
 
             return new HtmlHelper<T>(viewContext, viewDataContainer);
         }
+
     }
 }

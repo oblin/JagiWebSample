@@ -94,7 +94,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
             return GetJsonResult(() => {
                 _context.SaveChanges();
-                return JsonSuccess(Mapper.Map<CodeDetailEditView>(detail));
+                return Mapper.Map<CodeDetailEditView>(detail);
             });
         }
 

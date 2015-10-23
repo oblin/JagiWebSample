@@ -210,6 +210,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CodesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ColumnsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\SchemaController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="Areas\Admin\Models\SchemaColumnsView.cs" />
     <Compile Include="Areas\Admin\Models\TableSchema.cs" />
     <Compile Include="Areas\Admin\Models\TableSchemaEditView.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchemaListView.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\CreateUserView.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\DetailsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\UserIndexView.cs" />
@@ -242,6 +244,7 @@
     <Content Include="app\adminCodes\codeDetailDirective.js" />
     <Content Include="app\adminCodes\codeEditDirective.js" />
     <Content Include="app\adminCodes\codeService.js" />
+    <Content Include="app\adminSchema\schemaController.js" />
     <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\directives\showErrorsDirective.js" />
     <Content Include="app\utility\alerts.js" />
@@ -318,6 +321,7 @@
     <Content Include="Areas\Admin\Views\Schema\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Schema\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Alerts.cshtml" />
+    <Content Include="Areas\Admin\Views\Columns\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\JavaScript.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

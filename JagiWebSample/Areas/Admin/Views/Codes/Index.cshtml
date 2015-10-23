@@ -5,16 +5,13 @@
     var validations = Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>();
 }
 
-<div ng-app="app" ng-controller="codeController as vm">
+<div ng-controller="codeController as vm" wait-modal>
     <div class="col-md-3">@Html.Partial("_CodeList")</div>
     <div class="col-md-9">
         <div id="partialCodeEdit">
-            @*@Html.Partial("_CodeFile")*@
             <code-edit options update-current="vm.updateCurrentToList(item)" delete-current="vm.removeCurrentFromList(item)"></code-edit>
-            <input type="text" /><span class="fa fa-align-center" uib-tooltip="test"></span>
         </div>
     </div>
-    <wait-modal />
 </div>
 
 @section Scripts{
@@ -38,12 +35,12 @@
         window.app.constant("detailValidations", @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>()));*@
         var detailSaveUrl = '@(Html.BuildUrlFromExpression<CodesController>(c => c.SaveDetail(null)))';
         var getCodeUrl  = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Details(0)))';
-        getCodeUrl = getCodeUrl.substring(0, getCodeUrl.length - 1);
+        //getCodeUrl = getCodeUrl.substring(0, getCodeUrl.length - 1);
         var saveCodeUrl = '@(Html.BuildUrlFromExpression<CodesController>(c => c.Save(null)))';
         var deleteCodeUrl= '@(Html.BuildUrlFromExpression<CodesController>(c => c.DeleteCode(0)))';
-        deleteCodeUrl = deleteCodeUrl.substring(0, deleteCodeUrl.length - 1);   // 移除 ~/0 最後一個 0，由 controller 指定
+        //deleteCodeUrl = deleteCodeUrl.substring(0, deleteCodeUrl.length - 1);   // 移除 ~/0 最後一個 0，由 controller 指定
         var deleteDetailUrl= '@(Html.BuildUrlFromExpression<CodesController>(c => c.DeleteDetail(0)))';
-        deleteDetailUrl = deleteDetailUrl.substring(0, deleteDetailUrl.length - 1);   // 移除 ~/0 最後一個 0，由 controller 指定
+        //deleteDetailUrl = deleteDetailUrl.substring(0, deleteDetailUrl.length - 1);   // 移除 ~/0 最後一個 0，由 controller 指定
 
         var codeValidations = @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeFilesEditView>());
         var detailValidations = @(Html.ValidationsFor<JagiWebSample.Areas.Admin.Models.CodeDetailEditView>());

@@ -72,7 +72,8 @@ namespace Jagi.Mvc
 
         /// <summary>
         /// 處理 Exceptions 回傳 string message，這當 MVC 轉 JsonResult 時候很重要
-        /// 因為不會有任何的錯誤訊息
+        /// 因為不會有任何的錯誤訊息。
+        /// 請注意，傳入的 codeToExcute 請直接設定 物件即可，內部會包裝成 JsonSuccess
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="codetoExecute">Function method</param>
@@ -81,8 +82,11 @@ namespace Jagi.Mvc
         protected BetterJsonResult GetJsonResult<T>(Func<T> codetoExecute, int? errorCode = null)
         {
             try
-            {                
+            {
                 T result = codetoExecute.Invoke();
+                if (result is BetterJsonResult)
+                    throw new ArgumentException("請勿使用 JsonSuccess 包裝回傳成: JsonResult，內部會自動包裝");
+
                 return JsonSuccess(result);
             }
             catch (Exception ex)

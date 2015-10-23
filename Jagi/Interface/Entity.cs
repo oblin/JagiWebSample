@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Jagi.Database
+namespace Jagi.Interface
 {
     public abstract class Entity : IEntity
     {

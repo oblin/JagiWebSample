@@ -1,4 +1,4 @@
-﻿namespace Jagi.Database
+﻿namespace Jagi.Interface
 {
     public interface IEntity
     {

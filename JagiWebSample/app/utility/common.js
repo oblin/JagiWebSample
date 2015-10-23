@@ -13,9 +13,23 @@
         self.errors = [];
         self.isLoading = false;
 
+        function processHttpFailed(result) {
+            if (result.status != 406 && result.status != 409) 
+                if (result.status != 400)
+                    self.errors = [result.status + ':' + result.statusText + ' - ' + result.data.Message];
+                else
+                    self.errors = [result.data.Message];
+            else
+                // 處理 406 & 409 的伺服器會回傳 errorMessages 的訊息
+                self.errors = result.data.errorMessages;
+
+            self.isValid = false;
+        }
+
         self.get = function (uri, data, success, failure, always) {
             self.isLoading = true;
             self.isValid = true;
+
             $http.get(uri, data)
                 .then(function (result) {
                     success(result);
@@ -24,11 +38,7 @@
                     self.isLoading = false;
                 }, function (result) {
                     if (failure == null) {
-                        if (result.status != 400)
-                            self.errors = [result.status + ':' + result.statusText + ' - ' + result.data.Message];
-                        else
-                            self.errors = [result.data.Message];
-                        self.isValid = false;
+                        processHttpFailed(result);
                     }
                     else
                         failure(result);
@@ -50,19 +60,14 @@
                         always();
                 }, function (result) {
                     if (failure == null) {
-                        if (result.status != 406 || result.status != 409) 
-                            self.errors = [result.status + ':' + result.statusText + ' - ' + result.data.Message];
-                        else
-                            // 處理 406 & 409 的伺服器會回傳 errorMessages 的訊息
-                            self.errors = result.data.errorMessages;
-                        self.isValid = false;
+                        processHttpFailed(result);
                     }
                     else
                         failure(result);
 
                     if (always != null)
                         always();
-                    isLoading = false;
+                    self.isLoading = false;
                 });
         }
 

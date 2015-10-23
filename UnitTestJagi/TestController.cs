@@ -56,6 +56,11 @@ namespace UnitTestJagi
             });
         }
 
+        public ActionResult Link(string nullable)
+        {
+            return View();
+        }
+
         private Sample SetupSample()
         {
             string text = Request.QueryString["x"];

@@ -1,0 +1,92 @@
+﻿@model JagiWebSample.Areas.Admin.Models.TableSchemaGroupView
+
+@{
+    ViewBag.Title = "資料表格顯示定義";
+    ViewBag.Name = "Schema";
+    string url = Html.BuildUrlFromExpression<ColumnsController>(c => c.Create());
+    var schemaGroup = Html.Angular().ModelFor("vm");
+}
+
+<h2>資料表格顯示定義</h2>
+
+<div class="button-block">
+    <a class="btn btn-success" href="@url" icon="fa-plus-circle">新增欄位</a>
+</div>
+
+<div ng-controller="schemaController as vm" wait-modal>
+    <div class="row form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2">選擇資料表格</label>
+            <div class="col-md-9">
+                <select ng-model="tableName" ng-options='value for value in vm.tableNames'
+                        class="form-control"
+                        ng-change="vm.change(tableName)"></select>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.ColumnName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.DisplayName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.DataType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.DataTypeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.DropdwonKey)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.Nullable)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schema.StringMaxLength)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in vm.list">
+                <td>
+                    <a href="/Columns/Edit/{{item.Id}}">{{item.ColumnName}}</a>
+                </td>
+                <td>
+                    {{item.DisplayName}}
+                </td>
+                <td>
+                    {{item.DataType}}
+                </td>
+                <td>
+                    {{item.DataTypeName}}
+                </td>
+                <td>
+                    {{item.DropdwonKey}}
+                </td>
+                <td>
+                    <input type="checkbox" ng-checked="item.Nullable" disabled />
+                </td>
+                <td>
+                    {{item.StringMaxLength}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/app/adminSchema/schemaController.js"></script>
+    <script type="text/javascript">
+        var getListUrl = '@(Html.BuildUrlFromExpression<ColumnsController>(c => c.GetList(null)))';
+        window.app.constant("model", {
+            'tableName': @Html.JsonFor(Model.TableName),
+            'tableNames': @Html.JsonFor(Model.TableNames),
+            'listUrl': getListUrl
+        });
+</script>
+}

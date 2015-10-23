@@ -1,4 +1,4 @@
-﻿using Jagi.Database;
+﻿using Jagi.Interface;
 using Jagi.Helpers;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
@@ -13,7 +13,6 @@ namespace JagiWebSample.Areas.Admin.Controllers
 {
     public class SchemaController : ControllerBase
     {
-        private const string SCHEMA_DEFAULT_TABLE_NAME = "_DEFAULT";
         private AdminDataContext _context;
 
         private string[] _excludeTables = new string[]
@@ -71,7 +70,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
             foreach (var column in result)
             {
                 var defaultSchema = _context.TableSchema.SingleOrDefault(k =>
-                    k.TableName == SCHEMA_DEFAULT_TABLE_NAME
+                    k.TableName == ConstantString.SCHEMA_DEFAULT_TABLE_NAME
                     && k.ColumnName == column.COLUMN_NAME);
                 if (defaultSchema != null)          // 判斷已經有預設的欄位，則不在加入
                     continue;
