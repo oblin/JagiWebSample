@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\JHtmlHelper.cs" />
+    <Compile Include="Interface\IRunAtStartup.cs" />
     <Compile Include="Mvc\ConstantString.cs" />
     <Compile Include="Interface\FieldType.cs" />
     <Compile Include="Mvc\Alert.cs" />

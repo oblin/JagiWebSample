@@ -1,4 +1,6 @@
-﻿using Jagi.Utility;
+﻿using Jagi.Database;
+using Jagi.Database.Cache;
+using Jagi.Utility;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
@@ -11,15 +13,11 @@ namespace JagiConsoleSample
         private static void Main(string[] args)
         {
             使用ServiceLocator讓加解密可以使用預設的密碼進行不需要每次指定密碼();
+            //測試EMail();
 
-            Mailer email = new Mailer(
-                new EmailSetting { Email = "redmine.excelsior@gmail.com", Password = "490910490910" });
-
-            AutoResetEvent autoEvent = new AutoResetEvent(false);
-
-            WaitCallback waitCB = new WaitCallback(SetAutoResetEvent);
-
-            email.SendGMail("oblin228@gmail.com", "test", "Test", waitCB, autoEvent);
+            DataContext context = new DataContext();
+            var cacheInitializer = new InitCodeCache(context);
+            cacheInitializer.Execute();
 
             Console.ReadLine();
         }
@@ -53,6 +51,18 @@ namespace JagiConsoleSample
             Console.WriteLine("Encrypt text: {0}", encryptText);
             Console.WriteLine("Original text: {0}", crypto.Decrypt(encryptText));
             Console.WriteLine("=======================================================================");
+        }
+
+        private static void 測試EMail()
+        {
+            Mailer email = new Mailer(
+                new EmailSetting { Email = "redmine.excelsior@gmail.com", Password = "490910490910" });
+
+            AutoResetEvent autoEvent = new AutoResetEvent(false);
+
+            WaitCallback waitCB = new WaitCallback(SetAutoResetEvent);
+
+            email.SendGMail("oblin228@gmail.com", "test", "Test", waitCB, autoEvent);
         }
     }
 }

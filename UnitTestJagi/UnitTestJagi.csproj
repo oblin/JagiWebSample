@@ -105,8 +105,8 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NSubstitute, Version=1.9.1.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\NSubstitute.1.9.1.0\lib\net45\NSubstitute.dll</HintPath>
+    <Reference Include="NSubstitute, Version=1.7.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -115,6 +115,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -156,6 +157,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EntityHelpers.cs" />
     <Compile Include="JsonHelperTest.cs" />
     <Compile Include="LinqHelperCopyToTest.cs" />
     <Compile Include="LinqHelperDateCompareTest.cs" />
@@ -174,12 +176,17 @@
     <Compile Include="TestController.cs" />
     <Compile Include="EmailTest.cs" />
     <Compile Include="MetadataTest.cs" />
+    <Compile Include="CodeCacheTest.cs" />
     <Compile Include="UserControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Jagi.Database\Jagi.Database.csproj">
+      <Project>{7367ad13-c0bb-4d50-a600-35e586c08446}</Project>
+      <Name>Jagi.Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JagiWebSample\JagiWebSample.csproj">
       <Project>{e93fd473-4c37-4df5-b56b-0e25f2d0f4d1}</Project>
       <Name>JagiWebSample</Name>
