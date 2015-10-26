@@ -30,7 +30,11 @@
             self.isLoading = true;
             self.isValid = true;
 
-            $http.get(uri, data)
+            var config = {
+                params: data
+            };
+
+            $http.get(uri, config)
                 .then(function (result) {
                     success(result);
                     if (always != null)

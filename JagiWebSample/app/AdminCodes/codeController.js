@@ -1,4 +1,5 @@
-﻿(function () {
+﻿/// <reference path="codeDetailDirective.js" />
+(function () {
     'use strict';
 
     window.app.controller('codeController', codeController);

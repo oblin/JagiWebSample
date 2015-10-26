@@ -13,6 +13,7 @@ namespace JagiWebSample.Areas.Admin.Models
         public DbSet<CodeFile> CodeFiles { get; set; }
         public DbSet<CodeDetail> CodeDetails { get; set; }
         public DbSet<TableSchema> TableSchema { get; set; }
+        public DbSet<Address> Address { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -23,6 +24,11 @@ namespace JagiWebSample.Areas.Admin.Models
             {
                 m.MapInheritedProperties();
                 m.ToTable("TableSchema");
+            });
+
+            modelBuilder.Entity<Address>().Map(m =>
+            {
+                m.ToTable("Address");
             });
         }
     }

@@ -209,19 +209,21 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Areas\Admin\Controllers\CodesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ColumnsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ControllerBase.cs" />
     <Compile Include="Areas\Admin\Controllers\SchemaController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\Models\Address.cs" />
     <Compile Include="Areas\Admin\Models\CodeDetails\CodeDetail.cs" />
     <Compile Include="Areas\Admin\Models\CodeDetails\CodeFile.cs" />
     <Compile Include="Areas\Admin\Models\CodeDetails\CodeFileEditView.cs" />
     <Compile Include="Areas\Admin\Models\AdminDataContext.cs" />
-    <Compile Include="Areas\Admin\Models\SchemaColumnsView.cs" />
-    <Compile Include="Areas\Admin\Models\TableSchema.cs" />
-    <Compile Include="Areas\Admin\Models\TableSchemaEditView.cs" />
-    <Compile Include="Areas\Admin\Models\TableSchemaListView.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchema\SchemaColumnsView.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchema\TableSchema.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchema\TableSchemaEditView.cs" />
+    <Compile Include="Areas\Admin\Models\TableSchema\TableSchemaListView.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\CreateUserView.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\DetailsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserAdminViewModel\UserIndexView.cs" />
@@ -240,6 +242,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\adminAddress\addressController.js" />
     <Content Include="app\adminCodes\codeController.js" />
     <Content Include="app\adminCodes\codeDetailDirective.js" />
     <Content Include="app\adminCodes\codeEditDirective.js" />
@@ -335,6 +338,7 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Password.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Areas\Admin\Views\Columns\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Address\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\JavaScript.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
