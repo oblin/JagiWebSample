@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using HtmlTags;
 using Jagi.Helpers;
+using Jagi.Mvc.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;

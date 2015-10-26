@@ -157,6 +157,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ColumnCacheTest.cs" />
     <Compile Include="EntityHelpers.cs" />
     <Compile Include="JsonHelperTest.cs" />
     <Compile Include="LinqHelperCopyToTest.cs" />

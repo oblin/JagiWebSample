@@ -1,4 +1,4 @@
-﻿using Jagi.Helpers;
+﻿using Jagi.Mvc.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;

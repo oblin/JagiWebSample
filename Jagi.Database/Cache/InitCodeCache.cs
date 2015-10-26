@@ -1,12 +1,6 @@
-﻿using Jagi.Database.Models;
-using Jagi.Interface;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using Jagi.Interface;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jagi.Database.Cache
 {

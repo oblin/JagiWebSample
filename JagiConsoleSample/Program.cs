@@ -15,11 +15,33 @@ namespace JagiConsoleSample
             使用ServiceLocator讓加解密可以使用預設的密碼進行不需要每次指定密碼();
             //測試EMail();
 
+            測試CodeCache();
+
+            DataContext context = new DataContext();
+            var cacheInitializer = new InitColumnCache(context);
+            cacheInitializer.Execute();
+            var cache = new ColumnsCache();
+            var column = cache.Get("TableSchema", "Id");
+            Console.WriteLine("Column: {0}'s data type is {1}", column.DisplayName, column.DataType);
+
+            column = cache.Get("TableSchema", "TableName");
+            Console.WriteLine("Column: {0}'s string length is {1}", column.DisplayName, column.StringMaxLength);
+
+            Console.ReadLine();
+        }
+
+        private static void 測試CodeCache()
+        {
             DataContext context = new DataContext();
             var cacheInitializer = new InitCodeCache(context);
             cacheInitializer.Execute();
 
-            Console.ReadLine();
+            var cache = new CodeCache();
+            var details = cache.GetCodeDetails("IDIOPA");
+            foreach (var detail in details)
+            {
+                Console.WriteLine("ItemType: {0}, ItemCode:{1}", detail.ItemType, detail.ItemCode);
+            }
         }
 
         private static void SetAutoResetEvent(object eventState)

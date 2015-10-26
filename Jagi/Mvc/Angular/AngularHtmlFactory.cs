@@ -1,4 +1,4 @@
-﻿using Jagi.Helpers;
+﻿using Jagi.Mvc.Helpers;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Linq;

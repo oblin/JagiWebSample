@@ -111,7 +111,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\JHtmlHelper.cs" />
+    <Compile Include="Mvc\Helpers\JHtmlHelper.cs" />
     <Compile Include="Interface\IRunAtStartup.cs" />
     <Compile Include="Mvc\ConstantString.cs" />
     <Compile Include="Interface\FieldType.cs" />
@@ -127,7 +127,7 @@
     <Compile Include="Utility\CryptoSetting.cs" />
     <Compile Include="Utility\ICryptoProvider.cs" />
     <Compile Include="Utility\RandomPassword.cs" />
-    <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Mvc\Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\LinqHelper.cs" />
     <Compile Include="Helpers\ObjectHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />

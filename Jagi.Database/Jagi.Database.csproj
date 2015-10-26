@@ -53,10 +53,13 @@
   <ItemGroup>
     <Compile Include="Cache\CacheBase.cs" />
     <Compile Include="Cache\CodeCache.cs" />
+    <Compile Include="Cache\ColumnsCache.cs" />
+    <Compile Include="Cache\InitColumnCache.cs" />
     <Compile Include="Cache\InitCodeCache.cs" />
     <Compile Include="Models\CodeDetail.cs" />
     <Compile Include="Models\CodeFile.cs" />
     <Compile Include="DataContext.cs" />
+    <Compile Include="Models\TableSchema.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

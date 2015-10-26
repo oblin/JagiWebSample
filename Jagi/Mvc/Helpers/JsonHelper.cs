@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Jagi.Helpers
+namespace Jagi.Mvc.Helpers
 {
     public static class JsonHelper
     {

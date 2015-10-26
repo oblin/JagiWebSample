@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Jagi.Helpers
+namespace Jagi.Mvc.Helpers
 {
     public static class JHtmlHelper
     {
