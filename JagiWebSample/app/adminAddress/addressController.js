@@ -12,32 +12,62 @@
         var paginationOptions = {  /* Mapping to PageInfo.cs */
             pageNumber: 1,
             pageSize: 15,
-            sort: null
+            sort: null,
+            searchKeyword: null,
+            searchField: null
         };
 
+        vm.paginationOptions = paginationOptions;
         vm.openEdit = openEdit;
         vm.deleteDetail = deleteDetail;
+        vm.getPage = getPage;
+        vm.filters = [
+            { field: "Zip", keyword: "" },
+            { field: "County", keyword: "" },
+            { field: "Realm", keyword: "" }
+        ];
 
         vm.gridOptions = {
             paginationPageSizes: [15, 20, 25, 50],
             paginationPageSize: 25,
             useExternalPagination: true,
             useExternalSorting: true,
+            enableFiltering: true,
             columnDefs: [
-              { name: 'zip' },
-              { name: 'county' },
-              { name: 'realm' },
-              { name: 'street', enableColumnMenu: false, enableSorting: false },
               {
-                  name: 'eidt', displayName: '', enableColumnMenu: false, enableSorting: false,
+                  name: 'zip', title: '郵遞區號',
+                  filterHeaderTemplate:
+                    '<div class="ui-grid-filter-container">' +
+                    '<input type="text" ng-model="grid.appScope.vm.filters[0].keyword" class="ui-grid-filter-input" />' +
+                    '<span ng-click="grid.appScope.vm.getPage(grid.appScope.vm.filters[0])" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
+                    '</div>'
+              },
+              {
+                  name: 'county', title: '縣市',
+                  filterHeaderTemplate: 
+                    '<div class="ui-grid-filter-container">' +
+                    '<input type="text" ng-model="grid.appScope.vm.filters[1].keyword" class="ui-grid-filter-input" />' +
+                    '<span ng-click="grid.appScope.vm.getPage(grid.appScope.vm.filters[1])" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
+                    '</div>'
+              },
+              { name: 'realm', title: '鄉鎮',
+                  filterHeaderTemplate: 
+                    '<div class="ui-grid-filter-container">' +
+                    '<input type="text" ng-model="grid.appScope.vm.filters[2].keyword" class="ui-grid-filter-input" />' +
+                    '<span ng-click="grid.appScope.vm.getPage(grid.appScope.vm.filters[2])" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
+                    '</div>'
+              },
+              { name: 'street', enableColumnMenu: false, enableSorting: false, enableFiltering: false },
+              {
+                  name: 'eidt', displayName: '', enableColumnMenu: false, enableSorting: false, enableFiltering: false,
                   cellTemplate:
                     '<button ng-click="grid.appScope.vm.openEdit(row.entity)" class="btn btn-primary" icon="fa-edit">編輯</button>  ' +
                     '<button class="btn btn-danger" click-confirm="grid.appScope.vm.deleteDetail(item) "' +
                         'confirm-message="確定要刪除這筆地址資料嗎？" ' +
                          'item="row.entity" icon="fa-trash">刪除</button>',
-                  headerCellTemplate: 
-                      '<button ng-click="grid.appScope.vm.openEdit()" class="btn btn-success"  icon="fa-plus-circle">新增地址</button> '
-            }
+                  headerCellTemplate:
+                      '<button ng-click="grid.appScope.vm.openEdit()" class="btn btn-success" icon="fa-plus-circle">新增地址</button> '
+              }
             ],
             onRegisterApi: function (gridApi) {
                 vm.gridApi = gridApi;
@@ -60,20 +90,21 @@
 
         getPage();
 
-        function getPage() {
+        function getPage(filter) {
             var url = model.getAddressUrl;
+
+            if (filter) {
+                paginationOptions.searchField = filter.field;
+                paginationOptions.searchKeyword = filter.keyword;
+                for (var i = 0; i < vm.filters.length; i++)
+                    if (vm.filters[i].field != filter.field)
+                        vm.filters[i].keyword = null;
+            }
 
             dataService.get(url, paginationOptions, function (response) {
                 vm.gridOptions.data = response.data.data;
                 vm.gridOptions.totalItems = response.data.totalCount;
             });
-
-            //$http.get(url)
-            //.success(function (data) {
-            //    $scope.gridOptions.totalItems = 100;
-            //    var firstRow = (paginationOptions.pageNumber - 1) * paginationOptions.pageSize;
-            //    $scope.gridOptions.data = data.slice(firstRow, firstRow + paginationOptions.pageSize);
-            //});
         }
 
         function openEdit(item) {
@@ -92,6 +123,10 @@
             dataService.post(model.deleteUrl + item.id, null, function (response) {
                 getPage();
             })
+        }
+
+        function getKeywordInput(term, value, row, column) {
+            paginationOptions.searchKeyword = term;
         }
     }
 })();

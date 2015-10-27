@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Threading;
 using System;
+using System.Data.Entity;
 
 namespace JagiWebSample.Areas.Admin.Controllers
 {
@@ -32,7 +33,9 @@ namespace JagiWebSample.Areas.Admin.Controllers
             {
                 int pageNumber = pageInfo.PageNumber < 1 ? 1 : pageInfo.PageNumber;
                 pageInfo.SortField = pageInfo.SortField ?? "Zip";
-                var orderResult = GetOrder(_context.Address, pageInfo.SortField, pageInfo.Sort);
+                int count;
+                var fileterResult = GetStartWithFilter(_context.Address, pageInfo.SearchField, pageInfo.SearchKeyword, out count);
+                var orderResult = GetOrder(fileterResult, pageInfo.SortField, pageInfo.Sort);
                 var result = orderResult
                     .Skip((pageInfo.PageNumber - 1) * pageInfo.PageSize)
                     .Take(pageInfo.PageSize);
@@ -42,7 +45,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                     PageCount = pageInfo.PageSize,
                     Data = result,
                     CurrentPage = pageInfo.PageNumber,
-                    TotalCount = _context.Address.Count()
+                    TotalCount = count
                 };
             });
         }
@@ -100,6 +103,17 @@ namespace JagiWebSample.Areas.Admin.Controllers
         {
             fieldName = fieldName ?? typeof(T).GetProperties().First().Name;
             return set.OrderBy(fieldName + " " + order);
+        }
+
+        private IQueryable<T> GetStartWithFilter<T>(IQueryable<T> set, string searchField, string searchKeyword, out int count)
+        {
+            if (!string.IsNullOrEmpty(searchField) && !string.IsNullOrEmpty(searchKeyword))
+            {
+                set = set.Where(searchField + ".StartsWith(@0)", searchKeyword);
+            }
+
+            count = set.Count();
+            return set;
         }
     }
 }
