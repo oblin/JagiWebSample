@@ -27,7 +27,6 @@
         vm.details = [];                // details for table list
 
         // 處理 codeFile 的 CRUD
-        vm.modelStatus = dataService;
         vm.save = save;
         vm.create = create;
         vm.delete = deleteCode;
@@ -70,9 +69,9 @@
          */
         function save(item) {
             validator.ValidateModel(item, $scope.validations);
-            vm.modelStatus.isValid = item.isValid;
+            dataService.isValid = item.isValid;
             if (!item.isValid) {
-                vm.modelStatus.errors = item.errors;
+                dataService.errors = item.errors;
                 return;
             }
 

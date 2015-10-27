@@ -47,3 +47,8 @@
 .modal-margin-vertical {
     margin-top: 20%;
 }
+
+.grid {
+    width: 100%;
+    height: 550px;
+}

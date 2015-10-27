@@ -3,13 +3,16 @@
 
     window.app.controller("addressController", addressController);
 
-    addressController.$inject = ['model', 'dataService'];
+    addressController.$inject = ['$scope', 'model', 'dataService'];
 
-    function addressController(model, dataService) {
+    function addressController($scope, model, dataService) {
         var vm = this;
+        vm.modelStatus = dataService;
 
         var paginationOptions = {  /* Mapping to PageInfo.cs */
-            pageCount: 15,
+            pageNumber: 1,
+            pageSize: 15,
+            sort: null
         };
 
         vm.gridOptions = {
@@ -25,17 +28,18 @@
             ],
             onRegisterApi: function (gridApi) {
                 vm.gridApi = gridApi;
-                vm.gridApi.core.on.sortChanged(vm, function (grid, sortColumns) {
+                vm.gridApi.core.on.sortChanged($scope, function (grid, sortColumns) {
                     if (sortColumns.length == 0) {
                         paginationOptions.sort = null;
                     } else {
                         paginationOptions.sort = sortColumns[0].sort.direction;
+                        paginationOptions.sortField = sortColumns[0].field;
                     }
                     getPage();
                 });
                 gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                    paginationOptions.currentPage = newPage;
-                    paginationOptions.pageCount = pageSize;
+                    paginationOptions.pageNumber = newPage;
+                    paginationOptions.pageSize = pageSize;
                     getPage();
                 });
             }

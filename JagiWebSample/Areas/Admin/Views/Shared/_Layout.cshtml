@@ -12,6 +12,9 @@
 
 
     <div class="container body-content" ng-app="app">
+        <div ng-controller="layoutController as vm" wait-modal>
+            <show-errors model-status="vm.modelStatus"></show-errors>
+        </div>
         <div class="alert-container"></div>
         @RenderBody()
         <hr />
@@ -35,5 +38,6 @@
     @Scripts.Render("~/bundles/app")
     @Html.Partial("_Alerts")        @* 搭配 AlertExtension 使用 TempData *@ 
     @RenderSection("scripts", required: false)
+    <script src="~/app/layoutController.js"></script>
 </body>
 </html>

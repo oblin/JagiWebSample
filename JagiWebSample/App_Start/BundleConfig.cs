@@ -50,6 +50,7 @@ namespace JagiWebSample
                       "~/Content/bootstrap.css",
                       "~/Content/MvcMembership.css",
                       "~/fonts/font-awesome/css/font-awesome.css",
+                      "~/Content/ui-grid.css",
                       "~/Content/site.css"));
         }
     }

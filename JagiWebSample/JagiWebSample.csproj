@@ -90,6 +90,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -250,6 +254,7 @@
     <Content Include="app\adminSchema\schemaController.js" />
     <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\directives\showErrorsDirective.js" />
+    <Content Include="app\layoutController.js" />
     <Content Include="app\utility\alerts.js" />
     <Content Include="app\app.js" />
     <Content Include="app\utility\ArrayExtensions.js" />
