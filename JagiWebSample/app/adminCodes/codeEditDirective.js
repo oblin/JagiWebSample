@@ -31,13 +31,10 @@
         vm.create = create;
         vm.delete = deleteCode;
         vm.cancel = cancel;
+        vm.saving = dataService.saving;
         // 處理 codeDetail 
         vm.detail = detail;
         vm.deleteDetail = deleteDetail;
-
-        // 處理 validation rules，名稱不可變更，提供給 input directive 使用        
-        vm.validationName = "codeValidations";
-        $scope.validations = model.codeValidations;
 
         // Monitor Parent Scope vm.current 
         $scope.$parent.$watch('vm.current', function (value) {
@@ -68,7 +65,7 @@
          * @param item
          */
         function save(item) {
-            validator.ValidateModel(item, $scope.validations);
+            validator.ValidateModel(item, model.codeValidations);
             dataService.isValid = item.isValid;
             if (!item.isValid) {
                 dataService.errors = item.errors;

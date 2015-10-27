@@ -11,7 +11,7 @@
             //    icon: '@'
             //},
             link: function (scope, elem, attrs) {
-                var iconTmpl = '<i class="fa ' + attrs.icon + '"></i>'
+                var iconTmpl = ' <i class="fa ' + attrs.icon + '"></i>'
                 elem.append(iconTmpl);
             }
         }
@@ -24,7 +24,7 @@
             //    iconLeft: '@'
             //},
             link: function (scope, elem, attrs) {
-                var iconTmpl = '<i class="fa ' + attrs.iconLeft + '"></i>'
+                var iconTmpl = '<i class="fa ' + attrs.iconLeft + '"></i> '
                 elem.prepend(iconTmpl);
             }
         }

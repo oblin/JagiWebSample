@@ -14,6 +14,11 @@
     margin-right: -15px;
 }
 
+/* for angular form */
+.angular-input-form .ng-dirty {
+    background-color: #CEF6F5;
+}
+
 /* Table actived */
 .table > tbody > tr.active > td, tr.active > td {
     background-color: #0094ff;

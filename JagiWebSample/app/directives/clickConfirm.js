@@ -32,8 +32,8 @@
                     var modalHtml =
                         '<div class="modal-body">' + message + '</div>' +
                         '<div class="modal-footer">' +
-                        '<button class="btn btn-primary" ng-click="ok()" icon="fa-check"> 確定</button>' +
-                        '<button class="btn btn-warning" ng-click="cancel()" icon="fa-close"> 取消</button></div>';
+                        '<button class="btn btn-warning" ng-click="cancel()" icon="fa-close"> 取消</button>' +
+                        '<button class="btn btn-primary" ng-click="ok()" icon="fa-check"> 確定</button></div>';
 
                     var modalInstance = $modal.open({
                         template: modalHtml,

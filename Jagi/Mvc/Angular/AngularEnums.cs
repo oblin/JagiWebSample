@@ -32,7 +32,7 @@
         /// </summary>
         /// <param name="labelGridNumber">Label Grid length, 一般常用為 5</param>
         /// <param name="inputGridNumber">Input grid length, 一般常用為 7</param>
-        /// <param name="formGrid">整個 Form-Group 的 Grid length，也可以不輸入</param>
+        /// <param name="formGrid">整個 Form-Group 的 Grid length，例如輸入 4 代表有三欄（12/4)，也可以不輸入</param>
         public FormGroupLayout(int labelGridNumber, int inputGridNumber, int? formGrid = null)
         {
             this.LabelGrid = labelGridNumber;

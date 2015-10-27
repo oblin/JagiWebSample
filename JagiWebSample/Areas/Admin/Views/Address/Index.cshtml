@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "地址名稱維護";
     ViewBag.Name = "Others";
 }
@@ -7,16 +6,21 @@
 <h3>地址名稱維護</h3>
 
 <div ng-controller="addressController as vm">
-   <div ui-grid="vm.gridOptions" ui-grid-pagination style="height: 600px"></div>
+    <div ui-grid="vm.gridOptions" ui-grid-pagination class="grid"></div>
 </div>
 
 @section Scripts{
-<script src="~/app/adminAddress/addressController.js"></script>
+    <script src="~/app/adminAddress/addressController.js"></script>
+    <script src="~/app/adminAddress/addressEditDirective.js"></script>
     <script type="text/javascript">
         var getAddress = '@(Html.BuildUrlFromExpression<AddressController>(c => c.Get(null)))';
+        var updateAddressUrl = '@(Html.BuildUrlFromExpression<AddressController>(c => c.Update(null)))';
+        var deleteAddressUrl = '@(Html.BuildUrlFromExpression<AddressController>(c => c.Delete(0)))';
 
         window.app.constant("model", {
-            'getAddressUrl': getAddress
+            'getAddressUrl': getAddress,
+            'updateUrl': updateAddressUrl,
+            'deleteUrl': deleteAddressUrl
         });
     </script>
 }

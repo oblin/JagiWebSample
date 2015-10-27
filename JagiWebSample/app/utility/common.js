@@ -27,6 +27,10 @@
         }
 
         self.get = function (uri, data, success, failure, always) {
+            if (!uri) {
+                alerts.error("common.js 傳入的 url 是 null 值");
+                return;
+            }
             self.isLoading = true;
             self.isValid = true;
 
@@ -53,12 +57,17 @@
         }
 
         self.post = function (uri, data, success, failure, always) {
+            if (!uri) {
+                alerts.error("common.js 傳入的 url 是 null 值");
+                return;
+            }
             self.isLoading = true;
             self.isValid = true;
             $http.post(uri, data)
                 .then(function (result) {
                     alerts.success("存檔成功！");
-                    success(result);
+                    if (success)
+                        success(result);
                     self.isValid = true;
                     self.isLoading = false;
                     if (always != null)

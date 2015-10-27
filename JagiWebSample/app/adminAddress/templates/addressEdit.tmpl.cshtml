@@ -1,0 +1,31 @@
+﻿@model JagiWebSample.Areas.Admin.Models.Address
+
+@{
+    var address = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 6));
+}
+
+<form class="form-horizontal angular-input-form" name="addressForm" ng-cloak>
+    <show-errors model-status="vm.modelStatus"></show-errors>
+    <div class="modal-header">
+        <h3 class="modal-title">地址編輯</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            @address.FormGroupFor(m => m.Zip)
+            @address.FormGroupFor(m => m.County)
+        </div>
+        <div class="row">
+            @address.FormGroupFor(m => m.Realm)
+            @address.FormGroupFor(m => m.Street)
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="vm.cancel()" icon="fa-undo">
+            取消
+        </button>
+        <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
+                ng-disabled="!(addressForm.$dirty && addressForm.$valid)" icon="fa-save">
+            存檔
+        </button>
+    </div>
+</form>

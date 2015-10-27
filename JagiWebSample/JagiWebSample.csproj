@@ -247,6 +247,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\adminAddress\addressController.js" />
+    <Content Include="app\adminAddress\addressEditDirective.js" />
     <Content Include="app\adminCodes\codeController.js" />
     <Content Include="app\adminCodes\codeDetailDirective.js" />
     <Content Include="app\adminCodes\codeEditDirective.js" />
@@ -259,7 +260,6 @@
     <Content Include="app\app.js" />
     <Content Include="app\utility\ArrayExtensions.js" />
     <Content Include="app\directives\clickConfirm.js" />
-    <Content Include="app\directives\deleteModal.html" />
     <Content Include="app\directives\FormGroupValidationDirective.js" />
     <Content Include="app\directives\iconDirective.js" />
     <Content Include="app\directives\inputDirective.js" />
@@ -344,6 +344,7 @@
     <Content Include="Areas\Admin\Views\Shared\EditorTemplates\String.cshtml" />
     <Content Include="Areas\Admin\Views\Columns\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Address\Index.cshtml" />
+    <Content Include="app\adminAddress\templates\addressEdit.tmpl.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\JavaScript.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

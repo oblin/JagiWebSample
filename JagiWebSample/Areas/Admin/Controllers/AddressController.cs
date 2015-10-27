@@ -1,4 +1,5 @@
 ﻿using Jagi.Interface;
+using Jagi.Helpers;
 using Jagi.Mvc.Helpers;
 using JagiWebSample.Areas.Admin.Models;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ using System;
 
 namespace JagiWebSample.Areas.Admin.Controllers
 {
+    [OutputCache(Duration = 0)]
     public class AddressController : ControllerBase
     {
         private AdminDataContext _context;
@@ -35,13 +37,54 @@ namespace JagiWebSample.Areas.Admin.Controllers
                     .Skip((pageInfo.PageNumber - 1) * pageInfo.PageSize)
                     .Take(pageInfo.PageSize);
 
-                return new 
+                return new
                 {
                     PageCount = pageInfo.PageSize,
                     Data = result,
                     CurrentPage = pageInfo.PageNumber,
                     TotalCount = _context.Address.Count()
                 };
+            });
+        }
+
+        [HttpPost]
+        public JsonResult Update(Address address)
+        {
+            if (!ModelState.IsValid)
+                return JsonValidationError();
+
+            return GetJsonResult(() =>
+            {
+                Address addr;
+                if (address.Id == 0)
+                {
+                    addr = _context.Address.Add(address);
+                }
+                else
+                {
+                    addr = _context.Address.FirstOrDefault(p => p.Id == address.Id);
+                    if (addr == null)
+                        throw new NullReferenceException();
+                    address.CopyTo(addr);
+                }
+                _context.SaveChanges();
+
+                return addr;
+            });
+        }
+
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            var addr = _context.Address.FirstOrDefault(p => p.Id == id);
+            if (addr == null)
+                return JsonError("刪除的項目 id: {0} 無法對應到地址項目".FormatWith(id));
+
+            _context.Address.Remove(addr);
+
+            return GetJsonResult(() =>
+            {
+                _context.SaveChanges();
             });
         }
 
