@@ -39,67 +39,15 @@ namespace Jagi.Database.Mvc
                 {
                     if (_validations == null)
                     {
-                        _validations = new PropertyRule { PropertyName = _column.ColumnName, Rules = new Dictionary<string, dynamic>() };
+                        _validations = new PropertyRule 
+                            { PropertyName = _column.ColumnName, Rules = new Dictionary<string, dynamic>() };
                     }
 
                     var displayName = GetLabelFromColumns();
                     // 將 Table Schema 定義的 validation rule 放入
-                    if (!_column.Nullable)
-                    {
-                        if (!_validations.Rules.ContainsKey(ConstantString.VALIDATION_REQUIRED_FIELD))
-                            _validations.Rules.Add(ConstantString.VALIDATION_REQUIRED_FIELD,
-                                new
-                                {
-                                    message = ConstantString.VALIDATION_REQUIRED_MESSAGE
-                                        .FormatWith(displayName)
-                                });
-                    }
-                    if (_column.DataType == FieldType.String)
-                    {
-                        if (_column.StringMaxLength > 0
-                            && !_validations.Rules.ContainsKey(ConstantString.VALIDATION_MAXLENGTH_FIELD))
-                        {
-                            _validations.Rules.Add(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
-                            {
-                                message = ConstantString.VALIDATION_MAXLENGTH_MESSAGE
-                                    .FormatWith(displayName, _column.StringMaxLength),
-                                parameters = _column.StringMaxLength
-                            });
-                        }
-                        if (_column.StringMinLength.HasValue
-                            && !_validations.Rules.ContainsKey(ConstantString.VALIDATION_MINLENGTH_FIELD))
-                        {
-                            _validations.Rules.Add(ConstantString.VALIDATION_MINLENGTH_FIELD, new
-                            {
-                                message = ConstantString.VALIDATION_MINLENGTH_MESSAGE
-                                    .FormatWith(displayName, _column.StringMinLength),
-                                parameters = _column.StringMinLength
-                            });
-                        }
-                    }
-                    if (_column.DataType == FieldType.Decimal || _column.DataType == FieldType.Int32)
-                    {
-                        if (_column.MinValue.HasValue)
-                        {
-                            _validations.Rules.Add(ConstantString.VALIDATION_MIN_VALUE,
-                                new
-                                {
-                                    message = ConstantString.VALIDATION_MIN_MESSAGE
-                                        .FormatWith(displayName, _column.MinValue),
-                                    parameters = _column.MinValue
-                                });
-                        }
-                        if (_column.MaxValue.HasValue)
-                        {
-                            _validations.Rules.Add(ConstantString.VALIDATION_MAX_VALUE,
-                                new
-                                {
-                                    message = ConstantString.VALIDATION_MAX_MESSAGE
-                                        .FormatWith(displayName, _column.MaxValue),
-                                    parameters = _column.MaxValue
-                                });
-                        }
-                    }
+                    AddRequiredValidation(displayName);
+                    AddStringLengthValidation(displayName);
+                    AddNumberRangeValaidation(displayName);
                 }
             }
         }
@@ -129,8 +77,19 @@ namespace Jagi.Database.Mvc
             {
                 return base.GetInput(FormGroupType.Number, null, null);
             }
-
+            if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DropdwonKey))
+            {
+                var options = GetCodeCacheOptions(_column.DropdwonKey);
+                return base.GetInput(FormGroupType.Dropdown, null, options);
+            }
             return base.GetInput(type, value, selectOptions);
+        }
+
+        private Dictionary<string, string> GetCodeCacheOptions(string p)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
+            return result;
         }
 
         private string GetLabelFromColumns()
@@ -144,6 +103,74 @@ namespace Jagi.Database.Mvc
             }
 
             return label;
+        }
+
+        private void AddNumberRangeValaidation(string displayName)
+        {
+            if (_column.DataType == FieldType.Decimal || _column.DataType == FieldType.Int32)
+            {
+                if (_column.MinValue.HasValue)
+                {
+                    _validations.Rules.Add(ConstantString.VALIDATION_MIN_VALUE,
+                        new
+                        {
+                            message = ConstantString.VALIDATION_MIN_MESSAGE
+                                .FormatWith(displayName, _column.MinValue),
+                            parameters = _column.MinValue
+                        });
+                }
+                if (_column.MaxValue.HasValue)
+                {
+                    _validations.Rules.Add(ConstantString.VALIDATION_MAX_VALUE,
+                        new
+                        {
+                            message = ConstantString.VALIDATION_MAX_MESSAGE
+                                .FormatWith(displayName, _column.MaxValue),
+                            parameters = _column.MaxValue
+                        });
+                }
+            }
+        }
+
+        private void AddStringLengthValidation(string displayName)
+        {
+            if (_column.DataType == FieldType.String)
+            {
+                if (_column.StringMaxLength > 0
+                    && !_validations.Rules.ContainsKey(ConstantString.VALIDATION_MAXLENGTH_FIELD))
+                {
+                    _validations.Rules.Add(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
+                    {
+                        message = ConstantString.VALIDATION_MAXLENGTH_MESSAGE
+                            .FormatWith(displayName, _column.StringMaxLength),
+                        parameters = _column.StringMaxLength
+                    });
+                }
+                if (_column.StringMinLength.HasValue
+                    && !_validations.Rules.ContainsKey(ConstantString.VALIDATION_MINLENGTH_FIELD))
+                {
+                    _validations.Rules.Add(ConstantString.VALIDATION_MINLENGTH_FIELD, new
+                    {
+                        message = ConstantString.VALIDATION_MINLENGTH_MESSAGE
+                            .FormatWith(displayName, _column.StringMinLength),
+                        parameters = _column.StringMinLength
+                    });
+                }
+            }
+        }
+
+        private void AddRequiredValidation(string displayName)
+        {
+            if (!_column.Nullable)
+            {
+                if (!_validations.Rules.ContainsKey(ConstantString.VALIDATION_REQUIRED_FIELD))
+                    _validations.Rules.Add(ConstantString.VALIDATION_REQUIRED_FIELD,
+                        new
+                        {
+                            message = ConstantString.VALIDATION_REQUIRED_MESSAGE
+                                .FormatWith(displayName)
+                        });
+            }
         }
     }
 }
