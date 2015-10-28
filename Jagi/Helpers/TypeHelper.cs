@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 
 namespace Jagi.Helpers
@@ -56,6 +58,29 @@ namespace Jagi.Helpers
                 return true;
 
             return false;
+        }
+
+        public static ExpandoObject ToExpando(this object anonymousObject)
+        {
+            IDictionary<string, object> expando = new ExpandoObject();
+            foreach (PropertyDescriptor propertyDescriptor in TypeDescriptor.GetProperties(anonymousObject))
+            {
+                var obj = propertyDescriptor.GetValue(anonymousObject);
+                expando.Add(propertyDescriptor.Name, obj);
+            }
+
+            return (ExpandoObject)expando;
+        }
+
+        public static Dictionary<string, object> DynamicToDictionary(dynamic dynObj)
+        {
+            var dictionary = new Dictionary<string, object>();
+            foreach (PropertyDescriptor propertyDescriptor in TypeDescriptor.GetProperties(dynObj))
+            {
+                object obj = propertyDescriptor.GetValue(dynObj);
+                dictionary.Add(propertyDescriptor.Name, obj);
+            }
+            return dictionary;
         }
     }
 }

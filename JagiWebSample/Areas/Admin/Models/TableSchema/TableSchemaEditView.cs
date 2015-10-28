@@ -23,8 +23,11 @@ namespace JagiWebSample.Areas.Admin.Models
         [Display(Name = "允許空值")]
         public bool Nullable { get; set; }
 
-        [Display(Name = "字串最大長度")]
+        [Display(Name = "字串最大長度(0: 不限)")]
         public int StringMaxLength { get; set; }
+
+        [Display(Name = "字串最小長度")]
+        public int? StringMinLength { get; set; }
 
         public int Precision { get; set; }
         public int Scale { get; set; }

@@ -35,6 +35,7 @@ namespace Jagi.Database.Models
 
         public bool Nullable { get; set; }
         public int StringMaxLength { get; set; }
+        public int? StringMinLength { get; set; }
         public int Precision { get; set; }
         public int Scale { get; set; }
 

@@ -143,7 +143,7 @@
     <Compile Include="Mapping\IMapFromCustomized.cs" />
     <Compile Include="Interface\IVersionable.cs" />
     <Compile Include="Mapping\MapTypeConvert.cs" />
-    <Compile Include="Mvc\Angular\AngularControl.cs" />
+    <Compile Include="Mvc\Angular\AngularHtmlTag.cs" />
     <Compile Include="Mvc\Angular\AngularHelper.cs" />
     <Compile Include="Mvc\Angular\AngularModelHelper.cs" />
     <Compile Include="Mvc\Angular\AngularNgRepeatHelper.cs" />

@@ -12,10 +12,11 @@ namespace UnitTestJagi
         public string Text { get; set; }
         public bool IsChinese { get; set; }
         public DateTime StartDate { get; set; }
-        [DataType(DataType.MultilineText)]
         public string EndDate { get; set; }
         public int? NullableInt { get; set; }
         public Decimal FloatingPoint { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string MultiLine { get; set; }
     }
 
     public class SampleCopy1 : IMapFrom<Sample>
@@ -58,6 +59,7 @@ namespace UnitTestJagi
         public string Text { get; set; }
         [Display(Name ="限制長度"), StringLength(maximumLength: 10, MinimumLength = 4)]
         public string LimitTest { get; set; }
+        [Display(Name = "是否中文")]
         public bool IsChinese { get; set; }
         public DateTime StartDate { get; set; }
         [DataType(DataType.MultilineText)]

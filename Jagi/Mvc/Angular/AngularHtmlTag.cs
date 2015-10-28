@@ -4,20 +4,29 @@ using Jagi.Helpers;
 using Jagi.Mvc.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Web.Mvc;
 
 namespace Jagi.Mvc.Angular
 {
     /// <summary>
-    /// 提供基本的 HtmlTag 產生器，可以繼承後，使用 override 改寫任何一項內容
+    /// 使用 DataAnnotation 提供 HtmlTag 產生器，可以繼承後，使用 override 改寫任何一項內容
     /// </summary>
     public class AngularHtmlTag
     {
-        private ModelMetadata _metadata;
-        public ModelMetadata Metadata { get { return _metadata; } internal set { _metadata = value; } }
+        protected ModelMetadata _metadata;
+        public virtual ModelMetadata Metadata { get { return _metadata; } set { _metadata = value; } }
         public string Name { get; internal set; }
         public string Expression { get; internal set; }
-        public PropertyRule Validations { get; internal set; }
+        protected PropertyRule _validations;
+        public virtual PropertyRule Validations
+        {
+            get { return _validations; }
+            set
+            {
+                _validations = value;
+            }
+        }
 
         public AngularHtmlTag()
         {
@@ -36,17 +45,9 @@ namespace Jagi.Mvc.Angular
         public virtual HtmlTag GetLabel(FormGroupLayout layout)
         {
             CheckInitializedCorrection();
-            var labelText = _metadata.DisplayName ?? this.Name.Humanize(LetterCasing.Title);
+            var labelText = GetDefaultDisplayName();
 
-            var label = new HtmlTag("label")
-                .AddClass("control-label")
-                .Attr("for", this.Name)
-                .Text(labelText);
-
-            if (layout != null)
-                label.AddClass(GetLabelLayout(layout));
-
-            return label;
+            return ComposeLabelTag(layout, labelText);
         }
 
         public virtual HtmlTag GetInput(FormGroupType type, string value,
@@ -89,7 +90,7 @@ namespace Jagi.Mvc.Angular
         public virtual void ApplyValidationToInput(HtmlTag input)
         {
             if (this.Metadata.IsRequired)
-                input.Attr("required", "");
+                input.Attr(ConstantString.VALIDATION_REQUIRED_FIELD, "");
 
             if (this.Metadata.DataTypeName == "EmailAddress")
                 input.Attr("type", "email");
@@ -99,15 +100,20 @@ namespace Jagi.Mvc.Angular
 
             if (this.Validations != null && this.Validations.Rules.Count > 0)
             {
-                foreach(var rule in this.Validations.Rules)
+                foreach (var rule in this.Validations.Rules)
                 {
-                    if (rule.Key == "required")
+                    if (rule.Key == ConstantString.VALIDATION_REQUIRED_FIELD)
                         continue;
-                    var value = rule.Value.parameters;
-                    var key = "ng-" + rule.Key.ToLower();
+                    var ruleDict = TypeHelper.DynamicToDictionary(rule.Value);
+
+                    var value = ruleDict["parameters"];
+
+                    var key = rule.Key.ToLower();
+                    if (key != ConstantString.VALIDATION_MIN_VALUE && key != ConstantString.VALIDATION_MAX_VALUE)
+                        key = "ng-" + key;
                     input.Attr(key, value);
                 }
-                string messages =this.Validations.Rules.ToJson(); 
+                string messages = this.Validations.Rules.ToJson();
                 input.Attr("message", messages);
             }
         }
@@ -154,7 +160,7 @@ namespace Jagi.Mvc.Angular
                 input.AddClass(numberClass);
             else
                 if (!string.IsNullOrEmpty(placeholder))
-                input.Attr("placeholder", placeholder);
+                    input.Attr("placeholder", placeholder);
 
             SetInputType(input, type, value);
 
@@ -208,12 +214,18 @@ namespace Jagi.Mvc.Angular
                 case FormGroupType.RadioButton:
                     inputType = "radio";
                     break;
+
+                case FormGroupType.Number:
+                    inputType = "number";
+                    break;
             }
 
             if (inputType == "text" && _metadata.ModelType == typeof(bool))
             {
                 inputType = "checkbox";
-            } else if (inputType == "text" && _metadata.ModelType.IsNumericOrNull()){
+            }
+            else if (inputType == "text" && _metadata.ModelType.IsNumericOrNull())
+            {
                 inputType = "number";
             }
 
@@ -252,6 +264,25 @@ namespace Jagi.Mvc.Angular
                 .Attr("icon", "fa-calendar");
             span.Append(button);
             return tag.Append(input).Append(span);
+        }
+
+        protected HtmlTag ComposeLabelTag(FormGroupLayout layout, string labelText)
+        {
+            var label = new HtmlTag("label")
+                .AddClass("control-label")
+                .Attr("for", this.Name)
+                .Text(labelText);
+
+            if (layout != null)
+                label.AddClass(GetLabelLayout(layout));
+
+            return label;
+        }
+
+        protected string GetDefaultDisplayName()
+        {
+            var labelText = _metadata.DisplayName ?? this.Name.Humanize(LetterCasing.Title);
+            return labelText;
         }
 
         private string GetNumberClass(FormGroupType type)

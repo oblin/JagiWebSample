@@ -28,5 +28,22 @@
         public const string DATATYPE_NAME_VALUEFORTABLE = "ValueforTable";
 
         #endregion For Jagi.Mvc.Razor
+
+        #region For Validations
+        public const string VALIDATION_REQUIRED_FIELD = "required";
+        public const string VALIDATION_REQUIRED_MESSAGE = "【{0}】必須要輸入";
+
+        public const string VALIDATION_MINLENGTH_FIELD = "minlength";
+        public const string VALIDATION_MINLENGTH_MESSAGE = "【{0}】最小長度為：{1}";
+
+        public const string VALIDATION_MAXLENGTH_FIELD = "maxlength";
+        public const string VALIDATION_MAXLENGTH_MESSAGE = "【{0}】最大長度不可超過：{1}";
+
+        public const string VALIDATION_MIN_VALUE = "min";
+        public const string VALIDATION_MIN_MESSAGE = "【{0}】數值最小必須大於：{1}";
+
+        public const string VALIDATION_MAX_VALUE = "max";
+        public const string VALIDATION_MAX_MESSAGE = "【{0}】數值最大必須小於：{1}";
+        #endregion For Validations
     }
 }

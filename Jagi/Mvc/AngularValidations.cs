@@ -19,17 +19,11 @@ namespace Jagi.Mvc
         public Dictionary<string, dynamic> Rules { get; set; }
     }
 
+    /// <summary>
+    /// 目前只有定義三個規則： required, minLength & maxLength (for string) 
+    /// </summary>
     public class AngularValidations
     {
-        protected const string _requiredField = "required";
-        protected const string _requiredMessage = "【{0}】必須要輸入";
-
-        protected const string _minLengthField = "minlength";
-        protected const string _minLengthMessage = "【{0}】最小長度為：{1}";
-
-        protected const string _maxLengthField = "maxlength";
-        protected const string _maxLengthMessage = "【{0}】最大長度不可超過：{1}";
-
         protected string _displayName;
         protected ModelMetadata _metadata;
 
@@ -83,7 +77,8 @@ namespace Jagi.Mvc
 
                 _displayName = GetDisplayName(_metadata);
 
-                PropertyRule propRule = new PropertyRule { PropertyName = propName, Rules = new Dictionary<string, dynamic>() };
+                PropertyRule propRule = new PropertyRule 
+                    { PropertyName = propName, Rules = new Dictionary<string, dynamic>() };
 
                 AddStringLengthRule(prop, propRule);
 
@@ -107,7 +102,8 @@ namespace Jagi.Mvc
             bool hadRule = false;
             if (_metadata.IsRequired)
             {
-                propRule.Rules.Add(_requiredField, new { message = _requiredMessage.FormatWith(_displayName) });
+                propRule.Rules.Add(ConstantString.VALIDATION_REQUIRED_FIELD, 
+                    new { message = ConstantString.VALIDATION_REQUIRED_MESSAGE.FormatWith(_displayName) });
                 hadRule = true;
             }
 
@@ -122,18 +118,20 @@ namespace Jagi.Mvc
                 var attr = prop.GetCustomAttributes().OfType<StringLengthAttribute>().FirstOrDefault();
                 if (attr.MinimumLength > 0)
                 {
-                    propRule.Rules.Add(_minLengthField, new
+                    propRule.Rules.Add(ConstantString.VALIDATION_MINLENGTH_FIELD, new
                     {
-                        message = attr.ErrorMessage ?? _minLengthMessage.FormatWith(_displayName, attr.MinimumLength),
+                        message = attr.ErrorMessage ?? 
+                            ConstantString.VALIDATION_MINLENGTH_MESSAGE.FormatWith(_displayName, attr.MinimumLength),
                         parameters = attr.MinimumLength
                     });
                     hadRule = true;
                 }
                 if (attr.MaximumLength > 0)
                 {
-                    propRule.Rules.Add(_maxLengthField, new
+                    propRule.Rules.Add(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
                     {
-                        message = attr.ErrorMessage ?? _maxLengthMessage.FormatWith(_displayName, attr.MaximumLength),
+                        message = attr.ErrorMessage ?? 
+                            ConstantString.VALIDATION_MAXLENGTH_MESSAGE.FormatWith(_displayName, attr.MaximumLength),
                         parameters = attr.MaximumLength
                     });
                     hadRule = true;
