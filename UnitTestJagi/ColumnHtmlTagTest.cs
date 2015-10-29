@@ -31,6 +31,25 @@ namespace UnitTestJagi
         [TestInitialize]
         public void Setup()
         {
+            // Setup Code Definition
+            var codedetails = new List<CodeDetail>
+            {
+                new CodeDetail { ITEM_CODE = "A1", CodeFileID = 1, DESC = "A1 Detail" },
+                new CodeDetail { ITEM_CODE = "A2", CodeFileID = 1, DESC = "A2 Detail" },
+                new CodeDetail { ITEM_CODE = "B1", CodeFileID = 2, DESC = "B1 Detail" },
+                new CodeDetail { ITEM_CODE = "C1", CodeFileID = 3, DESC = "C1 Detail" },
+                new CodeDetail { ITEM_CODE = "C2", CodeFileID = 3, DESC = "C2 Detail" },
+                new CodeDetail { ITEM_CODE = "C3", CodeFileID = 3, DESC = "C3 Detail" }
+            }.AsQueryable();
+
+            var codefiles = new List<CodeFile>
+            {
+                new CodeFile { ID = 1, ITEM_TYPE = "A", TYPE_NAME = "A Name", CodeDetails = codedetails.Where(p => p.CodeFileID == 1).ToList() },
+                new CodeFile { ID = 2, ITEM_TYPE = "B", TYPE_NAME = "B Name", PARENT_CODE = "A",
+                    CodeDetails = codedetails.Where(p => p.CodeFileID == 2).ToList() },
+                new CodeFile { ID = 3, ITEM_TYPE = "C", TYPE_NAME = "C Name", CodeDetails = codedetails.Where(p => p.CodeFileID == 3).ToList() },
+            }.AsQueryable();
+
             // Setup Column Definition
             tableSchema = new List<TableSchema>
             {
@@ -41,14 +60,27 @@ namespace UnitTestJagi
                 new TableSchema { TableName = "Sample", ColumnName = "EndDate", DisplayName = "結束日期", StringMaxLength = 10, Nullable = false },
                 new TableSchema { TableName = "Sample", ColumnName = "NullableInt", DataType = Jagi.Interface.FieldType.Int32, Nullable = true, MinValue = 10, MaxValue = 30 },
                 new TableSchema { TableName = "Sample", ColumnName = "FloatingPoint", DataType = Jagi.Interface.FieldType.Decimal, Nullable = false },
+                new TableSchema { TableName = "Sample", ColumnName = "Dropdown1", DropdwonKey = "A" },
+                new TableSchema { TableName = "Sample", ColumnName = "Dropdown2", DropdwonKey = "C" },
+                new TableSchema { TableName = "Sample", ColumnName = "Dropdown3", DropdwonKey = "B", 
+                    DropdwonCascade = "Dropdown1" },
             }.AsQueryable();
 
-            // Initial Cache
+            // Initial Column Cache
             var mockTableSchema = tableSchema.MockDbSet();
             var mockContext = Substitute.For<DataContext>();
             mockContext.TableSchema.Returns(mockTableSchema);
 
-            var codeInitializer = new InitColumnCache(mockContext);
+            var columnsInitializer = new InitColumnCache(mockContext);
+            columnsInitializer.Execute();
+
+            // Initial Code Cache
+            var mockCodesSet = codefiles.MockDbSet();
+            var mockDetailsSet = codedetails.MockDbSet();
+            mockContext.CodeFiles.Returns(mockCodesSet);
+            mockContext.CodeDetails.Returns(mockDetailsSet);
+
+            var codeInitializer = new InitCodeCache(mockContext);
             codeInitializer.Execute();
 
             // Setup ServiceLocator
@@ -153,6 +185,45 @@ namespace UnitTestJagi
 
             htmlString = sampleModel.FormGroupFor(x => x.Text, FormGroupType.Textarea).ToString();
             Assert.IsTrue(htmlString.Contains("<textarea"));
+        }
+
+        [TestMethod]
+        public void Test_ColumnCache_FormGroupFor_Dropdown()
+        {
+            var sampleHtmlHelper = mvc.CreateHtmlHelper<Sample>();
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var htmlString = sampleModel.FormGroupFor(x => x.Dropdown1).ToString();
+
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.dropdown1\""));
+            Assert.IsTrue(htmlString.Contains("<option value=\"A1\">A1 Detail</option>"));
+            Assert.IsTrue(htmlString.Contains("<option value=\"A2\">A2 Detail</option>"));
+            Assert.IsTrue(htmlString.Contains("</select>"));
+
+            Assert.IsFalse(htmlString.Contains("<option value=\"B1\">B1 Detail</option>"));
+
+            htmlString = sampleModel.FormGroupFor(x => x.Dropdown2).ToString();
+
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.dropdown2\""));
+            Assert.IsTrue(htmlString.Contains("<option value=\"C1\">C1 Detail</option>"));
+            Assert.IsTrue(htmlString.Contains("<option value=\"C2\">C2 Detail</option>"));
+            Assert.IsTrue(htmlString.Contains("</select>"));
+
+            Assert.IsFalse(htmlString.Contains("<option value=\"B1\">B1 Detail</option>"));
+        }
+
+        [TestMethod]
+        public void Test_ColumnCache_FormGroupFor_DropdownCascade()
+        {
+            var sampleHtmlHelper = mvc.CreateHtmlHelper<Sample>();
+            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+            var htmlString = sampleModel.FormGroupFor(x => x.Dropdown3).ToString();
+
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.dropdown3\""));
+            Assert.IsTrue(htmlString.Contains("dropdown-cascade=\"vm.sample.dropdown1\""));
+            Assert.IsTrue(htmlString.Contains("</select>"));
+
+            Assert.IsFalse(htmlString.Contains("<option value=\"\"></option>"));
+            Assert.IsFalse(htmlString.Contains("<option value=\"B1\">B1 Detail</option>"));
         }
     }
 }

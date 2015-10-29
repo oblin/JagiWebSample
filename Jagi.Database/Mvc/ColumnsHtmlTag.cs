@@ -4,6 +4,7 @@ using Jagi.Helpers;
 using Jagi.Interface;
 using Jagi.Mvc;
 using Jagi.Mvc.Angular;
+using Jagi.Mvc.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Jagi.Database.Mvc
     public class ColumnsHtmlTag : AngularHtmlTag
     {
         private Cache.ColumnsCache _columns;
+        private Cache.CodeCache _codes;
+
         private TableSchema _column;
 
         public override ModelMetadata Metadata
@@ -55,6 +58,7 @@ namespace Jagi.Database.Mvc
         public ColumnsHtmlTag()
         {
             _columns = new Cache.ColumnsCache();
+            _codes = new Cache.CodeCache();
         }
 
         public override HtmlTag GetLabel(FormGroupLayout layout)
@@ -79,17 +83,31 @@ namespace Jagi.Database.Mvc
             }
             if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DropdwonKey))
             {
-                var options = GetCodeCacheOptions(_column.DropdwonKey);
-                return base.GetInput(FormGroupType.Dropdown, null, options);
+                HtmlTag input;
+                if (!string.IsNullOrEmpty(_column.DropdwonCascade))
+                {
+                    input = base.GetInput(FormGroupType.Dropdown, null);
+                    input.Attr("dropdown-cascade", GetPrefixDropdownCascade(_column.DropdwonCascade, input));
+                }
+                else
+                {
+                    var options = _codes.GetDetails(_column.DropdwonKey);
+                    input = base.GetInput(FormGroupType.Dropdown, null, options);
+                }
+
+                return input;
             }
             return base.GetInput(type, value, selectOptions);
         }
 
-        private Dictionary<string, string> GetCodeCacheOptions(string p)
+        private string GetPrefixDropdownCascade(string fieldName, HtmlTag input)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            fieldName = JsonHelper.ConvertToCamelCase(fieldName);
+            string ngModel = input.Attr("ng-model");
+            string[] prefixeName = ngModel.Split('.');
+            prefixeName[prefixeName.Length - 1] = fieldName;
 
-            return result;
+            return string.Join(".", prefixeName);
         }
 
         private string GetLabelFromColumns()

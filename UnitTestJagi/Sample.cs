@@ -17,6 +17,9 @@ namespace UnitTestJagi
         public Decimal FloatingPoint { get; set; }
         [DataType(DataType.MultilineText)]
         public string MultiLine { get; set; }
+        public string Dropdown1 { get; set; }
+        public string Dropdown2 { get; set; }
+        public string Dropdown3 { get; set; }
     }
 
     public class SampleCopy1 : IMapFrom<Sample>
