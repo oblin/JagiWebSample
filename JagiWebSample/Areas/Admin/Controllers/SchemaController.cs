@@ -1,4 +1,5 @@
-﻿using Jagi.Helpers;
+﻿using Jagi.Database.Mvc;
+using Jagi.Helpers;
 using Jagi.Interface;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
 {
-    public class SchemaController : ControllerBase
+    public class SchemaController : JagiController
     {
         private AdminDataContext _context;
 

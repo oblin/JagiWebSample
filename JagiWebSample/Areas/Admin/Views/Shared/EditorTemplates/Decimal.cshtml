@@ -1,7 +1,7 @@
 ﻿@model decimal?
 @{
     var styles = ViewData.ModelMetadata.AdditionalValues
-        .DictionaryListValueToString(ConstantString.ADDITIONAL_VALUES_NUMERIC_STYLES);
+        .ConvertToString(ConstantString.ADDITIONAL_VALUES_NUMERIC_STYLES);
 }
 @Html.TextBox("", ViewData.TemplateInfo.FormattedModelValue,
     new { @class = "form-control text-right", style = @styles  })

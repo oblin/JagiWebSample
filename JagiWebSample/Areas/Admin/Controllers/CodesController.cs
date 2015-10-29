@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Jagi.Database.Mvc;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Web.Mvc;
 namespace JagiWebSample.Areas.Admin.Controllers
 {
     [OutputCache(Duration = 0)]
-    public class CodesController : JagiControllerBase
+    public class CodesController : JagiController
     {
         private AdminDataContext _context;
 

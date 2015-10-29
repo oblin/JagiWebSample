@@ -2,10 +2,11 @@
 using System;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using System.Web.Mvc;
 
-namespace JagiWebSample.Areas.Admin.Controllers
+namespace Jagi.Database.Mvc
 {
-    public class ControllerBase : JagiControllerBase
+    public class JagiController : JagiControllerBase
     {
         /// <summary>
         /// 主要處理在執行中可能發生的 Exceptions，轉換成 Json format 提供給前端
@@ -76,6 +77,39 @@ namespace JagiWebSample.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return JsonError(ex.Message);
+            }
+        }
+
+        protected ActionResult GetActionResult(Func<ActionResult> codetoExecute, string message = null)
+        {
+            try
+            {
+                var result = codetoExecute.Invoke();
+                message = message ?? "處理作業成功！";
+                return result.WithSuccess(message);
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        message += String.Format("Class: {0}, Property: {1}, Error: {2}\n", validationErrors.Entry.Entity.GetType().FullName,
+                                      validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+                ViewBag.ErrorMessage = message;
+                return View("Error");
+            }
+            catch (DbUpdateException updExc)
+            {
+                ViewBag.ErrorMessage = updExc.InnerException.InnerException.Message;
+                return View("Error");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
             }
         }
     }

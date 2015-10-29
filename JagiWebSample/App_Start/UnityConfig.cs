@@ -5,6 +5,7 @@ using Jagi.Utility;
 using Microsoft.Practices.ServiceLocation;
 using JagiWebSample.Areas.Admin.Models;
 using Jagi.Mvc.Angular;
+using JagiWebSample.Models;
 
 namespace JagiWebSample.App_Start
 {
@@ -40,11 +41,20 @@ namespace JagiWebSample.App_Start
             // container.LoadConfiguration();
 
             container.RegisterType<AdminDataContext>(new PerRequestLifetimeManager());
+            string connection = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-JagiWebSample-20150929115454.mdf;Initial Catalog=aspnet-JagiWebSample-20150929115454;Integrated Security=True";
+            container.RegisterType<DataContext>(new PerRequestLifetimeManager(), new InjectionConstructor(connection));
 
+            // Setup Email Provider
             EmailSetting setting = new EmailSetting { Email = "redmine.excelsior@gmail.com", Password = "490910490910" };
-
             container.RegisterInstance(typeof(EmailSetting), setting);
+
+            // Setup Angular Html Tag Provider
             container.RegisterInstance(typeof(AngularHtmlTag), new AngularHtmlTag());
+
+            // Setup Crypto Service Provider
+            var cryptoSetting = new CryptoSetting("Ers@Hope", "jagi@Excelsi0r");
+            container.RegisterInstance(cryptoSetting);
+
             UnityServiceLocator locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);
         }

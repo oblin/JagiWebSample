@@ -17,13 +17,13 @@ namespace JagiWebSample.Areas.Admin.Models
         [Display(Name = "資料型態")]
         public FieldType DataType { get; set; }
 
-        [Display(Name = "對應型態 ")]
-        public string DataTypeName { get; set; }
+        //[Display(Name = "對應型態 ")]
+        //public string DataTypeName { get; set; }
 
         [Display(Name = "允許空值")]
         public bool Nullable { get; set; }
 
-        [Display(Name = "字串最大長度(0: 不限)")]
+        [Display(Name = "字串最大長度")]
         public int StringMaxLength { get; set; }
 
         [Display(Name = "字串最小長度")]
@@ -31,7 +31,7 @@ namespace JagiWebSample.Areas.Admin.Models
 
         public int Precision { get; set; }
         public int Scale { get; set; }
-        
+
         [Display(Name = "顯示名稱")]
         public string DisplayName { get; set; }
         public string DisplayFormat { get; set; }

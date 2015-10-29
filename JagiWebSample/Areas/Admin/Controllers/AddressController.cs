@@ -8,11 +8,12 @@ using System.Linq.Dynamic;
 using System.Threading;
 using System;
 using System.Data.Entity;
+using Jagi.Database.Mvc;
 
 namespace JagiWebSample.Areas.Admin.Controllers
 {
     [OutputCache(Duration = 0)]
-    public class AddressController : ControllerBase
+    public class AddressController : JagiController
     {
         private AdminDataContext _context;
 
