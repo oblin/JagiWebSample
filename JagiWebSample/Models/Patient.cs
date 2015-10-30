@@ -5,16 +5,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 
 namespace JagiWebSample.Models
 {
     public class Patient : Entity
     {
-        AESCryptoProvider _provider;
+        private static AESCryptoProvider _provider = null;
+
         public Patient()
         {
-            _provider = new AESCryptoProvider();
+            if (_provider == null)
+                _provider = new AESCryptoProvider();
         }
 
         [StringLength(11)]
@@ -181,6 +184,16 @@ namespace JagiWebSample.Models
         {
             get { return _provider.Decrypt(EncryptIdCard); }
             set { EncryptIdCard = _provider.Encrypt(value); }
+        }
+
+        public static Expression<Func<Patient, bool>> NameStartWith(string name)
+        {
+            return p => p.Name.StartsWith(name);
+        }
+
+        public static Expression<Func<Patient, object>> NameOrderby()
+        {            
+            return p => _provider.Decrypt(p.EncryptName);
         }
     }
 }

@@ -96,12 +96,12 @@ namespace UnitTestJagi
         public void Test_Performance_AES_KeyLength()
         {
             AESCryptoProvider defaultProvider = new AESCryptoProvider();
-            TimeSpan key32 = Utility.Timing(() =>
+            TimeSpan key32 = Tools.Timing(() =>
             {
                 EncryptDescryptLoop(defaultProvider);
             });
 
-            TimeSpan key16 = Utility.Timing(() =>
+            TimeSpan key16 = Tools.Timing(() =>
             {
                 AESCryptoProvider provider = new AESCryptoProvider("1234567812345678", "8765432187654321");
                 EncryptDescryptLoop(provider);

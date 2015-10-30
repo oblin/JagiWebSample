@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Humanizer;
+using System;
 using System.Globalization;
 
 namespace Jagi.Helpers
@@ -33,6 +34,11 @@ namespace Jagi.Helpers
             DateTime datetime = DateTime.ParseExact(dateString, dateFormats, null, DateTimeStyles.AllowWhiteSpaces);
 
             return datetime;
+        }
+
+        public static string ReadableName(this string value)
+        {
+            return value.Humanize(LetterCasing.Title);
         }
     }
 }

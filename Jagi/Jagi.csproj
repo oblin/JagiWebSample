@@ -157,7 +157,7 @@
     <Compile Include="Mvc\JagiControllerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\Email.cs" />
-    <Compile Include="Utility\Utility.cs" />
+    <Compile Include="Utility\Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

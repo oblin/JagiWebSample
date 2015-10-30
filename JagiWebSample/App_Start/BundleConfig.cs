@@ -39,10 +39,11 @@ namespace JagiWebSample
                     "~/app/directives/clickConfirm.js",
                     "~/app/directives/InputValidationIconsDirective.js",
                     "~/app/directives/FormGroupValidationDirective.js",
-                    "~/app/directives/waitModalDirective.js"
+                    "~/app/directives/waitModalDirective.js",
+                    "~/app/layoutController.js"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 

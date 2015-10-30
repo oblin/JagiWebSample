@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Jagi.Database.Mvc;
-using Jagi.Interface;
 using Jagi.Helpers;
+using Jagi.Interface;
 using Jagi.Utility;
 using JagiWebSample.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace JagiWebSample.Controllers
@@ -24,18 +23,23 @@ namespace JagiWebSample.Controllers
 
         public ActionResult Index(PageInfo pageInfo = null)
         {
-            if (pageInfo == null)
-                pageInfo = InitializePageInfo();
-            var patients = GetFilteredPatients(pageInfo);
-            var patientListView = Mapper.Map<IEnumerable<PatientListView>>(patients);
-
-            PagedView pagedView = new PagedView
+            PagedView pagedView = null;
+            ViewBag.Timer = Jagi.Utility.Tools.Timing(() =>
             {
-                Data = patientListView,
-                TotalCount = patientListView.Count(),
-                CurrentPage = pageInfo.PageNumber,
-                PageCount = pageInfo.PageSize
-            };
+                if (pageInfo == null || pageInfo.PageNumber == 0 || pageInfo.PageSize == 0)
+                    pageInfo = InitializePageInfo();
+                var patients = GetFilteredPatients(pageInfo);
+                var patientListView = Mapper.Map<IEnumerable<PatientListView>>(patients);
+
+                pagedView = new PagedView
+                {
+                    Data = patientListView,
+                    TotalCount = patientListView.Count(),
+                    CurrentPage = pageInfo.PageNumber,
+                    PageCount = pageInfo.PageSize,
+                    Headers = EntityHelper.GetDisplayName(new PatientListView())
+                };
+            });
             return View(pagedView);
         }
 
@@ -43,11 +47,22 @@ namespace JagiWebSample.Controllers
         {
             IEnumerable<Patient> patients = _context.Patients;
             if (AsEnumerableField.Contains(pageInfo.SortField) || AsEnumerableField.Contains(pageInfo.SearchField))
-                patients = patients.AsEnumerable();
+                patients = _context.Patients.AsNoTracking().ToList();
 
             patients = patients.StartWithFieldName(pageInfo.SearchField, pageInfo.SearchKeyword);
             patients = patients.OrderByFieldName(pageInfo.SortField, pageInfo.Sort);
             return patients;
+        }
+
+        private IEnumerable<Patient> StartWithFieldName(IEnumerable<Patient> patients, string searchField, string searchKeyword)
+        {
+            //return patients.Where(Patient.NameStartWith(searchKeyword));
+            return patients;
+        }
+
+        private IEnumerable<Patient> OrderByFieldName(IEnumerable<Patient> patients, string sortField, string sort)
+        {
+            return patients.AsQueryable().OrderBy(o => o.Name);
         }
 
         private PageInfo InitializePageInfo()
@@ -56,7 +71,7 @@ namespace JagiWebSample.Controllers
             {
                 PageNumber = 1,
                 PageSize = 25,
-                SortField = "Name",
+                //SortField = "Name"
             };
         }
 

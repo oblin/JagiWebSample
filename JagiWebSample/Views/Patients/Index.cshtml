@@ -1,10 +1,10 @@
-﻿@model Jagi.Interface.PagedView
+﻿@using Jagi.Mvc.Helpers
+@model Jagi.Interface.PagedView
 @{
     ViewBag.Title = "Patient";
-    IEnumerable<PatientListView> patients = Model.Data as IEnumerable<PatientListView>;
 }
 
-<h2>病人列表</h2>
+<h2>病人列表: @ViewBag.Timer</h2>
 
 <div ng-controller="patientsController as vm">
     <div ui-grid="vm.gridOptions" ui-grid-pagination class="grid"></div>
@@ -13,6 +13,15 @@
 @section Scripts{
     <script src="~/app/patients/patientsController.js"></script>
     <script type="text/javascript">
+        var paginationOptions = {
+            pageNumber: @Model.CurrentPage,
+            pageSize: @Model.PageCount,
+        };
 
+        window.app.constant("model", {
+            'paginationOptions': paginationOptions,
+            'headers': @Html.JsonFor(Model.Headers),
+            'data': @Html.JsonFor(Model.Data)
+        });
     </script>
 }

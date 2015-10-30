@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Jagi.Utility
 {
-    public class Utility
+    public class Tools
     {
         public static TimeSpan Timing(Action toTime)
         {
