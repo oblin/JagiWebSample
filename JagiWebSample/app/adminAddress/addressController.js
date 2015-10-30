@@ -11,7 +11,7 @@
 
         var paginationOptions = {  /* Mapping to PageInfo.cs */
             pageNumber: 1,
-            pageSize: 15,
+            pageSize: 25,
             sort: null,
             searchKeyword: null,
             searchField: null

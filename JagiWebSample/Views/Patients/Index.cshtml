@@ -1,0 +1,18 @@
+﻿@model Jagi.Interface.PagedView
+@{
+    ViewBag.Title = "Patient";
+    IEnumerable<PatientListView> patients = Model.Data as IEnumerable<PatientListView>;
+}
+
+<h2>病人列表</h2>
+
+<div ng-controller="patientsController as vm">
+    <div ui-grid="vm.gridOptions" ui-grid-pagination class="grid"></div>
+</div>
+
+@section Scripts{
+    <script src="~/app/patients/patientsController.js"></script>
+    <script type="text/javascript">
+
+    </script>
+}

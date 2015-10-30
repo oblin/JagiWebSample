@@ -244,6 +244,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\PatientListView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -258,6 +259,7 @@
     <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\directives\showErrorsDirective.js" />
     <Content Include="app\layoutController.js" />
+    <Content Include="app\patients\patientsController.js" />
     <Content Include="app\utility\alerts.js" />
     <Content Include="app\app.js" />
     <Content Include="app\utility\ArrayExtensions.js" />
@@ -402,11 +404,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\underscore.min.map" />
     <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\Patients\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\AngularTest\" />
-    <Folder Include="Views\Patients\" />
     <Folder Include="Views\Template\" />
   </ItemGroup>
   <ItemGroup>

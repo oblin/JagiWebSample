@@ -9,7 +9,7 @@ namespace Jagi.Interface
     public class PagedView
     {
         public IEnumerable<string> Headers { get; set; }
-        public IEnumerable<IDictionary<string, object>> List { get; set; }
+        public IEnumerable<object> Data { get; set; }
 
         public int PageCount { get; set; }
         public int? CurrentPage { get; set; }

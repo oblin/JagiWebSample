@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Linq.Expressions;
 
 namespace Jagi.Helpers
@@ -251,7 +252,53 @@ namespace Jagi.Helpers
 
             return destinationList;
         }
-        
+
+        /// <summary>
+        /// 依據欄位與排序順序，針對任意的 IQueryable or DbSet 項目進行排序
+        /// </summary>
+        /// <typeparam name="T">任意的型態</typeparam>
+        /// <param name="set"></param>
+        /// <param name="fieldName">排序的欄位，如果不指定，則使用 T 的第一個欄位；建議一定要指定</param>
+        /// <param name="order">只能是 "ASC" or "DESC" 這兩種字串</param>
+        /// <returns>傳回 IOrderedQueryable<T> 的型態</returns>
+        public static IQueryable<T> OrderByFieldName<T>(this IQueryable<T> set, string fieldName, string order = null)
+        {
+            order = order ?? "ASC";
+            fieldName = fieldName ?? typeof(T).GetProperties().First().Name;
+
+            return set.OrderBy(fieldName + " " + order);
+        }
+
+        public static IQueryable<T> OrderByFieldName<T>(this IEnumerable<T> set, string fieldName, string order = null)
+        {
+            return OrderByFieldName(set.AsQueryable(), fieldName, order);
+        }
+
+        /// <summary>
+        /// 指定任意欄位名稱，回傳符合 searchKeyword 的結果
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="set"></param>
+        /// <param name="searchField">欄位名稱</param>
+        /// <param name="searchKeyword">符合開頭的文字內容</param>
+        /// <returns></returns>
+        public static IQueryable<T> StartWithFieldName<T>(this IQueryable<T> set, 
+            string searchField, string searchKeyword)
+        {
+            if (!string.IsNullOrEmpty(searchField) && !string.IsNullOrEmpty(searchKeyword))
+            {
+                set = set.Where(searchField + ".StartsWith(@0)", searchKeyword);
+            }
+
+            return set;
+        }
+
+        public static IQueryable<T> StartWithFieldName<T>(this IEnumerable<T> set, 
+            string searchField, string searchKeyword)
+        {
+            return StartWithFieldName(set.AsQueryable(), searchField, searchKeyword);
+        }
+
         private static object ConvertToType(object key, Type type, bool ignoreCase)
         {
             if (type == typeof(string))
