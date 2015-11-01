@@ -282,7 +282,7 @@ namespace Jagi.Helpers
         /// <param name="searchField">欄位名稱</param>
         /// <param name="searchKeyword">符合開頭的文字內容</param>
         /// <returns></returns>
-        public static IQueryable<T> StartWithFieldName<T>(this IQueryable<T> set, 
+        public static IEnumerable<T> StartWithFieldName<T>(this IEnumerable<T> set, 
             string searchField, string searchKeyword)
         {
             if (!string.IsNullOrEmpty(searchField) && !string.IsNullOrEmpty(searchKeyword))
@@ -293,10 +293,15 @@ namespace Jagi.Helpers
             return set;
         }
 
-        public static IQueryable<T> StartWithFieldName<T>(this IEnumerable<T> set, 
+        public static IEnumerable<T> ContainsWithFieldName<T>(this IEnumerable<T> set,
             string searchField, string searchKeyword)
         {
-            return StartWithFieldName(set.AsQueryable(), searchField, searchKeyword);
+            if (!string.IsNullOrEmpty(searchField) && !string.IsNullOrEmpty(searchKeyword))
+            {
+                set = set.Where(searchField + ".Contains(@0)", searchKeyword);
+            }
+
+            return set;
         }
 
         private static object ConvertToType(object key, Type type, bool ignoreCase)

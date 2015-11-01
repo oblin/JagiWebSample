@@ -7,10 +7,11 @@
 <h2>病人列表: @ViewBag.Timer</h2>
 
 <div ng-controller="patientsController as vm">
-    <div ui-grid="vm.gridOptions" ui-grid-pagination class="grid"></div>
+    <div ui-grid="gridOptions" ui-grid-pagination class="grid"></div>
 </div>
 
 @section Scripts{
+<script src="~/app/pagedGridController.js"></script>
     <script src="~/app/patients/patientsController.js"></script>
     <script type="text/javascript">
         var paginationOptions = {
@@ -18,10 +19,13 @@
             pageSize: @Model.PageCount,
         };
 
+        var getPatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetPaged(null)))';
+
         window.app.constant("model", {
             'paginationOptions': paginationOptions,
             'headers': @Html.JsonFor(Model.Headers),
-            'data': @Html.JsonFor(Model.Data)
+            'data': @Html.JsonFor(Model.Data),
+            'getPatientUrl': getPatientUrl
         });
     </script>
 }

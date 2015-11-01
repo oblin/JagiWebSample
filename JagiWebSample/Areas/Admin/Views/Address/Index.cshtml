@@ -6,10 +6,11 @@
 <h3>地址名稱維護</h3>
 
 <div ng-controller="addressController as vm">
-    <div ui-grid="vm.gridOptions" ui-grid-pagination class="grid"></div>
+    <div ui-grid="gridOptions" ui-grid-pagination class="grid"></div>
 </div>
 
 @section Scripts{
+<script src="~/app/pagedGridController.js"></script>
     <script src="~/app/adminAddress/addressController.js"></script>
     <script src="~/app/adminAddress/addressEditDirective.js"></script>
     <script type="text/javascript">

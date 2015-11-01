@@ -258,6 +258,7 @@
     <Content Include="app\adminSchema\schemaController.js" />
     <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\directives\showErrorsDirective.js" />
+    <Content Include="app\pagedGridController.js" />
     <Content Include="app\layoutController.js" />
     <Content Include="app\patients\patientsController.js" />
     <Content Include="app\utility\alerts.js" />
@@ -271,6 +272,7 @@
     <Content Include="app\directives\preventDefault.js" />
     <Content Include="app\directives\waitModalDirective.js" />
     <Content Include="app\utility\common.js" />
+    <Content Include="app\utility\StringExtensions.js" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml">
       <SubType>Code</SubType>
     </Content>

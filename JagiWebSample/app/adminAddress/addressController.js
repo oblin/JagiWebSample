@@ -3,59 +3,34 @@
 
     window.app.controller("addressController", addressController);
 
-    addressController.$inject = ['$scope', 'model', '$modal', 'dataService'];
+    addressController.$inject = ['$scope', 'model', '$modal', 'gridConstans', 'dataService', '$controller'];
 
-    function addressController($scope, model, $modal, dataService) {
+    function addressController($scope, model, $modal, gridConstans, dataService, $controller) {
         var vm = this;
         vm.modelStatus = dataService;
 
-        var paginationOptions = {  /* Mapping to PageInfo.cs */
-            pageNumber: 1,
-            pageSize: 25,
-            sort: null,
-            searchKeyword: null,
-            searchField: null
-        };
+        $controller('pagedGridController', { $scope: $scope });
 
-        vm.paginationOptions = paginationOptions;
         vm.openEdit = openEdit;
         vm.deleteDetail = deleteDetail;
-        vm.getPage = getPage;
-        vm.filters = [
+        $scope.paginationOptions.url = model.getAddressUrl;
+        $scope.paginationOptions.filters = [
             { field: "Zip", keyword: "" },
             { field: "County", keyword: "" },
             { field: "Realm", keyword: "" }
         ];
-
-        vm.gridOptions = {
-            paginationPageSizes: [15, 20, 25, 50],
-            paginationPageSize: 25,
-            useExternalPagination: true,
-            useExternalSorting: true,
-            enableFiltering: true,
-            columnDefs: [
+        $scope.gridOptions.columnDefs = [
               {
                   name: 'zip', title: '郵遞區號',
-                  filterHeaderTemplate:
-                    '<div class="ui-grid-filter-container">' +
-                    '<input type="text" ng-model="grid.appScope.vm.filters[0].keyword" class="ui-grid-filter-input" />' +
-                    '<span ng-click="grid.appScope.vm.getPage(grid.appScope.vm.filters[0])" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
-                    '</div>'
+                  filterHeaderTemplate: gridConstans.filterHeaderTemplate.format("paginationOptions.filters[0]", "getPage")
               },
               {
                   name: 'county', title: '縣市',
-                  filterHeaderTemplate: 
-                    '<div class="ui-grid-filter-container">' +
-                    '<input type="text" ng-model="grid.appScope.vm.filters[1].keyword" class="ui-grid-filter-input" />' +
-                    '<span ng-click="grid.appScope.vm.getPage(grid.appScope.vm.filters[1])" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
-                    '</div>'
+                  filterHeaderTemplate: gridConstans.filterHeaderTemplate.format("paginationOptions.filters[1]", "getPage")
               },
-              { name: 'realm', title: '鄉鎮',
-                  filterHeaderTemplate: 
-                    '<div class="ui-grid-filter-container">' +
-                    '<input type="text" ng-model="grid.appScope.vm.filters[2].keyword" class="ui-grid-filter-input" />' +
-                    '<span ng-click="grid.appScope.vm.getPage(grid.appScope.vm.filters[2])" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
-                    '</div>'
+              {
+                  name: 'realm', title: '鄉鎮',
+                  filterHeaderTemplate: gridConstans.filterHeaderTemplate.format("paginationOptions.filters[2]", "getPage")
               },
               { name: 'street', enableColumnMenu: false, enableSorting: false, enableFiltering: false },
               {
@@ -68,44 +43,9 @@
                   headerCellTemplate:
                       '<button ng-click="grid.appScope.vm.openEdit()" class="btn btn-success" icon="fa-plus-circle">新增地址</button> '
               }
-            ],
-            onRegisterApi: function (gridApi) {
-                vm.gridApi = gridApi;
-                vm.gridApi.core.on.sortChanged($scope, function (grid, sortColumns) {
-                    if (sortColumns.length == 0) {
-                        paginationOptions.sort = null;
-                    } else {
-                        paginationOptions.sort = sortColumns[0].sort.direction;
-                        paginationOptions.sortField = sortColumns[0].field;
-                    }
-                    getPage();
-                });
-                gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-                    paginationOptions.pageNumber = newPage;
-                    paginationOptions.pageSize = pageSize;
-                    getPage();
-                });
-            }
-        };
+        ];
 
-        getPage();
-
-        function getPage(filter) {
-            var url = model.getAddressUrl;
-
-            if (filter) {
-                paginationOptions.searchField = filter.field;
-                paginationOptions.searchKeyword = filter.keyword;
-                for (var i = 0; i < vm.filters.length; i++)
-                    if (vm.filters[i].field != filter.field)
-                        vm.filters[i].keyword = null;
-            }
-
-            dataService.get(url, paginationOptions, function (response) {
-                vm.gridOptions.data = response.data.data;
-                vm.gridOptions.totalItems = response.data.totalCount;
-            });
-        }
+        $scope.getPage();
 
         function openEdit(item) {
             if (item == null)
@@ -114,14 +54,14 @@
                 template: '<address-edit item="item" page-refresh="pageRefresh()"></address-edit>',
                 backdrop: false,
                 scope: angular.extend($scope.$new(true),
-                    { item: item, pageRefresh: getPage })
+                    { item: item, pageRefresh: $scope.getPage })
             });
 
         }
 
         function deleteDetail(item) {
             dataService.post(model.deleteUrl + item.id, null, function (response) {
-                getPage();
+                $scope.getPage();
             })
         }
 

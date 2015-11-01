@@ -23,46 +23,82 @@ namespace JagiWebSample.Controllers
 
         public ActionResult Index(PageInfo pageInfo = null)
         {
+            PagedView pagedView = GetPagedPatients(pageInfo);
+            return View(pagedView);
+        }
+
+        [HttpGet, OutputCache(Duration = 0)]
+        public JsonResult GetPaged(PageInfo pageInfo)
+        {
+            return GetJsonResult(() =>
+            {
+                return GetPagedPatients(pageInfo);
+            });
+        }
+
+        private PagedView GetPagedPatients(PageInfo pageInfo)
+        {
             PagedView pagedView = null;
             ViewBag.Timer = Jagi.Utility.Tools.Timing(() =>
             {
                 if (pageInfo == null || pageInfo.PageNumber == 0 || pageInfo.PageSize == 0)
                     pageInfo = InitializePageInfo();
                 var patients = GetFilteredPatients(pageInfo);
+                int count = patients.Count();
+                patients = GetPagedSize(patients, pageInfo);
                 var patientListView = Mapper.Map<IEnumerable<PatientListView>>(patients);
 
                 pagedView = new PagedView
                 {
                     Data = patientListView,
-                    TotalCount = patientListView.Count(),
+                    TotalCount = count,
                     CurrentPage = pageInfo.PageNumber,
                     PageCount = pageInfo.PageSize,
                     Headers = EntityHelper.GetDisplayName(new PatientListView())
                 };
             });
-            return View(pagedView);
+            return pagedView;
         }
 
         private IEnumerable<Patient> GetFilteredPatients(PageInfo pageInfo)
         {
             IEnumerable<Patient> patients = _context.Patients;
-            if (AsEnumerableField.Contains(pageInfo.SortField) || AsEnumerableField.Contains(pageInfo.SearchField))
+            if (AsEnumerableField.Contains(pageInfo.SortField, StringComparer.OrdinalIgnoreCase) 
+                || AsEnumerableField.Contains(pageInfo.SearchField, StringComparer.OrdinalIgnoreCase))
+                // 必須使用要加密欄位，因此要將所有資料讀入後再進行處理
                 patients = _context.Patients.AsNoTracking().ToList();
 
-            patients = patients.StartWithFieldName(pageInfo.SearchField, pageInfo.SearchKeyword);
-            patients = patients.OrderByFieldName(pageInfo.SortField, pageInfo.Sort);
-            return patients;
-        }
+            if (!string.IsNullOrEmpty(pageInfo.SearchKeyword))
+                if (pageInfo.SearchField == "ChartId")
+                    patients = patients.ContainsWithFieldName(pageInfo.SearchField, pageInfo.SearchKeyword);
+                else
+                    patients = patients.StartWithFieldName(pageInfo.SearchField, pageInfo.SearchKeyword);
 
-        private IEnumerable<Patient> StartWithFieldName(IEnumerable<Patient> patients, string searchField, string searchKeyword)
-        {
-            //return patients.Where(Patient.NameStartWith(searchKeyword));
+            patients = OrderByFieldName(patients, pageInfo.SortField, pageInfo.Sort);
             return patients;
         }
 
         private IEnumerable<Patient> OrderByFieldName(IEnumerable<Patient> patients, string sortField, string sort)
         {
-            return patients.AsQueryable().OrderBy(o => o.Name);
+            if (string.IsNullOrEmpty(sortField))
+                return patients;
+            sort = sort ?? "asc";
+            switch (sortField.ToLower())
+            {
+                case "name":
+                    if (sort.ToLower() == "desc")
+                        return patients.OrderByDescending(o => o.Name);
+                    return patients.OrderBy(o => o.Name);
+                case "idcard":
+                    if (sort.ToLower() == "desc")
+                        return patients.OrderByDescending(o => o.IdCard);
+                    return patients.OrderBy(o => o.IdCard);
+                case "birthday":
+                    if (sort.ToLower() == "desc")
+                        return patients.OrderByDescending(o => o.BirthDay);
+                    return patients.OrderBy(o => o.BirthDay);
+            }
+            return patients.OrderByFieldName(sortField, sort);
         }
 
         private PageInfo InitializePageInfo()

@@ -12,20 +12,6 @@ namespace Jagi.Interface
         // Mapping entity name with display name
         public Dictionary<string, string> Headers { get; set; }
         public IEnumerable<object> Data { get; set; }
-        public string JsonHeaders
-        {
-            get
-            {
-                return this.Headers.ToJson();
-            }
-        }
-        public string JsonData
-        {
-            get
-            {
-                return this.Data.ToJson();
-            }
-        }
 
         public int PageCount { get; set; }
         public int? CurrentPage { get; set; }

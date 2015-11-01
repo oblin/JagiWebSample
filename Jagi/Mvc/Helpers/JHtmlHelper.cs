@@ -14,7 +14,9 @@ namespace Jagi.Mvc.Helpers
 {
     public static class JHtmlHelper
     {
-        public static string BuildUrlFromExpression<TController>(this HtmlHelper helper, Expression<Action<TController>> action) where TController : Controller
+        public static string BuildUrlFromExpression<TController>
+            (this HtmlHelper helper, Expression<Action<TController>> action) 
+            where TController : Controller
         {
             var url = LinkExtensions.BuildUrlFromExpression<TController>(helper, action);
             if (url.EndsWith("/0"))

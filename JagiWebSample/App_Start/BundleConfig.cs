@@ -29,6 +29,7 @@ namespace JagiWebSample
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                     "~/app/utility/ArrayExtensions.js",
+                    "~/app/utility/StringExtensions.js",
                     "~/app/utility/common.js",
                     "~/app/app.js",
                     "~/app/utility/alerts.js",
