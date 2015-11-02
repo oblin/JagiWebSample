@@ -22,6 +22,7 @@ namespace JagiWebSample.Models
             modelBuilder.Entity<Patient>().Ignore(t => t.Telno);
             modelBuilder.Entity<Patient>().Ignore(t => t.StreetNo);
             modelBuilder.Entity<Patient>().Ignore(t => t.IdCard);
+            modelBuilder.Entity<Patient>().Property(t => t.BirthDate).HasColumnName("BIRTHDAY");
 
             base.OnModelCreating(modelBuilder);
         }

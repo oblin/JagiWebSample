@@ -1,0 +1,66 @@
+﻿@model JagiWebSample.Models.PatientEditView
+@{
+    var patient = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 4));
+}
+
+<h3>Patient Edit passing id: {{ vm.id }}</h3>
+
+<form class="form-horizontal" name="patientEditForm" ng-show="vm.current" ng-disable="vm.dataService.saving" ng-cloak>
+    <p>
+        <button class="btn btn-primary" ng-click="vm.save(vm.current)" prevent-default
+                ng-disabled="!codeFileForm.$dirty" icon="fa-save">
+            存檔
+        </button>
+        <button class="btn btn-warning" ng-click="vm.cancel()"
+                ng-disabled="vm.current.id === 0 ? false : !codeFileForm.$dirty " icon="fa-undo">
+            取消
+        </button>
+        <button class="btn btn-success" ng-click="vm.create()" ng-disabled="vm.current.id === 0"
+                icon="fa-plus-circle">
+            新增
+        </button>
+        <button class="btn btn-danger deleteBtn"
+                icon="fa-trash" prevent-default
+                click-confirm="vm.delete(item)" item="vm.current">
+            刪除
+        </button>
+    </p>
+
+    <div class="row">
+        @patient.FormGroupFor(m => m.Name)
+        @patient.FormGroupFor(m => m.ChartId)
+        @patient.FormGroupFor(m => m.IdCard)
+    </div>
+    <div class="row">
+        @*<div class="input-group">
+            <input name="BirtDate" ng-model="vm.current.birtDate" type="text" datepicker-popup="yyyy/MM/dd" is-open="dateStatus.opened" class="form-control" />
+            <span class="input-group-btn">
+                <button type="button" ng-click="dateStatus.opened = true" icon="fa-calendar" class="btn btn-default"></button>
+            </span>
+        </div>*@
+
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="" ng-model="dt" uib-is-open="opened" min="minDate" max="'2015-06-22'" uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" uib-close-text="Close" />
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+        </p>
+        
+        @patient.FormGroupFor(m => m.CureDoc)
+    </div>
+    <div class="row">
+        @patient.FormGroupFor(m => m.Status)
+        @patient.FormGroupFor(m => m.Idiopa)
+        @patient.FormGroupFor(m => m.Idiopathy)
+    </div>
+    <div class="row">
+        @patient.FormGroupFor(m => m.Type)
+        @patient.FormGroupFor(m => m.Sex)
+        @patient.FormGroupFor(m => m.Marry)
+    </div>
+    <div class="row">
+        @patient.FormGroupFor(m => m.Ab)
+        @patient.FormGroupFor(m => m.Educate)
+        @patient.FormGroupFor(m => m.Vocation)
+    </div>
+</form>

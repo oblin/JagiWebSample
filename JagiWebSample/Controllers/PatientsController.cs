@@ -36,6 +36,22 @@ namespace JagiWebSample.Controllers
             });
         }
 
+        [HttpGet, OutputCache(Duration=0)]
+        public JsonResult Get(int id)
+        {
+            if (id == 0)
+                return JsonError("病患 id 不可以為零～");
+
+            return GetJsonResult(() =>
+            {
+                var patient = _context.Patients.Find(id);
+                if (patient == null)
+                    throw new NullReferenceException("Id: {0} 找不對應的病人".FormatWith(id));
+
+                return Mapper.Map<PatientEditView>(patient);
+            });
+        }
+
         private PagedView GetPagedPatients(PageInfo pageInfo)
         {
             PagedView pagedView = null;
@@ -63,7 +79,7 @@ namespace JagiWebSample.Controllers
         private IEnumerable<Patient> GetFilteredPatients(PageInfo pageInfo)
         {
             IEnumerable<Patient> patients = _context.Patients;
-            if (AsEnumerableField.Contains(pageInfo.SortField, StringComparer.OrdinalIgnoreCase) 
+            if (AsEnumerableField.Contains(pageInfo.SortField, StringComparer.OrdinalIgnoreCase)
                 || AsEnumerableField.Contains(pageInfo.SearchField, StringComparer.OrdinalIgnoreCase))
                 // 必須使用要加密欄位，因此要將所有資料讀入後再進行處理
                 patients = _context.Patients.AsNoTracking().ToList();
@@ -95,8 +111,8 @@ namespace JagiWebSample.Controllers
                     return patients.OrderBy(o => o.IdCard);
                 case "birthday":
                     if (sort.ToLower() == "desc")
-                        return patients.OrderByDescending(o => o.BirthDay);
-                    return patients.OrderBy(o => o.BirthDay);
+                        return patients.OrderByDescending(o => o.BirthDate);
+                    return patients.OrderBy(o => o.BirthDate);
             }
             return patients.OrderByFieldName(sortField, sort);
         }

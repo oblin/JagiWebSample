@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace JagiWebSample
@@ -25,6 +20,11 @@ namespace JagiWebSample
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            // AppendTrailingSlash = true 會將 routing 變成：
+            // /update/1/ 最後面都多加 "/" 
+            // 這個會造成 JHtmlHelper.BuildUrlFromExpression() 處理上錯誤
+            //routes.AppendTrailingSlash = true;
         }
     }
 }

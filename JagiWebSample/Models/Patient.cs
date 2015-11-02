@@ -29,7 +29,7 @@ namespace JagiWebSample.Models
         [StringLength(2)]
         public string Type { get; set; }
 
-        public DateTime BirthDay { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [StringLength(1)]
         public string Sex { get; set; }

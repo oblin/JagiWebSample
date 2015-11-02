@@ -3,9 +3,9 @@
 
     window.app.controller("addressController", addressController);
 
-    addressController.$inject = ['$scope', 'model', '$modal', 'gridConstans', 'dataService', '$controller'];
+    addressController.$inject = ['$scope', 'model', '$modal', 'gridConstants', 'dataService', '$controller'];
 
-    function addressController($scope, model, $modal, gridConstans, dataService, $controller) {
+    function addressController($scope, model, $modal, gridConstants, dataService, $controller) {
         var vm = this;
         vm.modelStatus = dataService;
 
@@ -22,15 +22,15 @@
         $scope.gridOptions.columnDefs = [
               {
                   name: 'zip', title: '郵遞區號',
-                  filterHeaderTemplate: gridConstans.filterHeaderTemplate.format("paginationOptions.filters[0]", "getPage")
+                  filterHeaderTemplate: gridConstants.filterHeaderTemplate.format("paginationOptions.filters[0]", "getPage")
               },
               {
                   name: 'county', title: '縣市',
-                  filterHeaderTemplate: gridConstans.filterHeaderTemplate.format("paginationOptions.filters[1]", "getPage")
+                  filterHeaderTemplate: gridConstants.filterHeaderTemplate.format("paginationOptions.filters[1]", "getPage")
               },
               {
                   name: 'realm', title: '鄉鎮',
-                  filterHeaderTemplate: gridConstans.filterHeaderTemplate.format("paginationOptions.filters[2]", "getPage")
+                  filterHeaderTemplate: gridConstants.filterHeaderTemplate.format("paginationOptions.filters[2]", "getPage")
               },
               { name: 'street', enableColumnMenu: false, enableSorting: false, enableFiltering: false },
               {

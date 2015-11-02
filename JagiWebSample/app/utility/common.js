@@ -26,6 +26,14 @@
             self.isValid = false;
         }
 
+        /**
+         * 通用 http get method
+         * @param {string} uri 目的地的 url，請注意如果是 get 要使用 html 5 mode (如: /edit/1)，後面要直接加上
+         * @param {type} data 使用 body 傳遞參數，這個必須要搭配 MVC 的 frombody attribute
+         * @param {type} success 處理成功時候，使用 response.data，接收資料（因為我們在 SERVER 端使用 JsonSucess）
+         * @param {type} failure 如果不定義，直接使用 alerts.error 顯示錯誤訊息
+         * @param {type} always 不管成功或者失敗，都要處理的內容
+         */
         self.get = function (uri, data, success, failure, always) {
             if (!uri) {
                 alerts.error("common.js 傳入的 url 是 null 值");

@@ -2,15 +2,15 @@
     'use strict';
 
     window.app.controller("patientsController", patientsController);
-    patientsController.$inject = ['$scope', 'model', 'gridConstants', 'dataService', '$controller'];
+    patientsController.$inject = ['$scope', '$location', 'model', 'gridConstants', 'dataService', '$controller'];
 
-    function patientsController($scope, model, gridConstants, dataService, $controller) {
+    function patientsController($scope, $location, model, gridConstants, dataService, $controller) {
         var vm = this;
         vm.modelStatus = dataService;
         vm.clearFilter = clearFilter;
         vm.openEdit = openEdit;
         $controller('pagedGridController', { $scope: $scope });
-        $scope.paginationOptions.url = model.getPatientUrl;
+        $scope.paginationOptions.url = model.pagedPatientsUrl;
         $scope.paginationOptions.filters = [
             { field: "Name", keyword: "" },
             { field: "ChartId", keyword: "" },
@@ -50,8 +50,8 @@
             $scope.gridOptions.data = model.data;
         }
 
-        function openEdit() {
-            alert("Not Implemented yet!");
+        function openEdit(item) {
+            $location.path("/edit/" + item.id);
         }
 
         function clearFilter() {
