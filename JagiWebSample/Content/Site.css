@@ -26,6 +26,11 @@
     color: aliceblue;
 }
 
+.bottom {
+    bottom: 3px; 
+    position: absolute;
+}
+
 .form-group.required .control-label { 
    color:blue;
 }

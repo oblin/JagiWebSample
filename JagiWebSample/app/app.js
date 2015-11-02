@@ -20,14 +20,6 @@
         $httpProvider.defaults.transformRequest.push(spinnerFunction);
     });
 
-    app.constant("gridConstans", {
-        'filterHeaderTemplate':
-            '<div class="ui-grid-filter-container">' +
-            '<input type="text" ng-model="grid.appScope.{0}.keyword" class="ui-grid-filter-input" />' +
-            '<span ng-click="grid.appScope.{1}(grid.appScope.{0})" class="btn btn-default fa fa-search ui-grid-filter-button"></span>' +
-            '</div>'
-    });
-
     angular.module('loadingService', [], function ($provide) {
         $provide.factory('httpInterceptor', function ($q, $window) {
             return {
