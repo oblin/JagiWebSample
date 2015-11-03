@@ -36,6 +36,14 @@ namespace Jagi.Mvc.Angular
             return ngControl;
         }
 
+        private static PropertyRule GetPropertyValidations<TModel>(string propertyName)
+        {
+            var validators = GetValidator();
+            var validator = validators.GetPropertyValidators<TModel>(propertyName);
+
+            return validator;
+        }
+
         public static AngularValidations GetValidator()
         {
             AngularValidations ngValidations = null;
@@ -45,14 +53,6 @@ namespace Jagi.Mvc.Angular
                 ngValidations = new AngularValidations();
 
             return ngValidations;
-        }
-
-        private static PropertyRule GetPropertyValidations<TModel>(string propertyName)
-        {
-            var validators = GetValidator();
-            var validator = validators.GetPropertyValidators<TModel>(propertyName);
-
-            return validator;
         }
     }
 }

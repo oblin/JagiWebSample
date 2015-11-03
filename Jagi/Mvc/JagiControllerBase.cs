@@ -95,7 +95,7 @@ namespace Jagi.Mvc
             }
         }
 
-        private int ConvertToHttpStatusCode(int? errorCode)
+        protected int ConvertToHttpStatusCode(int? errorCode)
         {
             HttpStatusCode result;
             if (errorCode != null && Enum.IsDefined(typeof(HttpStatusCode), errorCode))

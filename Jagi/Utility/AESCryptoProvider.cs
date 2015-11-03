@@ -41,6 +41,9 @@ namespace Jagi.Utility
         /// <returns></returns>
         public string Encrypt(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
             RijndaelManaged AES = new RijndaelManaged();
 
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
@@ -66,6 +69,9 @@ namespace Jagi.Utility
         /// <returns>傳回解密文字</returns>
         public string Decrypt(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
             byte[] cipherTextData = Convert.FromBase64String(text);
 
             RijndaelManaged aes = new RijndaelManaged();

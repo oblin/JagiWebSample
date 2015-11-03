@@ -11,6 +11,7 @@
         //#region UI Grid Settings
         vm.clearFilter = clearFilter;
         vm.openEdit = openEdit;
+
         $controller('pagedGridController', { $scope: $scope });
         $scope.paginationOptions.url = model.pagedPatientsUrl;
         $scope.paginationOptions.filters = [
@@ -53,9 +54,12 @@
         }
 
         function openEdit(item) {
-            $location.path("/edit/" + item.id);
+            if (item)
+                $location.path("/edit/" + item.id);
+            else
+                $location.path("/edit/0");
         }
-
+        
         function clearFilter() {
             angular.extend($scope.paginationOptions, gridConstants.defaultPaginationOptions);
             for (var i = 0; i < $scope.paginationOptions.filters.length; i++) {

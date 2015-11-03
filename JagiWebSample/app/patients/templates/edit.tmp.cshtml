@@ -3,8 +3,6 @@
     var patient = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 4));
 }
 
-<h3>Patient Edit passing id: {{ vm.id }}</h3>
-
 <form class="form-horizontal" name="patientEditForm" ng-show="vm.current" ng-disable="vm.dataService.saving" ng-cloak>
     <p>
         <button class="btn btn-primary" ng-click="vm.save(vm.current)"  type="submit"
@@ -15,10 +13,6 @@
         <button class="btn btn-warning" ng-click="vm.cancel()" type="button"
                 ng-disabled="vm.current.id === 0 ? false : !patientEditForm.$dirty " icon="fa-undo">
             取消
-        </button>
-        <button class="btn btn-success" ng-click="vm.create()" type="button"
-                ng-disabled="vm.current.id === 0" icon="fa-plus-circle">
-            新增
         </button>
         <button class="btn btn-danger deleteBtn" type="button"
                 icon="fa-trash" prevent-default

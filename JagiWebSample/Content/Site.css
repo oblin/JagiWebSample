@@ -62,3 +62,9 @@
     width: 100%;
     height: 550px;
 }
+
+.ui-grid-filter-container .ui-grid-filter-button {
+  top: 3px;
+  height: 22px;
+  vertical-align: middle;
+}

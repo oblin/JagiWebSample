@@ -157,6 +157,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ColumnValidationTest.cs" />
     <Compile Include="ColumnHtmlTagTest.cs" />
     <Compile Include="ColumnCacheTest.cs" />
     <Compile Include="EntityHelpers.cs" />

@@ -55,25 +55,39 @@ namespace JagiWebSample.Controllers
         [HttpPost]
         public JsonResult Save(PatientEditView model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !ColumnsValid(model))
                 return JsonValidationError();
+
+            Patient patient = null;
+            if (model.Id > 0)
+            {
+                patient = _context.Patients.Find(model.Id);
+                Mapper.Map(model, patient);
+            }
+            else
+            {
+                patient = Mapper.Map<Patient>(model);
+                _context.Patients.Add(patient);
+            }
 
             return GetJsonResult(() =>
             {
-                Patient patient = null;
-                if (model.Id > 0)
-                {
-                    patient = _context.Patients.Find(model.Id);
-                    Mapper.Map(model, patient);
-                }
-                else
-                {
-                    patient = Mapper.Map<Patient>(model);
-                    _context.Patients.Add(patient);
-                }
-
                 _context.SaveChanges();
                 return patient;
+            });
+        }
+
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            Patient patient = _context.Patients.Find(id);
+            if (patient == null)
+                return JsonError("找不到 id = {0} 的病人".FormatWith(id));
+
+            return GetJsonResult(() => {
+                _context.Patients.Remove(patient);
+                _context.SaveChanges();
+                return JsonSuccess();
             });
         }
 

@@ -11,6 +11,36 @@ namespace Jagi.Database.Mvc
 {
     public class JagiController : JagiControllerBase
     {
+        protected List<PropertyRule> columnsValidateResult = null;
+        protected bool ColumnsValid<T>(T entity)
+        {
+            columnsValidateResult = ColumnsValidations.ColumnsValidate(entity);
+            if (columnsValidateResult.Count > 0)
+                return false;
+
+            return true;
+        }
+
+        protected override BetterJsonResult JsonValidationError(int? errorCode = default(int?))
+        {
+            var result = new BetterJsonResult();
+            foreach (var validationError in ModelState.Values.SelectMany(s => s.Errors))
+            {
+                result.AddError(validationError.ErrorMessage);
+            }
+
+            foreach (var propertyRule in columnsValidateResult)
+            {
+                string error = string.Empty;
+                foreach (var rule in propertyRule.Rules)
+                    error = error + rule + rule.Value + '\n';
+                if (!string.IsNullOrEmpty(error))
+                    result.AddError(error);
+            }
+            Response.StatusCode = ConvertToHttpStatusCode(errorCode);
+            return result;
+        }
+
         /// <summary>
         /// 主要處理在執行中可能發生的 Exceptions，轉換成 Json format 提供給前端
         /// 一般錯誤預設為 406 (NotAcceptable)，資料庫錯誤預設為 409 (Conflict)

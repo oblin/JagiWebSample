@@ -97,6 +97,7 @@
     <Compile Include="DataContext.cs" />
     <Compile Include="Models\TableSchema.cs" />
     <Compile Include="Mvc\ColumnsHtmlTag.cs" />
+    <Compile Include="Mvc\ColumnsValidations.cs" />
     <Compile Include="Mvc\EntityHelper.cs" />
     <Compile Include="Mvc\JagiController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

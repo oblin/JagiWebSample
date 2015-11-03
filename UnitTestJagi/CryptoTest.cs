@@ -87,6 +87,25 @@ namespace UnitTestJagi
             Assert.AreEqual(text2, decrypt2);
         }
 
+        [TestMethod]
+        public void Test_Descrypt_Empty_String_Return_Empty()
+        {
+            AESCryptoProvider provider = new AESCryptoProvider();
+            string text = string.Empty;
+
+            string decrypt = provider.Decrypt(text);
+            Assert.AreEqual(string.Empty, decrypt);
+        }
+
+        [TestMethod]
+        public void Test_Encrypt_Empty_String_Return_Empty()
+        {
+            AESCryptoProvider provider = new AESCryptoProvider();
+            string text = string.Empty;
+
+            string encrypt = provider.Encrypt(text);
+            Assert.AreEqual(string.Empty, encrypt);
+        }
 
         /// <summary>
         /// 這裡主要測試 AES key length 128 and 256 哪一個速度比較快；猜測是 128 但事實上不分上下

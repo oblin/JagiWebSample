@@ -2,20 +2,22 @@
     'use strict';
 
     window.app.controller("patientEditController", patientEditController);
-    patientEditController.$inject = ['$scope', 'model', '$routeParams', '$window', 'dataService'];
+    patientEditController.$inject = ['$scope', 'model', '$location', '$routeParams', '$window', '$timeout', 'dataService'];
 
-    function patientEditController($scope, model, $routeParams, $window, dataService) {
+    function patientEditController($scope, model, $location, $routeParams, $window, $timeout, dataService) {
         var vm = this;
         vm.dataService = dataService;
-        vm.id = $routeParams.id;
+
         vm.origin;
         vm.current;
-
         vm.save = save;
         vm.cancel = cancel;
         vm.delete = deleteItem;
 
-        getPatient(vm.id);
+        if ($routeParams.id == 0)
+            create();
+        else
+            getPatient($routeParams.id);
 
         function getPatient(id) {
             var url = model.getPatientUrl;
@@ -30,17 +32,29 @@
             dataService.post(model.savePatientUrl, item,
                 function (response) {
                     angular.extend(vm.current, response.data);
-                    angular.extend(vm.origin, response.data);
-                    reset();
+                    if ($routeParams.id == 0)
+                        $location.path("/edit/" + vm.current.id);
+                    else {
+                        angular.extend(vm.origin, response.data);
+                        reset();
+                    }
                 })
         }
 
         function deleteItem(id) {
             if (id == 0) return;
-            dataService.post(model.deletePatientUrl + id,
+            dataService.post(model.deletePatientUrl + id, null,
                 function () {
-                    $window.history.back();
+                    $timeout(function () {
+                        // 呼叫 parent controller: patientController.js 的 $scope.getPage()，讓 patientController.js refresh 頁面
+                        $scope.getPage();
+                        $window.history.back();
+                    }, 0);
                 })
+        }
+
+        function create() {
+            vm.current = { id: 0 };
         }
 
         function cancel() {
