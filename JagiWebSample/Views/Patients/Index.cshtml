@@ -7,6 +7,13 @@
 <h2>病人列表: @ViewBag.Timer</h2>
 
 <div ng-controller="patientsController as vm">
+    <p class="input-group">
+        <input type="text" class="form-control" datepicker-popup="yyyy/MM/dd" ng-model="dateHired"
+               is-open="opened" current-text="今天" clear-text="清除" close-text="關閉" />
+        <span class="input-group-btn">
+            <button type="button" class="btn" ng-click="opened = true" icon="fa-calendar"></button>
+        </span>
+    </p>
     <div ng-view></div>
 </div>
 
@@ -22,13 +29,15 @@
 
         var getPagedUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetPaged(null)))';
         var getPatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Get(0)))';
+        var savePatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Save(null)))';
 
         window.app.constant("model", {
             'paginationOptions': paginationOptions,
             'headers': @Html.JsonFor(Model.Headers),
             'data': @Html.JsonFor(Model.Data),
             'pagedPatientsUrl': getPagedUrl,
-            'getPatientUrl': getPatientUrl
+            'getPatientUrl': getPatientUrl,
+            'savePatientUrl': savePatientUrl,
         });
     </script>
 }

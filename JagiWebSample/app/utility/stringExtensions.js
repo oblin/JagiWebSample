@@ -1,6 +1,51 @@
 ﻿(function(){
     'use strict';
 
+    var dateFormat = "YYYY/MM/DD";
+
+    String.convertToDate = function () {
+        var s = arguments[0];
+        return convertToDate(s);
+    }
+
+    String.prototype.convertToDate = function () {
+        var s = this.toString();
+        return convertToDate(s);
+    }
+
+    function convertToDate(s) {
+        if (s == null) return "";
+
+        if (s.length == 0 || s.length < 6) return "";
+
+        if (s.length == 6) {
+            // 處理 990101
+            s = '0' + s;
+        }
+        if (s.length == 7) {
+            // 處理 0990101 or 1031201
+            var y = parseInt(s.substr(0, 3), 10) + 1911;
+            var m = parseInt(s.substr(3, 2), 10);
+            var d = parseInt(s.substr(5, 2), 10);
+            var date = y + "/" + m + "/" + d;
+            if (moment(date).isValid()) {
+                var returnDate = moment(date).format(dateFormat);
+                var stringDate = returnDate.toString();
+                return stringDate;
+            }
+            else
+                return "";
+        }
+
+        if (moment(s).isValid()) {
+            var returnDate = moment(s).format(dateFormat);
+            var stringDate = returnDate.toString();
+            return stringDate;
+        } else {
+            return "";
+        }
+    }
+
     /**
      * 可在Javascript中使用如同C#中的string.format
      * 使用方式 : var fullName = String.format('Hello. My name is {0} {1}.', 'FirstName', 'LastName');

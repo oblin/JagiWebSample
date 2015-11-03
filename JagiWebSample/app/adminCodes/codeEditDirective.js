@@ -115,7 +115,6 @@
             $scope.codeFileForm.$setPristine();
             $scope.codeFileForm.$setUntouched();
             $scope.$parent.vm.current.isDirty = false;
-
         }
 
         /**

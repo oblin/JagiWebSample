@@ -15,7 +15,7 @@ namespace JagiWebSample.Areas.Admin.Models
     public class CodeFilesEditView : IMapFromCustomized
     {
         public int Id { get; set; }
-        [Required, DisplayName("代號類別"), StringLength(20, MinimumLength=4)]
+        [Required, DisplayName("代號類別"), StringLength(20)]
         public string ItemType { get; set; }
         [Required, DisplayName("類別名稱")]
         public string TypeName { get; set; }

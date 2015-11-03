@@ -51,6 +51,9 @@
             if (!isValid) {
                 var errorMessages = [];
                 var messageString = $("input[name='" + vm.field + "'").attr('message');
+                if (!messageString)
+                    return;
+
                 var messages = angular.fromJson(messageString);
                 var errors = Object.keys(field.$error);
                 for (var i = 0; i < errors.length; i++) {

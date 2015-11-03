@@ -7,11 +7,12 @@
      * 處理 IE browser 的 input element 後面會有一個 X clear text button
      * 這個 button 不會觸發 angular ngModel，這個 directive 判斷 $input.val() 是否為空
      * 如果是，則將 angular 對應的 $input 值刪除
+     * 
+     * 加上處理 date picker 的方式
      */
     function input() {
         return {
             restrict: 'E',
-            scope: {},
             link: function (scope, elem, attrs) {
 
                 // Only care about textboxes, not radio, checkbox, etc.
@@ -32,8 +33,18 @@
                         var newValue = $input.val();
                         if (newValue === '') {
                             angular.element($input).change();
-                        }
+                        } 
                     }, 1);
+                });
+                elem.bind('blur', function (e) {
+                    var $input = $(this), value = $input.val();
+                    if (value === '') return;
+
+                    // Check if it's datetimepicker
+                    if (attrs.hasOwnProperty("datepickerPopup")) {
+                        $input.val(value.convertToDate());
+                        angular.element($input).change();
+                    }
                 });
             }
         }

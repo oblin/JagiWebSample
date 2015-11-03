@@ -14,11 +14,11 @@
             @detail.FormGroupFor(m => m.Desc)
         </div>
         <div class="modal-footer">
-            <button class="btn btn-warning" ng-click="vm.cancel()" icon="fa-undo">
+            <button class="btn btn-warning" ng-click="vm.cancel()" icon="fa-undo" type="button">
                  取消
             </button>
             <button type="button" class="btn btn-primary" ng-disabled="!detailForm.$dirty"
-                    ng-click="vm.save()" icon="fa-save">
+                    ng-click="vm.save()" icon="fa-save" type="submit">
                  存檔
             </button>
         </div>

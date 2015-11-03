@@ -7,6 +7,8 @@
     function patientsController($scope, $location, model, gridConstants, dataService, $controller) {
         var vm = this;
         vm.modelStatus = dataService;
+
+        //#region UI Grid Settings
         vm.clearFilter = clearFilter;
         vm.openEdit = openEdit;
         $controller('pagedGridController', { $scope: $scope });
@@ -61,5 +63,6 @@
             }
             $scope.getPage();
         }
+        //#endregion
     }
 })();

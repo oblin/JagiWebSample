@@ -217,4 +217,18 @@
         return this;
     })
 
+    common.factory("commonParameters", function () {
+        var params;
+        return {
+            getParams: function () { return params; },
+            setParams: function (obj) {
+                for (item in obj) {
+                    params[item] = obj[item];
+                }
+
+                return params;
+            }
+        }
+    });
+
 })();

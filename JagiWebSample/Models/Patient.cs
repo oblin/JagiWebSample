@@ -1,16 +1,14 @@
 ﻿using Jagi.Interface;
+using Jagi.Mapping;
 using Jagi.Utility;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 
 namespace JagiWebSample.Models
 {
-    public class Patient : Entity
+    public class Patient : Entity, IMapFrom<PatientEditView>
     {
         private static AESCryptoProvider _provider = null;
 

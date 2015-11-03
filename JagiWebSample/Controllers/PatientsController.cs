@@ -52,6 +52,31 @@ namespace JagiWebSample.Controllers
             });
         }
 
+        [HttpPost]
+        public JsonResult Save(PatientEditView model)
+        {
+            if (!ModelState.IsValid)
+                return JsonValidationError();
+
+            return GetJsonResult(() =>
+            {
+                Patient patient = null;
+                if (model.Id > 0)
+                {
+                    patient = _context.Patients.Find(model.Id);
+                    Mapper.Map(model, patient);
+                }
+                else
+                {
+                    patient = Mapper.Map<Patient>(model);
+                    _context.Patients.Add(patient);
+                }
+
+                _context.SaveChanges();
+                return patient;
+            });
+        }
+
         private PagedView GetPagedPatients(PageInfo pageInfo)
         {
             PagedView pagedView = null;

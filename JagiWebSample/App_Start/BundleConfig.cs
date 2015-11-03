@@ -21,9 +21,11 @@ namespace JagiWebSample
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/underscore.js",
+                        "~/Scripts/moment.js",
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-route.js",
                         "~/Scripts/ui-grid.js",
+                        "~/Scripts/angular-ui/angular-locale_zh-tw.js",
                         "~/Scripts/angular-ui/ui-bootstrap-tpls.js"
                         ));
 
@@ -44,9 +46,9 @@ namespace JagiWebSample
                     "~/app/layoutController.js"
                 ));
 
-             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                     "~/Scripts/bootstrap.js",
+                     "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

@@ -259,7 +259,7 @@ namespace Jagi.Mvc.Angular
             var span = new HtmlTag("span").AddClass("input-group-btn");
             var button = new HtmlTag("button")
                 .Attr("type", "button")
-                .AddClasses("btn", "btn-default")
+                .AddClass("btn")
                 .Attr("ng-click", "dateStatus.opened = true")
                 .Attr("icon", "fa-calendar");
             span.Append(button);
