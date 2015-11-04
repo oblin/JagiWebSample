@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Jagi.Database.Cache;
 using Jagi.Database.Mvc;
 using Jagi.Interface;
+using Jagi.Helpers;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
 using System.Linq;
@@ -12,10 +14,12 @@ namespace JagiWebSample.Areas.Admin.Controllers
     public class ColumnsController : JagiController
     {
         private AdminDataContext _context;
+        private ColumnsCache _columns;
 
         public ColumnsController(AdminDataContext context)
         {
             _context = context;
+            _columns = new ColumnsCache();
         }
 
         public ActionResult Index(string id)
@@ -53,6 +57,8 @@ namespace JagiWebSample.Areas.Admin.Controllers
             _context.TableSchema.Add(tableSchema);
             _context.SaveChanges();
 
+            UpdateColumnCache(tableSchema);
+
             return RedirectToAction<ColumnsController>(c => c.Index(model.TableName)).WithSuccess("新增成功");
         }
 
@@ -82,6 +88,8 @@ namespace JagiWebSample.Areas.Admin.Controllers
             tableSchema = Mapper.Map<TableSchemaEditView, TableSchema>(model, tableSchema);
             _context.SaveChanges();
 
+            UpdateColumnCache(tableSchema);
+
             return RedirectToAction<ColumnsController>(c => c.Index(tableSchema.TableName))
                     .WithSuccess("修改成功");
             //return RedirectToAction("Index", new { id = tableSchema.TableName })
@@ -96,6 +104,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index").WithError("找不到該筆資料，無法刪除");
             }
+            _columns.Remove(tableSchema.TableName, tableSchema.ColumnName);
             _context.TableSchema.Remove(tableSchema);
             _context.SaveChanges();
 
@@ -108,6 +117,13 @@ namespace JagiWebSample.Areas.Admin.Controllers
         {
             var result = _context.TableSchema.Where(k => k.TableName == id);
             return JsonSuccess(result);
+        }
+
+        private void UpdateColumnCache(TableSchema tableSchema)
+        {
+            Jagi.Database.Models.TableSchema jgTableSchema = new Jagi.Database.Models.TableSchema();
+            tableSchema.CopyTo(jgTableSchema);
+            _columns.Set(jgTableSchema);
         }
 
         private string FindDefaultDisplayName(TableSchema column)

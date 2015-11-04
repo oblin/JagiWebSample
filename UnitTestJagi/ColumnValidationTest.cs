@@ -76,7 +76,7 @@ namespace UnitTestJagi
             mockContext.CodeFiles.Returns(mockCodesSet);
             mockContext.CodeDetails.Returns(mockDetailsSet);
 
-            var codeInitializer = new InitCodeCache(mockContext);
+            var codeInitializer = new CodeCacheManager(mockContext);
             codeInitializer.Execute();
 
             // Setup ServiceLocator

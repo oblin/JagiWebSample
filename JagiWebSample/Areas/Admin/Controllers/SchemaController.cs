@@ -130,8 +130,10 @@ namespace JagiWebSample.Areas.Admin.Controllers
             switch (dataType)
             {
                 case "NVARCHAR":
+                case "VARBINARY":
                     return FieldType.String;
 
+                case "DATE":
                 case "DATETIME":
                     return FieldType.DateTime;
 

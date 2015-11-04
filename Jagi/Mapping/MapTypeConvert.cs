@@ -45,4 +45,29 @@ namespace Jagi.Mapping
                 return source.ConvertToDateTime();
         }
     }
+
+    /// <summary>
+    /// 設定 AutoMaper 將文字轉換成 Nullabl DateTime
+    /// </summary>
+    public class DateTimeNullToString : TypeConverter<DateTime?, string>
+    {
+        protected override string ConvertCore(DateTime? source)
+        {
+            if (source.HasValue)
+                return ((DateTime)source).ToString("yyyy/MM/dd");
+            else
+                return string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// 設定 AutoMaper 將文字轉換成 Nullabl DateTime
+    /// </summary>
+    public class DateTimeToString : TypeConverter<DateTime, string>
+    {
+        protected override string ConvertCore(DateTime source)
+        {
+            return source.ToString("yyyy/MM/dd");
+        }
+    }
 }

@@ -5,9 +5,9 @@
 
 <form class="form-horizontal" name="patientEditForm" ng-show="vm.current" ng-disable="vm.dataService.saving" ng-cloak>
     <p>
-        <button class="btn btn-primary" ng-click="vm.save(vm.current)"  type="submit"
+        <button class="btn btn-primary" ng-click="vm.save(vm.current)" type="submit"
                 prevent-default
-                ng-disabled="!patientEditForm.$dirty" icon="fa-save">
+                ng-disabled="!(patientEditForm.$dirty && patientEditForm.$valid)" icon="fa-save">
             存檔
         </button>
         <button class="btn btn-warning" ng-click="vm.cancel()" type="button"
@@ -20,7 +20,6 @@
             刪除
         </button>
     </p>
-
     <div class="row">
         @patient.FormGroupFor(m => m.Name)
         @patient.FormGroupFor(m => m.ChartId)

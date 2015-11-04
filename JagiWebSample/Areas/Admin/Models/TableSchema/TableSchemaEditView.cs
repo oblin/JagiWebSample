@@ -46,11 +46,9 @@ namespace JagiWebSample.Areas.Admin.Models
         public string Tooltips { get; set; }
         public string FromTable { get; set; }
 
-        [Display(Name = "Code File Key")]
+        [Display(Name = "Code DropdwonKey")]
         public string DropdwonKey { get; set; }
-        [Display(Name = "Code File Value")]
-        public string DropdwonValue { get; set; }
-        [Display(Name = "對應 Parent Key")]
+        [Display(Name = "Code DropdwonCascade")]
         public string DropdwonCascade { get; set; }
 
         [StringLength(20), Display(Name = "對應資料表")]

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Jagi.Database.Cache;
 using Jagi.Database.Mvc;
+using Jagi.Helpers;
 using Jagi.Mvc;
 using JagiWebSample.Areas.Admin.Models;
 using System.Collections.Generic;
@@ -13,10 +15,14 @@ namespace JagiWebSample.Areas.Admin.Controllers
     public class CodesController : JagiController
     {
         private AdminDataContext _context;
+        private CodeCache _codeCache;
+        private CodeCacheManager _codeManager;
 
-        public CodesController(AdminDataContext context)
+        public CodesController(AdminDataContext context, CodeCacheManager codeManager)
         {
             _context = context;
+            _codeCache = new CodeCache();
+            _codeManager = codeManager;
         }
         
         public ActionResult Index()
@@ -46,7 +52,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
             return GetJsonResult(() =>
             {
                 _context.SaveChanges();
-
+                _codeManager.SetCodeFile(target.ID);
                 return Mapper.Map<CodeFilesEditView>(target);
             });
         }
@@ -58,8 +64,11 @@ namespace JagiWebSample.Areas.Admin.Controllers
             if (code == null)
                 return JsonError("刪除資料失敗，找不到資料");
 
+            _codeManager.RemoveCodeFile(id);
+            
             _context.CodeFiles.Remove(code);
             _context.SaveChanges();
+
 
             return JsonSuccess();
         }
@@ -95,6 +104,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
             return GetJsonResult(() => {
                 _context.SaveChanges();
+                _codeManager.SetCodeDetail(detail.ID);
                 return Mapper.Map<CodeDetailEditView>(detail);
             });
         }
@@ -105,6 +115,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
             var detail = _context.CodeDetails.Find(id);
             _context.CodeDetails.Remove(detail);
 
+            _codeManager.RemoveCodeDetail(id);
             _context.SaveChanges();
 
             return JsonSuccess();

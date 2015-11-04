@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using Jagi.Utility;
@@ -6,6 +7,8 @@ using Microsoft.Practices.ServiceLocation;
 using JagiWebSample.Areas.Admin.Models;
 using Jagi.Mvc.Angular;
 using JagiWebSample.Models;
+using Jagi.Database.Mvc;
+using Jagi.Interface;
 
 namespace JagiWebSample.App_Start
 {
@@ -49,7 +52,9 @@ namespace JagiWebSample.App_Start
             container.RegisterInstance(typeof(EmailSetting), setting);
 
             // Setup Angular Html Tag Provider
-            container.RegisterInstance(typeof(AngularHtmlTag), new AngularHtmlTag());
+            container.RegisterInstance(typeof(AngularHtmlTag), new ColumnsHtmlTag());
+
+            ExecuteStartupTasks(container);
 
             // Setup Crypto Service Provider
             var cryptoSetting = new CryptoSetting("Ers@Hope", "jagi@Excelsi0r");
@@ -57,6 +62,17 @@ namespace JagiWebSample.App_Start
 
             UnityServiceLocator locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);
+        }
+
+        private static void ExecuteStartupTasks(IUnityContainer container)
+        {
+            // registering all type of IRunAtStartup:
+            container.RegisterTypes(AllClasses.FromLoadedAssemblies()
+                .Where(type => typeof(IRunAtStartup).IsAssignableFrom(type)),
+                WithMappings.FromAllInterfaces, WithName.TypeName, WithLifetime.Transient);
+
+            foreach (var task in container.ResolveAll<IRunAtStartup>())
+                task.Execute();
         }
     }
 }

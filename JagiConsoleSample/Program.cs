@@ -33,7 +33,7 @@ namespace JagiConsoleSample
         private static void 測試CodeCache()
         {
             DataContext context = new DataContext();
-            var cacheInitializer = new InitCodeCache(context);
+            var cacheInitializer = new CodeCacheManager(context);
             cacheInitializer.Execute();
 
             var cache = new CodeCache();

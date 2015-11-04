@@ -9,7 +9,7 @@ namespace JagiWebSample.Models
         public string Name { get; set; }
         public string ChartId { get; set; }
         public string IdCard { get; set; }
-        public DateTime BirthDate { get; set; }
+        public string BirthDate { get; set; }
         public string Sex { get; set; }
         public string Marry { get; set; }
         public string CureDoc { get; set; }
@@ -43,6 +43,6 @@ namespace JagiWebSample.Models
         public DateTime? FirstDate { get; set; }
 
         // 本院開始日期，沒有使用，以 Start 內容為準
-        public DateTime BeginDate { get; set; }
+        public string BeginDate { get; set; }
     }
 }

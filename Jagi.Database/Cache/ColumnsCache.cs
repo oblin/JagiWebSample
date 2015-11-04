@@ -22,26 +22,41 @@ namespace Jagi.Database.Cache
 
         public void Set(TableSchema column)
         {
-            string key = string.Format(KEY_FORMAT, column.TableName, column.ColumnName);
+            string tableName = column.TableName.ToLower();
+            string columnName = column.ColumnName.ToLower();
+
+            string key = string.Format(KEY_FORMAT, tableName, columnName);
             Set(key, column);
             var tableCache = base.Get<List<string>>(SCHEMA_CACHE_TABLES);
             if (tableCache == null)
-                base.Set(SCHEMA_CACHE_TABLES, new List<string> { column.TableName });
+                base.Set(SCHEMA_CACHE_TABLES, new List<string> { tableName });
             else
             {
-                if (!tableCache.Contains(column.TableName))
-                    tableCache.Add(column.TableName);
+                if (!tableCache.Contains(tableName))
+                    tableCache.Add(tableName);
             }
         }
 
         public void Remove(string tableName, string columnName)
         {
+            if (string.IsNullOrEmpty(tableName))
+                return;
+
+            tableName = tableName.ToLower();
+            columnName = columnName.ToLower();
+
             string key = string.Format(KEY_FORMAT, tableName, columnName);
             Remove(key);
         }
 
         public TableSchema Get(string tableName, string columnName)
         {
+            if (string.IsNullOrEmpty(tableName))
+                return null;
+
+            tableName = tableName.ToLower();
+            columnName = columnName.ToLower();
+
             string key = string.Format(KEY_FORMAT, tableName, columnName);
             var column = base.Get<TableSchema>(key);
             if (column == null)
@@ -57,6 +72,9 @@ namespace Jagi.Database.Cache
         /// <returns>欄位在 view 中的顯示名稱</returns>
         public string GetDisplayName(string tableName, string columnName)
         {
+            tableName = tableName.ToLower();
+            columnName = columnName.ToLower();
+
             var column = Get(tableName, columnName);
             if (column == null)
                 column = base.Get<TableSchema>(string.Format(KEY_FORMAT, ConstantString.SCHEMA_DEFAULT_TABLE_NAME, columnName));
@@ -84,6 +102,8 @@ namespace Jagi.Database.Cache
         /// <returns>Table name</returns>
         public string GetRelativeTableName(string typeName)
         {
+            typeName = typeName.ToLower();
+
             var tableNames = GetTableNames();
             if (tableNames == null || tableNames.Count == 0)
                 return string.Empty;

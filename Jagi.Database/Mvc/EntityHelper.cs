@@ -29,7 +29,13 @@ namespace Jagi.Database.Mvc
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(value.GetType()))
             {
                 var column = columns.Get(tableName, property.Name);
-                var displayName = column.DisplayName ?? property.Name;
+                var displayName = 
+                    column == null 
+                        ? property.Name 
+                        : string.IsNullOrEmpty(column.DisplayName) 
+                            ? property.Name 
+                            : column.DisplayName;
+
                 result.Add(property.Name, displayName);
             }
             return result;

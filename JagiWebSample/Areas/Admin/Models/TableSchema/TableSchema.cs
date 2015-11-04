@@ -22,10 +22,10 @@ namespace JagiWebSample.Areas.Admin.Models
         [StringLength(20)]
         public string FromTable { get; set; }
 
-        [StringLength(20)]
+        [StringLength(20)]  // 暫時保留，因為 Code File 就已經定義了 parent code，這裡的意義不明
         public string DropdwonKey { get; set; }
 
-        [StringLength(20)]
+        [StringLength(20)]  // 暫時保留，實際使用的目的未知
         public string DropdwonValue { get; set; }
 
         [StringLength(20)]
