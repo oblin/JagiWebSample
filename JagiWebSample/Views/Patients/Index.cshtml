@@ -2,21 +2,34 @@
 @model Jagi.Interface.PagedView
 @{
     ViewBag.Title = "Patient";
+    string currentStatus = ViewBag.CurrentStatus;
+    List<SelectListItem> status = ViewBag.Status;
+    Dictionary<string, Dictionary<string, string>> codes = ViewBag.Codes as Dictionary<string, Dictionary<string, string>>;
 }
 
 <h2>病人列表: @ViewBag.Timer</h2>
 
+
 <div ng-controller="patientsController as vm">
-    <button class="btn btn-success" ng-click="vm.openEdit()" type="button" 
-            icon="fa-plus-circle" style="margin-bottom: 5px;">
-        新增病人
-    </button>
+    @using (Html.BeginForm("Index", "Patients", FormMethod.Get))
+    {
+        @Html.DropDownList("status", status,
+            new { @class = "form-control col-sm-3", style = "width: 300px;", ng_model = "vm.status" })
+        <button class="btn btn-primary" type="submit"
+                icon="fa-filter" style="margin-bottom: 5px; margin-left: 5px">
+            過濾
+        </button>
+        <button class="btn btn-success" ng-click="vm.openEdit()" type="button"
+                icon="fa-plus-circle" style="margin-bottom: 5px;">
+            新增病人
+        </button>
+    }
     <div ng-view></div>
 </div>
 
 @section Scripts{
-<script src="~/app/pagedGridController.js"></script>
-<script src="~/app/patients/patientEditController.js"></script>
+    <script src="~/app/pagedGridController.js"></script>
+    <script src="~/app/patients/patientEditController.js"></script>
     <script src="~/app/patients/patientsController.js"></script>
     <script type="text/javascript">
         var paginationOptions = {
@@ -24,7 +37,7 @@
             pageSize: @Model.PageCount,
         };
 
-        var getPagedUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetPaged(null)))';
+        var getPagedUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetPaged(null, null)))';
         var getPatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Get(0)))';
         var savePatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Save(null)))';
         var deletePatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Delete(0)))';
@@ -33,10 +46,12 @@
             'paginationOptions': paginationOptions,
             'headers': @Html.JsonFor(Model.Headers),
             'data': @Html.JsonFor(Model.Data),
+            'codes': @Html.JsonFor(codes),
+            'status': '@currentStatus',
             'pagedPatientsUrl': getPagedUrl,
             'getPatientUrl': getPatientUrl,
             'savePatientUrl': savePatientUrl,
-            'deletePatientUrl': deletePatientUrl
+            'deletePatientUrl': deletePatientUrl,
         });
     </script>
 }

@@ -1,11 +1,13 @@
 ﻿using HtmlTags;
 using Humanizer;
+using Jagi.Helpers;
 using Jagi.Mvc.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Jagi.Mvc.Angular
 {
@@ -71,7 +73,7 @@ namespace Jagi.Mvc.Angular
         public HtmlTag AngularEditorFor<TProp>(Expression<Func<TModel, TProp>> property,
             FormGroupType type = FormGroupType.Default,
             string attr = null,
-            Dictionary<string, string> attrs = null,
+            RouteValueDictionary attrs = null,
             Dictionary<string, string> options = null,
             string value = null)
         {
@@ -88,6 +90,38 @@ namespace Jagi.Mvc.Angular
             return input;
         }
 
+
+        public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property,
+            int formGroupGrid, object attrs = null )
+        {
+            RouteValueDictionary dict = DictionaryHelper.ObjectToRouteValueDictionary(attrs);
+
+            try
+            {
+                FormGroupLayout layout = new FormGroupLayout((int)formGroupGrid);
+                return FormGroupFor(property, attrs: dict, layout: layout);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return FormGroupFor(property, attrs: dict, formGroupGrid: formGroupGrid);
+            }
+        }
+        
+        public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property,
+            object attrs, int? formGroupGrid = null)
+        {
+            RouteValueDictionary dict = DictionaryHelper.ObjectToRouteValueDictionary(attrs);
+
+            if (formGroupGrid.HasValue)
+            {
+                return FormGroupFor(property, (int)formGroupGrid, attrs);
+            }
+            else
+            {
+                return FormGroupFor(property, attrs: dict);
+            }
+        }
+
         /// <summary>
         /// 建立 bootstrap Fromgroup Div 與其所屬的內容，範例：
         /// </summary>
@@ -100,10 +134,10 @@ namespace Jagi.Mvc.Angular
         /// <param name="value">提供指定的 value，主要是給 checkbox or radio button 使用</param>
         /// <param name="values">提供多個 value，並且會依據每一個 value 產生 input</param>
         /// <returns></returns>
-        public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property, 
+        public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property,
             FormGroupType type = FormGroupType.Default,
             string attr = null,
-            Dictionary<string, string> attrs = null,
+            RouteValueDictionary attrs = null,
             Dictionary<string, string> options = null,
             string value = null,
             string[] values = null,
@@ -138,8 +172,8 @@ namespace Jagi.Mvc.Angular
             if (string.IsNullOrEmpty(checkOrRadioType))
             {
                 // Default for type="text" and textarea
-                label = AngularLabelFor(property);
-                if (layout != null )
+                label = AngularLabelFor(property, layout);
+                if (layout != null)
                 {
                     input = AppendLayoutInputDiv(layout, input);
                 }

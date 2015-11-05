@@ -13,5 +13,6 @@ namespace JagiWebSample.Models
         public string ChartId { get; set; }
         public string IdCard { get; set; }
         public string BirthDate { get; set; }
+        public string Status { get; set; }
     }
 }

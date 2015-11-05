@@ -259,6 +259,7 @@
     <Content Include="app\adminSchema\schemaController.js" />
     <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\directives\showErrorsDirective.js" />
+    <Content Include="app\filters\jagiFilters.js" />
     <Content Include="app\pagedGridController.js" />
     <Content Include="app\layoutController.js" />
     <Content Include="app\patients\patientsController.js" />

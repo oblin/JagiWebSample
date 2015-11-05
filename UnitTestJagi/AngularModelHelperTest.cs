@@ -1,7 +1,9 @@
-﻿using Jagi.Mvc.Angular;
+﻿using Jagi.Helpers;
+using Jagi.Mvc.Angular;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace UnitTestJagi
 {
@@ -405,11 +407,11 @@ namespace UnitTestJagi
             Assert.IsTrue(htmlString.Contains("ng-click=\"dateStatus.opened = true\""));
         }
 
-        private Dictionary<string, string> SetAttrs()
+        private RouteValueDictionary SetAttrs()
         {
             Dictionary<string, string> attrs = new Dictionary<string, string>();
             attrs.Add("ng-options", "color.name for color in colors");
-            return attrs;
+            return attrs.ToRouteValueDictionary();
         }
 
         private string[] SetValues()

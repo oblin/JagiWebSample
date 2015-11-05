@@ -13,6 +13,7 @@ namespace JagiWebSample.Models
         public string Sex { get; set; }
         public string Marry { get; set; }
         public string CureDoc { get; set; }
+        public string Code { get; set; }
 
         // Address
         public string County0 { get; set; }

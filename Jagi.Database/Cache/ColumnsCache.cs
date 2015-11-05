@@ -60,7 +60,9 @@ namespace Jagi.Database.Cache
             string key = string.Format(KEY_FORMAT, tableName, columnName);
             var column = base.Get<TableSchema>(key);
             if (column == null)
-                column = base.Get<TableSchema>(string.Format(KEY_FORMAT, ConstantString.SCHEMA_DEFAULT_TABLE_NAME, columnName));
+                column = base.Get<TableSchema>(string.Format(KEY_FORMAT, 
+                    ConstantString.SCHEMA_DEFAULT_TABLE_NAME.ToLower(), 
+                    columnName));
             return column;
         }
 
@@ -77,7 +79,9 @@ namespace Jagi.Database.Cache
 
             var column = Get(tableName, columnName);
             if (column == null)
-                column = base.Get<TableSchema>(string.Format(KEY_FORMAT, ConstantString.SCHEMA_DEFAULT_TABLE_NAME, columnName));
+                column = base.Get<TableSchema>(string.Format(KEY_FORMAT, 
+                    ConstantString.SCHEMA_DEFAULT_TABLE_NAME.ToLower(), 
+                    columnName));
             if (column != null)
                 return column.DisplayName;
 

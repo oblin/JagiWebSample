@@ -35,6 +35,7 @@ namespace JagiWebSample
                     "~/app/utility/common.js",
                     "~/app/app.js",
                     "~/app/utility/alerts.js",
+                    "~/app/filters/jagiFilters.js",
                     "~/app/directives/inputDirective.js",
                     "~/app/directives/showErrorsDirective.js",
                     "~/app/directives/preventDefault.js",

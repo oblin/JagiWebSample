@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Jagi.Database.Cache;
 using Jagi.Database.Mvc;
 using Jagi.Helpers;
 using Jagi.Interface;
@@ -15,28 +16,63 @@ namespace JagiWebSample.Controllers
     {
         private readonly string[] AsEnumerableField = { "Name", "IdCard", "BirthDay" };
         private DataContext _context;
+        private CodeCache _codes;
 
         public PatientsController(DataContext context)
         {
             _context = context;
+            _codes = new CodeCache();
         }
 
-        public ActionResult Index(PageInfo pageInfo = null)
+        public ActionResult Index(PageInfo pageInfo = null, string status = null)
         {
-            PagedView pagedView = GetPagedPatients(pageInfo);
+            PagedView pagedView = GetPagedPatients(pageInfo, status);
+            ViewBag.Codes = GetUIDisplayCodes();
+            ViewBag.Status = GetStatusSelections(status);
+            ViewBag.CurrentStatus = status;
             return View(pagedView);
         }
 
+        private List<SelectListItem> GetStatusSelections(string status)
+        {
+            var statusCodes = _codes.GetCodeDetails("Status").OrderBy(o => o.ItemCode);
+            var result = new List<SelectListItem> { new SelectListItem { 
+                    Selected = string.IsNullOrEmpty(status),
+                    Text = "全部",
+                    Value = ""
+                }};
+
+            foreach (var code in statusCodes)
+                result.Add(new SelectListItem
+                {
+                    Selected = code.ItemCode == status,
+                    Value = code.ItemCode,
+                    Text = code.Description
+                });
+
+            return result;
+        }
+
+        private Dictionary<string, Dictionary<string, string>> GetUIDisplayCodes()
+        {
+            Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
+            // key value 一律小寫，避免不必要的錯誤
+            result.Add("status", _codes.GetDetails("Status"));
+            result.Add("ab", _codes.GetDetails("AB"));
+
+            return result;
+        }
+
         [HttpGet, OutputCache(Duration = 0)]
-        public JsonResult GetPaged(PageInfo pageInfo)
+        public JsonResult GetPaged(PageInfo pageInfo, string status = null)
         {
             return GetJsonResult(() =>
             {
-                return GetPagedPatients(pageInfo);
+                return GetPagedPatients(pageInfo, status);
             });
         }
 
-        [HttpGet, OutputCache(Duration=0)]
+        [HttpGet, OutputCache(Duration = 0)]
         public JsonResult Get(int id)
         {
             if (id == 0)
@@ -84,21 +120,26 @@ namespace JagiWebSample.Controllers
             if (patient == null)
                 return JsonError("找不到 id = {0} 的病人".FormatWith(id));
 
-            return GetJsonResult(() => {
+            return GetJsonResult(() =>
+            {
                 _context.Patients.Remove(patient);
                 _context.SaveChanges();
                 return JsonSuccess();
             });
         }
 
-        private PagedView GetPagedPatients(PageInfo pageInfo)
+        private PagedView GetPagedPatients(PageInfo pageInfo, string status)
         {
             PagedView pagedView = null;
+            IEnumerable<Patient> patients = _context.Patients.AsNoTracking();
+            if (!string.IsNullOrEmpty(status))
+                patients = patients.Where(p => p.Status == status);
+
             ViewBag.Timer = Jagi.Utility.Tools.Timing(() =>
             {
                 if (pageInfo == null || pageInfo.PageNumber == 0 || pageInfo.PageSize == 0)
                     pageInfo = InitializePageInfo();
-                var patients = GetFilteredPatients(pageInfo);
+                patients = GetFilteredPatients(pageInfo, patients);
                 int count = patients.Count();
                 patients = GetPagedSize(patients, pageInfo);
                 var patientListView = Mapper.Map<IEnumerable<PatientListView>>(patients);
@@ -115,13 +156,12 @@ namespace JagiWebSample.Controllers
             return pagedView;
         }
 
-        private IEnumerable<Patient> GetFilteredPatients(PageInfo pageInfo)
+        private IEnumerable<Patient> GetFilteredPatients(PageInfo pageInfo, IEnumerable<Patient> patients)
         {
-            IEnumerable<Patient> patients = _context.Patients;
             if (AsEnumerableField.Contains(pageInfo.SortField, StringComparer.OrdinalIgnoreCase)
                 || AsEnumerableField.Contains(pageInfo.SearchField, StringComparer.OrdinalIgnoreCase))
                 // 必須使用要加密欄位，因此要將所有資料讀入後再進行處理
-                patients = _context.Patients.AsNoTracking().ToList();
+                patients = patients.ToList();
 
             if (!string.IsNullOrEmpty(pageInfo.SearchKeyword))
                 if (pageInfo.SearchField == "ChartId")

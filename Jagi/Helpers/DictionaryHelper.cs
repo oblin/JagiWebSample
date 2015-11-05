@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Routing;
 
 namespace Jagi.Helpers
 {
@@ -50,6 +52,29 @@ namespace Jagi.Helpers
                 dictionary.Add(key, new List<string> { value });
             }
 
+        }
+
+        public static RouteValueDictionary ToRouteValueDictionary(this Dictionary<string, string> dictionary)
+        {
+            RouteValueDictionary result = new RouteValueDictionary();
+            foreach (var item in dictionary)
+                result.Add(item.Key, item.Value);
+
+            return result;
+        }
+
+        public static RouteValueDictionary ObjectToRouteValueDictionary(object value)
+        {
+            RouteValueDictionary dictionary = new RouteValueDictionary();
+            if (value != null)
+            {
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(value))
+                {
+                    dictionary.Add(descriptor.Name.Replace("_", "-"), descriptor.GetValue(value));
+                }
+            }
+
+            return dictionary;
         }
     }
 }

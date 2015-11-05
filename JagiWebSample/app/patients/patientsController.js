@@ -2,15 +2,17 @@
     'use strict';
 
     window.app.controller("patientsController", patientsController);
-    patientsController.$inject = ['$scope', '$location', 'model', 'gridConstants', 'dataService', '$controller'];
+    patientsController.$inject = ['$scope', '$location', 'model', 'gridConstants', 'dataService', '$filter', '$controller'];
 
-    function patientsController($scope, $location, model, gridConstants, dataService, $controller) {
+    function patientsController($scope, $location, model, gridConstants, dataService, $filter, $controller) {
         var vm = this;
         vm.modelStatus = dataService;
 
         //#region UI Grid Settings
         vm.clearFilter = clearFilter;
         vm.openEdit = openEdit;
+        vm.codes = model.codes;
+        vm.status = model.status;
 
         $controller('pagedGridController', { $scope: $scope });
         $scope.paginationOptions.url = model.pagedPatientsUrl;
@@ -19,11 +21,13 @@
             { field: "ChartId", keyword: "" },
             { field: "idCard", keyword: "" }
         ];
+        $scope.paginationOptions.status = vm.status;
 
         var headers = model.headers;
         $scope.gridOptions.columnDefs = [
             {
-                name: 'edit', displayName: '', enableColumnMenu: false, enableSorting: false, enableFiltering: false,
+                name: 'edit', displayName: '', width: '10%',
+                enableColumnMenu: false, enableSorting: false, enableFiltering: false,
                 headerCellTemplate:
                     '<button ng-click="grid.appScope.vm.clearFilter()" class="btn btn-warning bottom" icon="fa-eraser">清除過濾</button>',
                 cellTemplate:
@@ -35,7 +39,11 @@
                     gridConstants.filterHeaderTemplate.format("paginationOptions.filters[0]", "getPage")
             },
             {
-                name: 'chartId', title: headers['chartId'],
+                name: 'status', title: headers['status'], enableFiltering: false, width: '20%',
+                cellFilter: 'codeDesc: "status": grid.appScope.vm.codes'
+            },
+            {
+                name: 'chartId', title: headers['chartId'], 
                 filterHeaderTemplate:
                     gridConstants.filterHeaderTemplate.format("paginationOptions.filters[1]", "getPage")
             },
@@ -51,6 +59,9 @@
 
         function init() {
             $scope.gridOptions.data = model.data;
+
+            // test filter:
+            var test = $filter('codeDesc')("2", "status", vm.codes);
         }
 
         function openEdit(item) {

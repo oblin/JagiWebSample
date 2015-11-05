@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Jagi.Mvc.Angular
 {
@@ -118,7 +119,7 @@ namespace Jagi.Mvc.Angular
             }
         }
 
-        public virtual void ApplyCustomizedAttributes(HtmlTag input, string attr, Dictionary<string, string> attrs = null)
+        public virtual void ApplyCustomizedAttributes(HtmlTag input, string attr, RouteValueDictionary attrs = null)
         {
             if (attrs != null)
                 foreach (var item in attrs)

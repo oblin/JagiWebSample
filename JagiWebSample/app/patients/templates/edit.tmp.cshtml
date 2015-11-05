@@ -1,6 +1,7 @@
 ﻿@model JagiWebSample.Models.PatientEditView
 @{
-    var patient = Html.Angular().ModelFor("vm.current", new FormGroupLayout(5, 7, 4));
+    var patient = Html.Angular().ModelFor("vm.current", new FormGroupLayout(4));
+    var disabled = new RouteValueDictionary(new { disabled = "disabled" });
 }
 
 <form class="form-horizontal" name="patientEditForm" ng-show="vm.current" ng-disable="vm.dataService.saving" ng-cloak>
@@ -31,9 +32,12 @@
         @patient.FormGroupFor(m => m.BeginDate)
     </div>
     <div class="row">
-        @patient.FormGroupFor(m => m.Status)
-        @patient.FormGroupFor(m => m.Idiopa)
-        @patient.FormGroupFor(m => m.Idiopathy)
+        @patient.FormGroupFor(m => m.Code, formGroupGrid: 4)
+        @patient.FormGroupFor(m => m.Status, attrs: new { disabled = "disabled" }, formGroupGrid: 6)
+    </div>
+    <div class="row">
+        @patient.FormGroupFor(m => m.Idiopa, formGroupGrid: 6)
+        @patient.FormGroupFor(m => m.Idiopathy, formGroupGrid: 6)
     </div>
     <div class="row">
         @patient.FormGroupFor(m => m.Type)
