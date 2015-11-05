@@ -4,6 +4,7 @@ using Jagi.Database.Mvc;
 using Jagi.Helpers;
 using Jagi.Interface;
 using Jagi.Utility;
+using JagiWebSample.Areas.Admin.Models;
 using JagiWebSample.Models;
 using System;
 using System.Collections.Generic;
@@ -30,37 +31,8 @@ namespace JagiWebSample.Controllers
             ViewBag.Codes = GetUIDisplayCodes();
             ViewBag.Status = GetStatusSelections(status);
             ViewBag.CurrentStatus = status;
+            ViewBag.Counties = GetAllCounties();
             return View(pagedView);
-        }
-
-        private List<SelectListItem> GetStatusSelections(string status)
-        {
-            var statusCodes = _codes.GetCodeDetails("Status").OrderBy(o => o.ItemCode);
-            var result = new List<SelectListItem> { new SelectListItem { 
-                    Selected = string.IsNullOrEmpty(status),
-                    Text = "全部",
-                    Value = ""
-                }};
-
-            foreach (var code in statusCodes)
-                result.Add(new SelectListItem
-                {
-                    Selected = code.ItemCode == status,
-                    Value = code.ItemCode,
-                    Text = code.Description
-                });
-
-            return result;
-        }
-
-        private Dictionary<string, Dictionary<string, string>> GetUIDisplayCodes()
-        {
-            Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
-            // key value 一律小寫，避免不必要的錯誤
-            result.Add("status", _codes.GetDetails("Status"));
-            result.Add("ab", _codes.GetDetails("AB"));
-
-            return result;
         }
 
         [HttpGet, OutputCache(Duration = 0)]
@@ -126,6 +98,66 @@ namespace JagiWebSample.Controllers
                 _context.SaveChanges();
                 return JsonSuccess();
             });
+        }
+
+        [HttpGet]
+        public JsonResult GetAddrByZip(string id)
+        {
+            return GetJsonResult(() =>
+            {
+                using (var context = new AdminDataContext())
+                {
+                    var result = context.Address.Where(p => p.Zip == id);
+                    if (result.Any())
+                        return new
+                        {
+                            County = result.First().County,
+                            Realm = result.First().Realm,
+                            Villages = result.Select(s => s.Street).ToArray()
+                        };
+
+                    throw new NullReferenceException("找不到此 zip: {0} 的資料".FormatWith(id));
+                }
+            });
+        }
+
+        private string[] GetAllCounties()
+        {
+            using (AdminDataContext context = new AdminDataContext())
+            {
+                var group = context.Address.GroupBy(g => g.County).Select(g => g.Key);
+                return group.ToArray();
+            }
+        }
+
+        private List<SelectListItem> GetStatusSelections(string status)
+        {
+            var statusCodes = _codes.GetCodeDetails("Status").OrderBy(o => o.ItemCode);
+            var result = new List<SelectListItem> { new SelectListItem {
+                    Selected = string.IsNullOrEmpty(status),
+                    Text = "全部",
+                    Value = ""
+                }};
+
+            foreach (var code in statusCodes)
+                result.Add(new SelectListItem
+                {
+                    Selected = code.ItemCode == status,
+                    Value = code.ItemCode,
+                    Text = code.Description
+                });
+
+            return result;
+        }
+
+        private Dictionary<string, Dictionary<string, string>> GetUIDisplayCodes()
+        {
+            Dictionary<string, Dictionary<string, string>> result = new Dictionary<string, Dictionary<string, string>>();
+            // key value 一律小寫，避免不必要的錯誤
+            result.Add("status", _codes.GetDetails("Status"));
+            result.Add("ab", _codes.GetDetails("AB"));
+
+            return result;
         }
 
         private PagedView GetPagedPatients(PageInfo pageInfo, string status)

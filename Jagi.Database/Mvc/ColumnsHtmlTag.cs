@@ -42,8 +42,8 @@ namespace Jagi.Database.Mvc
                 {
                     if (_validations == null)
                     {
-                        _validations = new PropertyRule 
-                            { PropertyName = _column.ColumnName, Rules = new Dictionary<string, dynamic>() };
+                        _validations = new PropertyRule
+                        { PropertyName = _column.ColumnName, Rules = new Dictionary<string, dynamic>() };
                     }
 
                     var displayName = GetDefaultDisplayName();
@@ -51,6 +51,7 @@ namespace Jagi.Database.Mvc
                     AddRequiredValidation(displayName);
                     AddStringLengthValidation(displayName);
                     AddNumberRangeValaidation(displayName);
+                    AddPatternValidation(displayName);
                 }
             }
         }
@@ -68,7 +69,11 @@ namespace Jagi.Database.Mvc
 
             string columnLabel = GetDefaultDisplayName();
 
-            return ComposeLabelTag(layout, columnLabel);
+            var label = ComposeLabelTag(layout, columnLabel);
+            if (string.IsNullOrEmpty(_column.Tooltips))
+                return label;
+            else
+                return label.Attr("uib-tooltip", _column.Tooltips);
         }
 
         public override HtmlTag GetInput(FormGroupType type, string value, Dictionary<string, string> selectOptions = null)
@@ -102,7 +107,7 @@ namespace Jagi.Database.Mvc
 
         protected override string GetDefaultDisplayName()
         {
-            if (!string.IsNullOrEmpty(_column.DisplayName))
+            if (_column != null && !string.IsNullOrEmpty(_column.DisplayName))
                 return _column.DisplayName;
             return base.GetDefaultDisplayName();
         }
@@ -115,6 +120,19 @@ namespace Jagi.Database.Mvc
             prefixeName[prefixeName.Length - 1] = fieldName;
 
             return string.Join(".", prefixeName);
+        }
+
+        private void AddPatternValidation(string displayName)
+        {
+            if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DisplayFormat))
+            {
+                _validations.Rules.Add(ConstantString.VALIDATION_PATTERN,
+                    new
+                    {
+                        message = ConstantString.VALIDATION_PATTERN_MESSAGE.FormatWith(displayName),
+                        parameters = _column.DisplayFormat
+                    });
+            }
         }
 
         private void AddNumberRangeValaidation(string displayName)

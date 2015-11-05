@@ -42,7 +42,7 @@ namespace JagiWebSample.Areas.Admin.Models
         [StringLength(200)]
         public string DisplayName { get; set; }
 
-        [StringLength(50)]
+        [StringLength(60)]
         public string DisplayFormat { get; set; }
 
         public decimal? MinValue { get; set; }

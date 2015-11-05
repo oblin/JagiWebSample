@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Jagi.Database;
 using Jagi.Database.Cache;
 using Jagi.Database.Mvc;
 using Jagi.Interface;
@@ -55,7 +56,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
             var tableSchema = Mapper.Map<TableSchema>(model);
             _context.TableSchema.Add(tableSchema);
-            _context.SaveChanges();
+            _context.Save();
 
             UpdateColumnCache(tableSchema);
 
@@ -86,7 +87,11 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 return View(model).WithError("找不到該筆資料，請重新操作");
 
             tableSchema = Mapper.Map<TableSchemaEditView, TableSchema>(model, tableSchema);
-            _context.SaveChanges();
+            var result = _context.Save();
+
+            if (!string.IsNullOrEmpty(result))
+                return RedirectToAction<ColumnsController>(c => c.Index(tableSchema.TableName))
+                    .WithError(result);
 
             UpdateColumnCache(tableSchema);
 

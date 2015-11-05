@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Patient";
     string currentStatus = ViewBag.CurrentStatus;
+    string[] countries = ViewBag.Counties as string[];
     List<SelectListItem> status = ViewBag.Status;
     Dictionary<string, Dictionary<string, string>> codes = ViewBag.Codes as Dictionary<string, Dictionary<string, string>>;
 }
@@ -42,16 +43,23 @@
         var savePatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Save(null)))';
         var deletePatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Delete(0)))';
 
+        var addrZipUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetAddrByZip(null)))';
+
         window.app.constant("model", {
             'paginationOptions': paginationOptions,
             'headers': @Html.JsonFor(Model.Headers),
             'data': @Html.JsonFor(Model.Data),
+            // Codes for selections
             'codes': @Html.JsonFor(codes),
             'status': '@currentStatus',
+            'countries': @Html.JsonFor(countries),
+            // Url for CRUD of Patient
             'pagedPatientsUrl': getPagedUrl,
             'getPatientUrl': getPatientUrl,
             'savePatientUrl': savePatientUrl,
             'deletePatientUrl': deletePatientUrl,
+            // Url for Processing Address
+            'addrZipUrl': addrZipUrl,
         });
     </script>
 }

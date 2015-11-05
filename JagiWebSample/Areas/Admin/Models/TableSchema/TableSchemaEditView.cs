@@ -34,6 +34,7 @@ namespace JagiWebSample.Areas.Admin.Models
 
         [Display(Name = "顯示名稱")]
         public string DisplayName { get; set; }
+        [Display(Name = "正規式檢查")]
         public string DisplayFormat { get; set; }
 
         [Display(Name = "限制最小值")]

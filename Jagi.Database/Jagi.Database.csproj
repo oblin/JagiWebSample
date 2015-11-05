@@ -91,6 +91,7 @@
     <Compile Include="Cache\ColumnsCache.cs" />
     <Compile Include="Cache\InitColumnCache.cs" />
     <Compile Include="Cache\InitCodeCache.cs" />
+    <Compile Include="EFHelper.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\CodeDetail.cs" />
     <Compile Include="Models\CodeFile.cs" />

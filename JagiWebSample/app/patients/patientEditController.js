@@ -14,6 +14,11 @@
         vm.cancel = cancel;
         vm.delete = deleteItem;
 
+        // for address
+        vm.countries = model.countries;
+        vm.realms;
+        vm.changeZip = changeZip;
+
         if ($routeParams.id == 0)
             create();
         else
@@ -25,6 +30,7 @@
             dataService.get(url + id, null, function (response) {
                 vm.origin = response.data;
                 vm.current = angular.copy(vm.origin);
+                resetAddress();
             })
         }
 
@@ -65,6 +71,31 @@
         function reset() {
             $scope.patientEditForm.$setPristine();
             $scope.patientEditForm.$setUntouched();
+        }
+
+        function changeZip(oldValue) {
+            var currentValue = $scope.patientEditForm.Mailno.$viewValue;
+            if (currentValue != oldValue) {
+                dataService.get(model.addrZipUrl + currentValue, null, function (response) {
+                    vm.current.county = response.data.county;
+                    vm.current.realm = response.data.realm;
+                    vm.current.village = "";
+                    resetAddress(response.data.realm);
+                    vm.villages = response.data.villages;
+                });
+            }
+        }
+
+        function resetAddress(realm, village) {
+            vm.realms = [];
+            realm = realm ? realm : vm.current.realm;
+            if (realm)
+                vm.realms.push(realm);
+
+            vm.villages = [];
+            village = village ? village : vm.current.village;
+            if (village)
+                vm.villages.push(village);
         }
     }
 })();

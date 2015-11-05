@@ -44,6 +44,9 @@
 
         public const string VALIDATION_MAX_VALUE = "max";
         public const string VALIDATION_MAX_MESSAGE = "【{0}】數值最大必須小於：{1}";
+
+        public const string VALIDATION_PATTERN = "pattern";
+        public const string VALIDATION_PATTERN_MESSAGE = "{0} 格式錯誤，請確認填寫正確格式";
         #endregion For Validations
     }
 }
