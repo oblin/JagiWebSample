@@ -68,3 +68,14 @@
   height: 22px;
   vertical-align: middle;
 }
+
+/* 設定 checkbox position & size */
+input[type=checkbox], input[type=radio] {
+    vertical-align: middle;
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.3); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    /*zoom: 1.3;*/
+}

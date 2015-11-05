@@ -21,32 +21,55 @@
             刪除
         </button>
     </p>
-    <div class="row">
-        @patient.FormGroupFor(m => m.Name)
-        @patient.FormGroupFor(m => m.ChartId)
-        @patient.FormGroupFor(m => m.IdCard)
-    </div>
-    <div class="row">
-        @patient.FormGroupFor(m => m.BirthDate)
-        @patient.FormGroupFor(m => m.CureDoc)
-        @patient.FormGroupFor(m => m.BeginDate)
-    </div>
-    <div class="row">
-        @patient.FormGroupFor(m => m.Code, formGroupGrid: 4)
-        @patient.FormGroupFor(m => m.Status, attrs: new { disabled = "disabled" }, formGroupGrid: 6)
-    </div>
-    <div class="row">
-        @patient.FormGroupFor(m => m.Idiopa, formGroupGrid: 6)
-        @patient.FormGroupFor(m => m.Idiopathy, formGroupGrid: 6)
-    </div>
-    <div class="row">
-        @patient.FormGroupFor(m => m.Type)
-        @patient.FormGroupFor(m => m.Sex)
-        @patient.FormGroupFor(m => m.Marry)
-    </div>
-    <div class="row">
-        @patient.FormGroupFor(m => m.Ab)
-        @patient.FormGroupFor(m => m.Educate)
-        @patient.FormGroupFor(m => m.Vocation)
-    </div>
+    <fieldset>
+        <legend><small>基本資料</small></legend>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Name)
+            @patient.FormGroupFor(m => m.ChartId)
+            @patient.FormGroupFor(m => m.BirthDate)
+        </div>
+        <div class="row">
+            @patient.FormGroupFor(m => m.IdCard)
+            @patient.FormGroupFor(m => m.IsForeign)
+        </div>
+        <div class="row">
+            @patient.FormGroupFor(m => m.CureDoc)
+            @patient.FormGroupFor(m => m.BeginDate)
+
+        </div>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Code, formGroupGrid: 4)
+            @patient.FormGroupFor(m => m.Status, attrs: new { disabled = "disabled" }, formGroupGrid: 6)
+        </div>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Idiopa, formGroupGrid: 6)
+            @patient.FormGroupFor(m => m.Idiopathy, formGroupGrid: 6)
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><small>其他</small></legend>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Type)
+            @patient.FormGroupFor(m => m.Sex)
+            @patient.FormGroupFor(m => m.Marry)
+        </div>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Ab)
+            @patient.FormGroupFor(m => m.Educate)
+            @patient.FormGroupFor(m => m.Vocation)
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><small>地址</small></legend>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Type)
+            @patient.FormGroupFor(m => m.Sex)
+            @patient.FormGroupFor(m => m.Marry)
+        </div>
+        <div class="row">
+            @patient.FormGroupFor(m => m.Ab)
+            @patient.FormGroupFor(m => m.Educate)
+            @patient.FormGroupFor(m => m.Vocation)
+        </div>
+    </fieldset>
 </form>

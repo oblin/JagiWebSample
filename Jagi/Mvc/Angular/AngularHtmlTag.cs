@@ -81,8 +81,10 @@ namespace Jagi.Mvc.Angular
                     break;
             }
 
-            input.AddClass("form-control")
-                 .Attr("name", this.Name)
+            if (input.Attr("type") != "checkbox")
+                input.AddClass("form-control");
+
+            input.Attr("name", this.Name)
                  .Attr("ng-model", this.Expression);
 
             return input;
@@ -221,7 +223,8 @@ namespace Jagi.Mvc.Angular
                     break;
             }
 
-            if (inputType == "text" && _metadata.ModelType == typeof(bool))
+            if (inputType == "text"
+                && (_metadata.ModelType == typeof(bool) || _metadata.ModelType == typeof(bool?)))
             {
                 inputType = "checkbox";
             }
@@ -280,7 +283,7 @@ namespace Jagi.Mvc.Angular
             return label;
         }
 
-        protected string GetDefaultDisplayName()
+        protected virtual string GetDefaultDisplayName()
         {
             var labelText = _metadata.DisplayName ?? this.Name.Humanize(LetterCasing.Title);
             return labelText;

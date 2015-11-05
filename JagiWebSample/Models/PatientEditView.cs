@@ -9,11 +9,16 @@ namespace JagiWebSample.Models
         public string Name { get; set; }
         public string ChartId { get; set; }
         public string IdCard { get; set; }
+        public bool? IsForeign { get; set; }
         public string BirthDate { get; set; }
         public string Sex { get; set; }
         public string Marry { get; set; }
         public string CureDoc { get; set; }
         public string Code { get; set; }
+
+        public string Idiopa { get; set; }
+        public string Idiopathy { get; set; }
+        public string Status { get; set; }
 
         // Address
         public string County0 { get; set; }
@@ -23,10 +28,8 @@ namespace JagiWebSample.Models
         public string Village { get; set; }
         public string Street { get; set; }
 
-        public string Idiopa { get; set; }
-        public string Idiopathy { get; set; }
-        public string Status { get; set; }
-
+        public string MobileNo { get; set; }
+        public string Telno { get; set; }
 
         // 健保、自費
         public string Type { get; set; }

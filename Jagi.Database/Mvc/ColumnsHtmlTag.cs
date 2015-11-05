@@ -46,7 +46,7 @@ namespace Jagi.Database.Mvc
                             { PropertyName = _column.ColumnName, Rules = new Dictionary<string, dynamic>() };
                     }
 
-                    var displayName = GetLabelFromColumns();
+                    var displayName = GetDefaultDisplayName();
                     // 將 Table Schema 定義的 validation rule 放入
                     AddRequiredValidation(displayName);
                     AddStringLengthValidation(displayName);
@@ -66,7 +66,7 @@ namespace Jagi.Database.Mvc
             if (_column == null || !string.IsNullOrEmpty(Metadata.DisplayName))
                 return base.GetLabel(layout);
 
-            string columnLabel = GetLabelFromColumns();
+            string columnLabel = GetDefaultDisplayName();
 
             return ComposeLabelTag(layout, columnLabel);
         }
@@ -100,6 +100,13 @@ namespace Jagi.Database.Mvc
             return base.GetInput(type, value, selectOptions);
         }
 
+        protected override string GetDefaultDisplayName()
+        {
+            if (!string.IsNullOrEmpty(_column.DisplayName))
+                return _column.DisplayName;
+            return base.GetDefaultDisplayName();
+        }
+
         private string GetPrefixDropdownCascade(string fieldName, HtmlTag input)
         {
             fieldName = JsonHelper.ConvertToCamelCase(fieldName);
@@ -108,19 +115,6 @@ namespace Jagi.Database.Mvc
             prefixeName[prefixeName.Length - 1] = fieldName;
 
             return string.Join(".", prefixeName);
-        }
-
-        private string GetLabelFromColumns()
-        {
-            string label = string.Empty;
-            if (!string.IsNullOrEmpty(_column.DisplayName))
-                label = _column.DisplayName;
-            else
-            {
-                label = GetDefaultDisplayName();
-            }
-
-            return label;
         }
 
         private void AddNumberRangeValaidation(string displayName)

@@ -163,39 +163,46 @@ namespace Jagi.Mvc.Angular
             if (input.HasAttr("required"))
                 formGroup.AddClass("required");
 
-            string checkOrRadioType = string.Empty;
-            if (type == FormGroupType.Checkbox || input.Attr("type") == "checkbox")
-                checkOrRadioType = "checkbox";
-            else if (type == FormGroupType.RadioButton)
-                checkOrRadioType = "radio";
+            //string checkOrRadioType = string.Empty;
+            //if (type == FormGroupType.Checkbox || input.Attr("type") == "checkbox")
+            //    checkOrRadioType = "checkbox";
+            //else if (type == FormGroupType.RadioButton)
+            //    checkOrRadioType = "radio";
 
-            if (string.IsNullOrEmpty(checkOrRadioType))
+            //if (string.IsNullOrEmpty(checkOrRadioType))
+            //{
+            //    // Default for type="text" and textarea
+            //    label = AngularLabelFor(property, layout);
+            //    if (layout != null)
+            //    {
+            //        input = AppendLayoutInputDiv(layout, input);
+            //    }
+            //    return formGroup.Append(label).Append(input);
+            //}
+            //else
+            //{
+            //    // for type="checkbox" or "radio"
+            //    if (values == null || values.Length == 0)
+            //    {
+            //        formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
+            //    }
+            //    else
+            //    {
+            //        foreach (var item in values)
+            //        {
+            //            input = AngularEditorFor(property, type, attr, attrs, options, item);
+            //            formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
+            //        }
+            //    }
+            //    return formGroup;
+            //}
+            // Default for type="text" and textarea
+            label = AngularLabelFor(property, layout);
+            if (layout != null)
             {
-                // Default for type="text" and textarea
-                label = AngularLabelFor(property, layout);
-                if (layout != null)
-                {
-                    input = AppendLayoutInputDiv(layout, input);
-                }
-                return formGroup.Append(label).Append(input);
+                input = AppendLayoutInputDiv(layout, input);
             }
-            else
-            {
-                // for type="checkbox" or "radio"
-                if (values == null || values.Length == 0)
-                {
-                    formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
-                }
-                else
-                {
-                    foreach (var item in values)
-                    {
-                        input = AngularEditorFor(property, type, attr, attrs, options, item);
-                        formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
-                    }
-                }
-                return formGroup;
-            }
+            return formGroup.Append(label).Append(input);
         }
 
         private static HtmlTag AppendLayoutInputDiv(FormGroupLayout layout, HtmlTag input)
