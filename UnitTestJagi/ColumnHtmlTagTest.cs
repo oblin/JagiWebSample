@@ -9,9 +9,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Caching;
 
 namespace UnitTestJagi
 {
@@ -125,7 +123,7 @@ namespace UnitTestJagi
             var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm");
             var htmlString = sampleModel.AngularEditorFor(x => x.EndDate).ToString();
 
-            Assert.IsTrue(htmlString.Contains("type=\"text\"")); 
+            Assert.IsTrue(htmlString.Contains("type=\"text\""));
             Assert.IsTrue(htmlString.Contains("name=\"EndDate\""));
             Assert.IsTrue(htmlString.Contains("ng-model=\"vm.endDate\""));
             Assert.IsTrue(htmlString.Contains("is-open=\"dateStatus.opened\""));
@@ -224,6 +222,9 @@ namespace UnitTestJagi
 
             Assert.IsFalse(htmlString.Contains("<option value=\"\"></option>"));
             Assert.IsFalse(htmlString.Contains("<option value=\"B1\">B1 Detail</option>"));
+
+            Assert.IsTrue(htmlString.Contains("ng-options=\"key as value for (key, value) in codedetailDropdown3\""));
+            Assert.IsTrue(htmlString.Contains("cascade-options=\"codedetailDropdown3\""));
         }
     }
 }

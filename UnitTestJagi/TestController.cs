@@ -47,6 +47,11 @@ namespace UnitTestJagi
             return JsonSuccess(SetupSample());
         }
 
+        public JsonResult GetJsonSuccessNoCamel()
+        {
+            return JsonSuccess(SetupSample(), false);
+        }
+
         public JsonResult GetJsonError()
         {
             return GetJsonResult(() =>

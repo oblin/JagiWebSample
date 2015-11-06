@@ -64,8 +64,10 @@ namespace Jagi.Database.Mvc
 
         public override HtmlTag GetLabel(FormGroupLayout layout)
         {
-            if (_column == null || !string.IsNullOrEmpty(Metadata.DisplayName))
+            if (_column == null)
                 return base.GetLabel(layout);
+            if (!string.IsNullOrEmpty(Metadata.DisplayName))
+                _column.DisplayName = Metadata.DisplayName;
 
             string columnLabel = GetDefaultDisplayName();
 
@@ -93,6 +95,10 @@ namespace Jagi.Database.Mvc
                 {
                     input = base.GetInput(FormGroupType.Dropdown, null);
                     input.Attr("dropdown-cascade", GetPrefixDropdownCascade(_column.DropdwonCascade, input));
+                    var optionsName = "codedetail" + _column.ColumnName;
+                    input.Attr("ng-options", "key as value for (key, value) in {0}"
+                        .FormatWith(optionsName));
+                    input.Attr("cascade-options", optionsName);
                 }
                 else
                 {

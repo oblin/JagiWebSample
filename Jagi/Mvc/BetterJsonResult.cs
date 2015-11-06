@@ -12,6 +12,9 @@ namespace Jagi.Mvc
     {
         public IList<string> ErrorMessages { get; private set; }
 
+        private bool _isCamelCase = true;
+        public bool IsCamelCase { get { return _isCamelCase; } set { _isCamelCase = value; } }
+
         public BetterJsonResult()
         {
             ErrorMessages = new List<string>();
@@ -68,7 +71,7 @@ namespace Jagi.Mvc
 
             if (Data == null) return;
 
-            response.Write(Data.ToJson());
+            response.Write(Data.ToJson(isCamelCase: IsCamelCase));
         }
     }
 

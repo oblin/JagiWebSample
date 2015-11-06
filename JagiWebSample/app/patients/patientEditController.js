@@ -8,6 +8,8 @@
         var vm = this;
         vm.dataService = dataService;
 
+        vm.test = "test";
+
         vm.origin;
         vm.current;
         vm.save = save;

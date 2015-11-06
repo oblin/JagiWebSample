@@ -93,6 +93,17 @@
                 });
         }
 
+        /**
+         * 提供 CodeCache 的標準讀取方案（這裡直接設定好 code read url，因此專案必須要配合）
+         * @param {string} code: parent code name, ex: "Sex"
+         * @param {string} code: parent code value, ex: Male
+         * @param {function} success: 回傳值客戶端必須要自行處理
+         */
+        self.getCodeDetails = function (code, value, success) {
+            var url = "/Admin/Codes/GetDetail/";
+            self.get(url, { code: code, value: value }, success);
+        }
+
         return this;
     })
 

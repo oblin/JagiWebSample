@@ -32,14 +32,16 @@ namespace Jagi.Mvc.Helpers
         /// <param name="obj">任意物件</param>
         /// <param name="includeNull">是否將 null 轉入預設 true，如果不要將 null 轉入，則會沒有 null 值的屬性</param>
         /// <returns></returns>
-        public static string ToJson<T>(this T obj, bool includeNull = true)
+        public static string ToJson<T>(this T obj, bool isCamelCase = true, bool includeNull = true)
         {
             var settings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 Converters = new JsonConverter[] { new StringEnumConverter() },
                 NullValueHandling = includeNull ? NullValueHandling.Include : NullValueHandling.Ignore
             };
+
+            if (isCamelCase)
+                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
             return JsonConvert.SerializeObject(obj, settings);
         }

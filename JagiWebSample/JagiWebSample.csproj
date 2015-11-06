@@ -257,6 +257,7 @@
     <Content Include="app\adminCodes\codeEditDirective.js" />
     <Content Include="app\adminCodes\codeService.js" />
     <Content Include="app\adminSchema\schemaController.js" />
+    <Content Include="app\directives\dropdownCascadeDirective.js" />
     <Content Include="app\directives\mvcGridDirective.js" />
     <Content Include="app\directives\showErrorsDirective.js" />
     <Content Include="app\filters\jagiFilters.js" />

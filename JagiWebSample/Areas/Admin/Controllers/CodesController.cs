@@ -120,5 +120,13 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
             return JsonSuccess();
         }
+
+        [HttpGet]
+        public JsonResult GetDetail(string code, string value)
+        {
+            return GetJsonResult(() => {
+                return _codeCache.GetDetails(code, value);
+            }, isCamelCase: false);
+        }
     }
 }

@@ -103,6 +103,28 @@ namespace UnitTestJagi
         }
 
         [TestMethod]
+        public void Test_BetterJsonResult_NoCamelCase_Result()
+        {
+            request.QueryString.Returns(new NameValueCollection { { "x", "TestQString" } });
+            request.Form.Returns(new NameValueCollection { { "y", "TestDate" } });
+
+            var controller = SetupController();
+            var result = controller.GetJsonSuccessNoCamel();
+
+            var response = controller.ControllerContext.HttpContext.Response;
+            string responseWrite = string.Empty;
+            response.Write(Arg.Do<string>(x => responseWrite = x));
+
+            result.ExecuteResult(controller.ControllerContext);
+
+            Assert.IsFalse(string.IsNullOrEmpty(responseWrite));
+
+            var resultObject = JsonConvert.DeserializeObject<dynamic>(responseWrite);
+            Assert.AreEqual("TestQString", (string)resultObject.Text);
+            Assert.AreEqual(1, (int)resultObject.Number);
+        }
+
+        [TestMethod]
         public void Test_Standard_JsonResult_Array_Result()
         {
             SetupRequestCollection();

@@ -64,20 +64,28 @@
         <div class="row">
             @patient.FormGroupFor(m => m.MobileNo)
             @patient.FormGroupFor(m => m.Telno)
+            
+                @*Test for dropdownCascadeDirective
+
+                <h3>{{vm.current.idiopathy}}</h3>
+                <select ng-model="vm.current.idiopathy" dropdown-cascade="vm.current.idiopa"
+                        cascade-options="codedetailidiopathy" name="Idiopathy"
+                        ng-options="k as v for (k,v) in codedetailidiopathy"></select>*@
+
         </div>
         <div class="row">
             @patient.FormGroupFor(m => m.Mailno, new { ng_blur = "vm.changeZip(vm.current.mailno)", ng_model_options = "{ updateOn: 'blur', debounce:0 }" })
             <div class="form-group col-sm-4">
                 <label class="control-label col-sm-6">縣市</label>
                 <div class="col-sm-6">
-                    <select class="form-control" ng-model="vm.current.county" ng-options="item for item in vm.countries" 
+                    <select class="form-control" ng-model="vm.current.county" ng-options="item for item in vm.countries"
                             ng-change="vm.changeCounty(vm.current.county)"></select>
                 </div>
             </div>
             <div class="form-group col-sm-4">
                 <label class="control-label col-sm-6">鄉鎮</label>
                 <div class="col-sm-6">
-                    <select class="form-control" ng-model="vm.current.realm" ng-options="item for item in vm.realms" 
+                    <select class="form-control" ng-model="vm.current.realm" ng-options="item for item in vm.realms"
                             ng-change="vm.changeRealm(vm.current.realm)"></select>
                 </div>
             </div>
@@ -86,7 +94,7 @@
             <div class="form-group col-sm-4">
                 <label class="control-label col-sm-6">區</label>
                 <div class="col-sm-6">
-                    <select class="form-control" ng-model="vm.current.village" ng-options="item for item in vm.villages" 
+                    <select class="form-control" ng-model="vm.current.village" ng-options="item for item in vm.villages"
                             ng-change="vm.changeVillage(vm.current.village)"></select>
                 </div>
             </div>

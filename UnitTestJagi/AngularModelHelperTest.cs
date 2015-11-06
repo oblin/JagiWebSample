@@ -273,72 +273,68 @@ namespace UnitTestJagi
         [TestMethod]
         public void Test_Angular_FormGroupFor_Checkbox()
         {
+            // Checkbox 跟  Input 一樣
             var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
-            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese).ToString();
-            /// <div class="checkbox">
-            ///     <label><input type="checkbox" value="perkCar" 
-            ///               ng-model="editableEmployee.perkCar"/>Company Car</label>
-            /// </div>
-            Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\""));
-            Assert.IsTrue(htmlString.Contains("<label><input value=\"true\" type=\"checkbox\""));
-
-            htmlString = sampleModel.FormGroupFor(x => x.IsChinese, value: "CheckboxValue").ToString();
-            Assert.IsTrue(htmlString.Contains("<label><input value=\"CheckboxValue\" type=\"checkbox\""));
+            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, value: "CheckboxValue").ToString();
+            Assert.IsTrue(htmlString.Contains("label for=\"IsChinese\""));
+            Assert.IsTrue(htmlString.Contains("ng-model=\"vm.sample.isChinese\""));
+            Assert.IsTrue(htmlString.Contains("type=\"checkbox\""));
         }
 
-        [TestMethod]
-        public void Test_Angular_FormGroupFor_Checkbox_MultiValues()
-        {
-            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
-            var values = SetValues();
-            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, values: values).ToString();
+        //[TestMethod]
+        //public void Test_Angular_FormGroupFor_Checkbox_MultiValues()
+        //{
+        //    var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+        //    var values = SetValues();
+        //    var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, values: values).ToString();
 
-            /// <div form-group-validation="IsChinese" class="form-group has-feedback">
-            ///    <div class="checkbox">
-            ///      <label>
-            ///        <input value="True" type="checkbox" name="IsChinese" ng-model="vm.sample.isChinese" class="form-control" />
-            ///      </label>
-            ///    </div>
-            ///    <div class="checkbox">
-            ///      <label>
-            ///        <input value="False" type="checkbox" name="IsChinese" ng-model="vm.sample.isChinese" class="form-control" />
-            ///      </label>
-            ///    </div>
-            /// </div>
-            Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[0] + "\" type=\"checkbox\""));
-            Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[1] + "\" type=\"checkbox\""));
-        }
+        //    /// <div form-group-validation="IsChinese" class="form-group has-feedback">
+        //    ///    <div class="checkbox">
+        //    ///      <label>
+        //    ///        <input value="True" type="checkbox" name="IsChinese" ng-model="vm.sample.isChinese" class="form-control" />
+        //    ///      </label>
+        //    ///    </div>
+        //    ///    <div class="checkbox">
+        //    ///      <label>
+        //    ///        <input value="False" type="checkbox" name="IsChinese" ng-model="vm.sample.isChinese" class="form-control" />
+        //    ///      </label>
+        //    ///    </div>
+        //    /// </div>
+        //    Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[0] + "\" type=\"checkbox\""));
+        //    Assert.IsTrue(htmlString.Contains("<div class=\"checkbox\"><label><input value=\"" + values[1] + "\" type=\"checkbox\""));
+        //}
 
-        [TestMethod]
-        public void Test_Angular_FormGroupFor_RadioButton()
-        {
-            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
-            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, 
-                type: FormGroupType.RadioButton).ToString();
-            /// <div class="radio">
-            ///     <label><input type="radio" value="perkCar" 
-            ///               ng-model="editableEmployee.perkCar"/>Company Car</label>
-            /// </div>
-            Assert.IsTrue(htmlString.Contains("<div class=\"radio\""));
-            Assert.IsTrue(htmlString.Contains("<label><input value=\"true\" type=\"radio\""));
+        //[TestMethod]
+        //public void Test_Angular_FormGroupFor_RadioButton()
+        //{
+        //    // 尚未決定好如何測試，基本上如果有此需求，會建議直接寫 html 語法
+        //    var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+        //    var htmlString = sampleModel.FormGroupFor(x => x.IsChinese, 
+        //        type: FormGroupType.RadioButton).ToString();
+        //    /// <div class="radio">
+        //    ///     <label><input type="radio" value="perkCar" 
+        //    ///               ng-model="editableEmployee.perkCar"/>Company Car</label>
+        //    /// </div>
+        //    Assert.IsTrue(htmlString.Contains("<div class=\"radio\""));
+        //    Assert.IsTrue(htmlString.Contains("<label><input value=\"true\" type=\"radio\""));
 
-            htmlString = sampleModel.FormGroupFor(x => x.IsChinese, 
-                type: FormGroupType.RadioButton, 
-                value: "CheckboxValue").ToString();
-            Assert.IsTrue(htmlString.Contains("<label><input value=\"CheckboxValue\" type=\"radio\""));
-        }
+        //    htmlString = sampleModel.FormGroupFor(x => x.IsChinese, 
+        //        type: FormGroupType.RadioButton, 
+        //        value: "CheckboxValue").ToString();
+        //    Assert.IsTrue(htmlString.Contains("<label><input value=\"CheckboxValue\" type=\"radio\""));
+        //}
 
-        [TestMethod]
-        public void Test_Angular_FormGroupFor_RadioButton_Multi()
-        {
-            var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
-            var values = SetValues();
-            var htmlString = sampleModel.FormGroupFor(x => x.IsChinese,
-                type: FormGroupType.RadioButton, values: values).ToString();
+        //[TestMethod]
+        //public void Test_Angular_FormGroupFor_RadioButton_Multi()
+        //{
+        //    var sampleModel = sampleHtmlHelper.Angular().ModelFor("vm.sample");
+        //    var values = SetValues();
+        //    var htmlString = sampleModel.FormGroupFor(x => x.IsChinese,
+        //        type: FormGroupType.RadioButton, values: values).ToString();
 
-            Assert.IsTrue(htmlString.Contains("<div class=\"radio\"><label><input value=\"" + values[0] + "\" type=\"radio\""));
-            Assert.IsTrue(htmlString.Contains("<div class=\"radio\"><label><input value=\"" + values[1] + "\" type=\"radio\""));
-        }
+        //    Assert.IsTrue(htmlString.Contains("<div class=\"radio\"><label><input value=\"" + values[0] + "\" type=\"radio\""));
+        //    Assert.IsTrue(htmlString.Contains("<div class=\"radio\"><label><input value=\"" + values[1] + "\" type=\"radio\""));
+        //}
 
         [TestMethod]
         public void Test_Angular_LabelFor()

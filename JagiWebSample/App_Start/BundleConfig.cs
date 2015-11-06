@@ -40,6 +40,7 @@ namespace JagiWebSample
                     "~/app/directives/showErrorsDirective.js",
                     "~/app/directives/preventDefault.js",
                     "~/app/directives/iconDirective.js",
+                    "~/app/directives/dropdownCascadeDirective.js",
                     "~/app/directives/clickConfirm.js",
                     "~/app/directives/InputValidationIconsDirective.js",
                     "~/app/directives/FormGroupValidationDirective.js",

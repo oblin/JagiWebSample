@@ -113,13 +113,13 @@ namespace Jagi.Database.Cache
 
         /// <summary>
         /// 取得 CodeFile 所有的 Detail 用 CodeMapper 呈現
+        /// 注意大小寫必須要一致
         /// </summary>
         /// <param name="itemType"></param>
         /// <param name="parentCode"></param>
         /// <returns></returns>
         public IEnumerable<CodeMapper> GetCodeDetails(string itemType, string parentCode = null)
         {
-            // 一律轉換成大寫，避免不必要的拼字錯誤
             itemType = itemType.ToUpper();
             var key = string.Empty;
             if (string.IsNullOrEmpty(parentCode))
@@ -127,7 +127,7 @@ namespace Jagi.Database.Cache
                 key = "=" + itemType + ".";
             }
             else
-                key = itemType.ToUpper() + "." + parentCode.ToUpper() + ".";
+                key = itemType + "." + parentCode + ".";
             var result = GetAll().Where(k => k.Key.Contains(key)).Select(s => (CodeMapper)s.Value);
 
             return result;
@@ -135,10 +135,9 @@ namespace Jagi.Database.Cache
 
         private string GetKeyCode(string itemType, string itemCode, string parentCode)
         {
-            // 一律轉換成大寫，避免不必要的拼字錯誤
             return itemType.ToUpper() + "."
-                + (string.IsNullOrEmpty(parentCode) ? "NULL" : parentCode.ToUpper()) + "."
-                + KEY_DETAIL_CODE + itemCode.ToUpper();
+                + (string.IsNullOrEmpty(parentCode) ? "NULL" : parentCode) + "."
+                + KEY_DETAIL_CODE + itemCode;
         }
     }
 

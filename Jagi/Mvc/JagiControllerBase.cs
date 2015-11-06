@@ -52,9 +52,9 @@ namespace Jagi.Mvc
             return result;
         }
 
-        protected BetterJsonResult JsonSuccess<T>(T data)
+        protected BetterJsonResult JsonSuccess<T>(T data, bool isCamelCase = true)
         {
-            var result = new BetterJsonResult<T> { Data = data };
+            var result = new BetterJsonResult<T> { Data = data, IsCamelCase = isCamelCase };
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
 
             Response.StatusCode = (int)HttpStatusCode.OK;

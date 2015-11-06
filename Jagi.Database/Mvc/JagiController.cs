@@ -47,13 +47,14 @@ namespace Jagi.Database.Mvc
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="codetoExecute"></param>
+        /// <param name="isCamelCase">是否轉換小寫，預設 true </param>
         /// <returns></returns>
-        protected BetterJsonResult GetJsonResult<T>(Func<T> codetoExecute)
+        protected BetterJsonResult GetJsonResult<T>(Func<T> codetoExecute, bool isCamelCase = true)
         {
             try
             {
                 T result = codetoExecute.Invoke();
-                return JsonSuccess(result);
+                return JsonSuccess(result, isCamelCase);
             }
             catch (DbEntityValidationException dbEx)
             {
