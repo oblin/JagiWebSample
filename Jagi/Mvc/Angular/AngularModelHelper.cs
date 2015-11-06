@@ -160,49 +160,24 @@ namespace Jagi.Mvc.Angular
             HtmlTag label = null;
             HtmlTag input = AngularEditorFor(property, type, attr, attrs, options, value);
 
-            if (input.HasAttr("required"))
-                formGroup.AddClass("required");
+            if (InputHasRquiredAttr(input))
+                formGroup.AddClass(ConstantString.VALIDATION_REQUIRED_FIELD);
 
-            //string checkOrRadioType = string.Empty;
-            //if (type == FormGroupType.Checkbox || input.Attr("type") == "checkbox")
-            //    checkOrRadioType = "checkbox";
-            //else if (type == FormGroupType.RadioButton)
-            //    checkOrRadioType = "radio";
-
-            //if (string.IsNullOrEmpty(checkOrRadioType))
-            //{
-            //    // Default for type="text" and textarea
-            //    label = AngularLabelFor(property, layout);
-            //    if (layout != null)
-            //    {
-            //        input = AppendLayoutInputDiv(layout, input);
-            //    }
-            //    return formGroup.Append(label).Append(input);
-            //}
-            //else
-            //{
-            //    // for type="checkbox" or "radio"
-            //    if (values == null || values.Length == 0)
-            //    {
-            //        formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
-            //    }
-            //    else
-            //    {
-            //        foreach (var item in values)
-            //        {
-            //            input = AngularEditorFor(property, type, attr, attrs, options, item);
-            //            formGroup = AppendCheckboxOrRadio(formGroup, input, checkOrRadioType);
-            //        }
-            //    }
-            //    return formGroup;
-            //}
-            // Default for type="text" and textarea
             label = AngularLabelFor(property, layout);
             if (layout != null)
             {
                 input = AppendLayoutInputDiv(layout, input);
             }
             return formGroup.Append(label).Append(input);
+        }
+
+        private static bool InputHasRquiredAttr(HtmlTag input)
+        {
+            if (input.HasAttr(ConstantString.VALIDATION_REQUIRED_FIELD))
+                return true;
+            foreach (var child in input.Children)
+                return InputHasRquiredAttr(child);
+            return false;
         }
 
         private static HtmlTag AppendLayoutInputDiv(FormGroupLayout layout, HtmlTag input)

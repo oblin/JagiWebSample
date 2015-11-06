@@ -9,6 +9,7 @@ using Jagi.Mvc.Angular;
 using JagiWebSample.Models;
 using Jagi.Database.Mvc;
 using Jagi.Interface;
+using JagiWebSample.Utility;
 
 namespace JagiWebSample.App_Start
 {
@@ -52,13 +53,16 @@ namespace JagiWebSample.App_Start
             container.RegisterInstance(typeof(EmailSetting), setting);
 
             // Setup Angular Html Tag Provider
-            container.RegisterInstance(typeof(AngularHtmlTag), new ColumnsHtmlTag());
+            container.RegisterInstance(typeof(AngularHtmlTag), new EntityHtmlTag());
 
             ExecuteStartupTasks(container);
 
             // Setup Crypto Service Provider
             var cryptoSetting = new CryptoSetting("Ers@Hope", "jagi@Excelsi0r");
             container.RegisterInstance(cryptoSetting);
+
+            // Setup TableValue
+            container.RegisterType<TableValue>(new PerRequestLifetimeManager());
 
             UnityServiceLocator locator = new UnityServiceLocator(container);
             ServiceLocator.SetLocatorProvider(() => locator);

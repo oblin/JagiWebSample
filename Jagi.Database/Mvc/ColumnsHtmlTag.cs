@@ -5,12 +5,9 @@ using Jagi.Interface;
 using Jagi.Mvc;
 using Jagi.Mvc.Angular;
 using Jagi.Mvc.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using System;
 
 namespace Jagi.Database.Mvc
 {
@@ -83,32 +80,33 @@ namespace Jagi.Database.Mvc
             if (_column == null || type != FormGroupType.Default)
                 return base.GetInput(type, value, selectOptions);
 
-            // 只處理 FormGroupType.Default 情況，避免使用者直接在畫面上指定
             if (_column.DataType == FieldType.Int32 || _column.DataType == FieldType.Decimal)
             {
+                // For number type input
                 return base.GetInput(FormGroupType.Number, null, null);
             }
             if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DropdwonKey))
             {
-                HtmlTag input;
-                if (!string.IsNullOrEmpty(_column.DropdwonCascade))
-                {
-                    input = base.GetInput(FormGroupType.Dropdown, null);
-                    input.Attr("dropdown-cascade", GetPrefixDropdownCascade(_column.DropdwonCascade, input));
-                    var optionsName = "codedetail" + _column.ColumnName;
-                    input.Attr("ng-options", "key as value for (key, value) in {0}"
-                        .FormatWith(optionsName));
-                    input.Attr("cascade-options", optionsName);
-                }
-                else
-                {
-                    var options = _codes.GetDetails(_column.DropdwonKey);
-                    input = base.GetInput(FormGroupType.Dropdown, null, options);
-                }
-
-                return input;
+                HtmlTag input = ProcessDropdownFor();
+                if (input != null)
+                    return input;
+            }
+            if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.ValueforTable))
+            {
+                HtmlTag input = ProcessValueFor();
+                if (input != null)
+                    return input;
             }
             return base.GetInput(type, value, selectOptions);
+        }
+
+        public override void ApplyValidationToInput(HtmlTag input)
+        {
+            base.ApplyValidationToInput(input);
+            if (!_column.Nullable && !input.HasAttr(ConstantString.VALIDATION_REQUIRED_FIELD))
+            {
+                input.Attr(ConstantString.VALIDATION_REQUIRED_FIELD, "");
+            }
         }
 
         protected override string GetDefaultDisplayName()
@@ -116,6 +114,46 @@ namespace Jagi.Database.Mvc
             if (_column != null && !string.IsNullOrEmpty(_column.DisplayName))
                 return _column.DisplayName;
             return base.GetDefaultDisplayName();
+        }
+
+        protected HtmlTag ProcessValueFor()
+        {
+            HtmlTag input = null;
+            if (!string.IsNullOrEmpty(_column.ValueforValue) && !string.IsNullOrEmpty(_column.ValueforKey))
+            {
+                Dictionary<string, string> options = GetTableOptions(_column.ValueforTable, _column.ValueforKey, _column.ValueforValue, _column.Valuefor);
+                if (options != null && options.Count > 0)
+                {
+                    input = base.GetInput(FormGroupType.Dropdown, null, options);                    
+                }
+            }
+            return input;
+        }
+
+        protected virtual Dictionary<string, string> GetTableOptions(string valueforTable, string valueforKey, string valueforValue, string valueFor)
+        {
+            return new Dictionary<string, string>();
+        }
+
+        private HtmlTag ProcessDropdownFor()
+        {
+            HtmlTag input = null;
+            if (!string.IsNullOrEmpty(_column.DropdwonCascade))
+            {
+                input = base.GetInput(FormGroupType.Dropdown, null);
+                input.Attr("dropdown-cascade", GetPrefixDropdownCascade(_column.DropdwonCascade, input));
+                var optionsName = "codedetail" + _column.ColumnName;
+                input.Attr("ng-options", "key as value for (key, value) in {0}"
+                    .FormatWith(optionsName));
+                input.Attr("cascade-options", optionsName);
+            }
+            else
+            {
+                var options = _codes.GetDetails(_column.DropdwonKey);
+                input = base.GetInput(FormGroupType.Dropdown, null, options);
+            }
+
+            return input;
         }
 
         private string GetPrefixDropdownCascade(string fieldName, HtmlTag input)

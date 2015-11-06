@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace JagiWebSample.Models
@@ -12,6 +13,13 @@ namespace JagiWebSample.Models
         public DataContext(string connectionString) : base(connectionString) {}
 
         public DbSet<Patient> Patients { get; set; }
+
+        public DbSet Set(string name)
+        {
+            var nameSpace = this.GetType().Namespace;
+            Type type = Type.GetType(nameSpace + "." + name);
+            return base.Set(type);
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

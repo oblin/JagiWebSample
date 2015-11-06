@@ -30,7 +30,7 @@
         #endregion For Jagi.Mvc.Razor
 
         #region For Validations
-        public const string VALIDATION_REQUIRED_FIELD = "required";
+        public const string VALIDATION_REQUIRED_FIELD = "required"; 
         public const string VALIDATION_REQUIRED_MESSAGE = "【{0}】必須要輸入";
 
         public const string VALIDATION_MINLENGTH_FIELD = "minlength";

@@ -23,7 +23,7 @@
     </p>
     <fieldset>
         <legend><small>基本資料</small></legend>
-        <div class="row">
+        <div class="row" >
             @patient.FormGroupFor(m => m.Name)
             @patient.FormGroupFor(m => m.ChartId)
             @patient.FormGroupFor(m => m.BirthDate)
@@ -39,7 +39,7 @@
         </div>
         <div class="row">
             @patient.FormGroupFor(m => m.Code, formGroupGrid: 4)
-            @patient.FormGroupFor(m => m.Status, attrs: new { disabled = "disabled" }, formGroupGrid: 6)
+            @patient.FormGroupFor(m => m.Status, attrs: new { ng_disable = "vm.current.id > 0" }, formGroupGrid: 6)
         </div>
         <div class="row">
             @patient.FormGroupFor(m => m.Idiopa, formGroupGrid: 6)
