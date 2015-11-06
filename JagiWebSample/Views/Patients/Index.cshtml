@@ -44,6 +44,9 @@
         var deletePatientUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.Delete(0)))';
 
         var addrZipUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetAddrByZip(null)))';
+        var addrCountyUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetAddrByCounty(null)))';
+        var addrRealmUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetAddrByRealm(null)))';
+        var addrVillageUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetAddrByVillage(null, null,null)))';
 
         window.app.constant("model", {
             'paginationOptions': paginationOptions,
@@ -60,6 +63,9 @@
             'deletePatientUrl': deletePatientUrl,
             // Url for Processing Address
             'addrZipUrl': addrZipUrl,
+            'addrCountyUrl': addrCountyUrl,
+            'addrRealmUrl': addrRealmUrl,
+            'addrVillageUrl': addrVillageUrl,
         });
     </script>
 }

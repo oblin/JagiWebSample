@@ -17,7 +17,10 @@
         // for address
         vm.countries = model.countries;
         vm.realms;
+        vm.changeCounty = changeCounty;
         vm.changeZip = changeZip;
+        vm.changeRealm = changeRealm;
+        vm.changeVillage = changeVillage;
 
         if ($routeParams.id == 0)
             create();
@@ -82,20 +85,63 @@
                     vm.current.village = "";
                     resetAddress(response.data.realm);
                     vm.villages = response.data.villages;
+                    resetCurrentAddress();
                 });
             }
         }
 
-        function resetAddress(realm, village) {
+        function changeCounty(county) {
+            if (county) {
+                dataService.get(model.addrCountyUrl + county, null, function (response) {
+                    resetAddress();
+                    vm.realms = response.data.realms;
+                    //vm.villages = response.data.villages;
+                    resetCurrentAddress()
+                });
+            }
+        }
+
+        function changeRealm(realm) {
+            if (realm) {
+                dataService.get(model.addrRealmUrl + realm, null, function (response) {
+                    vm.villages = response.data.villages;
+                });
+            }
+        }
+
+        function changeVillage(village) {
+            if (village) {
+                var addr = { county: vm.current.county, realm: vm.current.realm, village: vm.current.village };
+                dataService.get(model.addrVillageUrl, addr, function (response) {
+                    vm.current.mailno = response.data.zip;
+                })
+            }
+        }
+
+        /**
+         * 檢查 vm.current address 是否在 vm.realms & vm.villages，如果不是，則將其清空
+         */
+        function resetCurrentAddress() {
+            if (vm.realms.indexOf(vm.current.realm) < 0)
+                vm.current.realm = "";
+            if (vm.villages.indexOf(vm.current.village) < 0)
+                vm.current.village = "";
+        }
+
+        /**
+         * 將 vm.realms & villages 的選項清空；但如果 vm.current 對應的 address 是有數值，則將
+         * 其放入到 vm.realms & villages 中，可以正常顯示
+         * @param {type} realm
+         * @param {type} village
+         */
+        function resetAddress() {
             vm.realms = [];
-            realm = realm ? realm : vm.current.realm;
-            if (realm)
-                vm.realms.push(realm);
+            if (vm.current.realm)
+                vm.realms.push(vm.current.realm);
 
             vm.villages = [];
-            village = village ? village : vm.current.village;
-            if (village)
-                vm.villages.push(village);
+            if (vm.current.village)
+                vm.villages.push(vm.current.village);
         }
     }
 })();

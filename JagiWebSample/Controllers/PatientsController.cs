@@ -121,6 +121,76 @@ namespace JagiWebSample.Controllers
             });
         }
 
+        [HttpGet]
+        public JsonResult GetAddrByCounty(string id)
+        {
+            return GetJsonResult(() =>
+            {
+                using (var context = new AdminDataContext())
+                {
+                    var result = context.Address.Where(p => p.County == id);
+                    if (result.Any())
+                    {
+                        var realms = result.GroupBy(g => g.Realm).Select(s => s.Key).ToArray();
+                        return new
+                        {
+                            County = result.First().County,
+                            Realms = realms,
+                            Villages = result.Select(s => s.Street).ToArray()
+                        };
+                    }
+
+                    throw new NullReferenceException("找不到此 county: {0} 的資料".FormatWith(id));
+                }
+            });
+        }
+
+        [HttpGet]
+        public JsonResult GetAddrByRealm(string id)
+        {
+            return GetJsonResult(() =>
+            {
+                using (var context = new AdminDataContext())
+                {
+                    var result = context.Address.Where(p => p.Realm == id);
+                    if (result.Any())
+                    {
+                        return new
+                        {
+                            Villages = result.Select(s => s.Street).ToArray()
+                        };
+                    }
+
+                    throw new NullReferenceException("找不到此 realm: {0} 的資料".FormatWith(id));
+                }
+            });
+        }
+
+        [HttpGet]
+        public JsonResult GetAddrByVillage(string county, string realm, string village)
+        {
+            return GetJsonResult(() =>
+            {
+                using (var context = new AdminDataContext())
+                {
+                    var result = context.Address
+                                    .Where(p => p.Realm == realm && p.County == county && p.Street == village);
+
+                    if (result.Any())
+                    {
+                        if (result.Count() > 1)
+                            throw new IndexOutOfRangeException("Street: {0} 傳回的 zip 大於 1".FormatWith(village));
+                        return new
+                        {
+                            zip = result.First().Zip
+                        };
+                    }
+
+                    throw new NullReferenceException("找不到此 Village: {0} 的資料".FormatWith(village));
+                }
+            });
+        }
+
         private string[] GetAllCounties()
         {
             using (AdminDataContext context = new AdminDataContext())

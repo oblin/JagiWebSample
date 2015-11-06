@@ -36,12 +36,13 @@ namespace Jagi.Mvc
                 throw new ArgumentNullException("context");
             }
 
-            if (JsonRequestBehavior == JsonRequestBehavior.DenyGet &&
-                "GET".Equals(context.HttpContext.Request.HttpMethod, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidOperationException(
-                    "GET access is not allowed.  Change the JsonRequestBehavior if you need GET access.");
-            }
+            // 這段有問題，如果是 JsonError 會進入這裡的 Excpetion，造成無法正確顯示錯誤訊息
+            //if (JsonRequestBehavior == JsonRequestBehavior.DenyGet &&
+            //    "GET".Equals(context.HttpContext.Request.HttpMethod, StringComparison.OrdinalIgnoreCase))
+            //{
+            //    throw new InvalidOperationException(
+            //        "GET access is not allowed.  Change the JsonRequestBehavior if you need GET access.");
+            //}
 
             var response = context.HttpContext.Response;
             response.ContentType = string.IsNullOrEmpty(ContentType) ? "application/json" : ContentType;
