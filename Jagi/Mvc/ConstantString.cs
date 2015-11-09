@@ -48,5 +48,7 @@
         public const string VALIDATION_PATTERN = "pattern";
         public const string VALIDATION_PATTERN_MESSAGE = "{0} 格式錯誤，請確認填寫正確格式";
         #endregion For Validations
+
+        public const string UNAUTHORIZED_ACCESS_EXCEPTION = "使用者尚未登入，或者登入名稱存取錯誤，無法進行資料存取";
     }
 }

@@ -239,7 +239,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataAccessLog.cs" />
+    <Compile Include="Models\PatientEntity.cs" />
+    <Compile Include="Utility\CurrentRequest.cs" />
     <Compile Include="Utility\EntityHtmlTag.cs" />
+    <Compile Include="Utility\RetrieveLogAttribute.cs" />
     <Compile Include="Utility\TableValue.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DataContext.cs" />

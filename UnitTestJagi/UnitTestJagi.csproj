@@ -180,7 +180,6 @@
     <Compile Include="EmailTest.cs" />
     <Compile Include="MetadataTest.cs" />
     <Compile Include="CodeCacheTest.cs" />
-    <Compile Include="UserControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

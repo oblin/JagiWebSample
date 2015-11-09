@@ -6,6 +6,7 @@ using Jagi.Interface;
 using Jagi.Utility;
 using JagiWebSample.Areas.Admin.Models;
 using JagiWebSample.Models;
+using JagiWebSample.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace JagiWebSample.Controllers
             _codes = new CodeCache();
         }
 
+        [RetrieveLog]
         public ActionResult Index(PageInfo pageInfo = null, string status = null)
         {
             PagedView pagedView = GetPagedPatients(pageInfo, status);
@@ -35,7 +37,7 @@ namespace JagiWebSample.Controllers
             return View(pagedView);
         }
 
-        [HttpGet, OutputCache(Duration = 0)]
+        [HttpGet, RetrieveLog, OutputCache(Duration = 0)]
         public JsonResult GetPaged(PageInfo pageInfo, string status = null)
         {
             return GetJsonResult(() =>
@@ -80,7 +82,7 @@ namespace JagiWebSample.Controllers
 
             return GetJsonResult(() =>
             {
-                _context.SaveChanges();
+                _context.Save();
                 return patient;
             });
         }
@@ -95,7 +97,7 @@ namespace JagiWebSample.Controllers
             return GetJsonResult(() =>
             {
                 _context.Patients.Remove(patient);
-                _context.SaveChanges();
+                _context.Save();
                 return JsonSuccess();
             });
         }
@@ -325,7 +327,7 @@ namespace JagiWebSample.Controllers
 
             return GetActionResult(() =>
             {
-                _context.SaveChanges();
+                _context.Save();
                 return View("Info");
             });
         }

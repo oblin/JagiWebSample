@@ -10,6 +10,7 @@ using JagiWebSample.Models;
 using Jagi.Database.Mvc;
 using Jagi.Interface;
 using JagiWebSample.Utility;
+using JagiWebSample.Controllers;
 
 namespace JagiWebSample.App_Start
 {
@@ -46,7 +47,11 @@ namespace JagiWebSample.App_Start
 
             container.RegisterType<AdminDataContext>(new PerRequestLifetimeManager());
             string connection = @"Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-JagiWebSample-20150929115454.mdf;Initial Catalog=aspnet-JagiWebSample-20150929115454;Integrated Security=True";
-            container.RegisterType<DataContext>(new PerRequestLifetimeManager(), new InjectionConstructor(connection));
+            container.RegisterType<DataContext>(new PerRequestLifetimeManager(), 
+                new InjectionConstructor(connection, new CurrentRequest()));
+
+            // Setup AccountController 使用無參數版本，讓 Owin 自行協助注入
+            container.RegisterType<AccountController>(new InjectionConstructor());
 
             // Setup Email Provider
             EmailSetting setting = new EmailSetting { Email = "redmine.excelsior@gmail.com", Password = "490910490910" };

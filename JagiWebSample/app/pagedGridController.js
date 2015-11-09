@@ -31,6 +31,7 @@
             useExternalPagination: true,
             useExternalSorting: true,
             enableFiltering: true,
+            enableColumnMenus: false,
             columnDefs: [],
             onRegisterApi: function (gridApi) {
                 $scope.gridApi = gridApi;

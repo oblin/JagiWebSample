@@ -24,10 +24,11 @@
         $scope.paginationOptions.status = vm.status;
 
         var headers = model.headers;
+
         $scope.gridOptions.columnDefs = [
             {
                 name: 'edit', displayName: '', width: '10%',
-                enableColumnMenu: false, enableSorting: false, enableFiltering: false,
+                enableSorting: false, enableFiltering: false,
                 headerCellTemplate:
                     '<button ng-click="grid.appScope.vm.clearFilter()" class="btn btn-warning bottom" icon="fa-eraser">清除過濾</button>',
                 cellTemplate:
@@ -39,7 +40,7 @@
                     gridConstants.filterHeaderTemplate.format("paginationOptions.filters[0]", "getPage")
             },
             {
-                name: 'status', title: headers['status'], enableFiltering: false, width: '20%',
+                name: 'status', title: headers['status'], enableFiltering: false, width: '20%', 
                 cellFilter: 'codeDesc: "status": grid.appScope.vm.codes'
             },
             {
@@ -48,11 +49,21 @@
                     gridConstants.filterHeaderTemplate.format("paginationOptions.filters[1]", "getPage")
             },
             {
-                name: 'idCard', title: headers['idCard'], enableSorting: false,
+                name: 'idCard', title: headers['idCard'], enableSorting: false, 
                 filterHeaderTemplate:
                     gridConstants.filterHeaderTemplate.format("paginationOptions.filters[2]", "getPage")
             },
-            { name: 'birthDay', title: headers['birthDay'], enableFiltering: false },
+            {
+                name: 'createdDate', title: headers['createdDate'],
+                enableFiltering: false, enableSorting: false, 
+                cellFilter: 'date: "yyyy/mm/dd"'
+            },
+            { name: 'createdUser', title: headers['createdUser'], enableFiltering: false, enableSorting: false, },
+            {
+                name: 'modifiedDate', title: headers['modifiedDate'], enableFiltering: false, enableSorting: false,
+                cellFilter: 'date: "yyyy/mm/dd"'
+            },
+            { name: 'modifiedUser', title: headers['modifiedUser'], enableFiltering: false, enableSorting: false, },
         ];
 
         init();
