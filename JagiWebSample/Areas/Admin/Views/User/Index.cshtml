@@ -30,7 +30,9 @@
         <span>(@Html.ActionLink("Clear Search", "Index"))</span>
     }
 </h3>
-<form method="get" class="mvcMembership-searchForm">
+
+@using (Html.BeginForm("Index", "User", FormMethod.Get, new { @class = "mvcMembership-searchForm" }))
+{
     <fieldset>
         <label>
             輸入使用者帳號或者電子郵件查詢：
@@ -38,7 +40,8 @@
             <input type="submit" value="查詢" />
         </label>
     </fieldset>
-</form>
+}
+
 
 <h3 class="mvcMembership">使用者列表：  (@Html.ActionLink("建立新的使用者", "CreateUser", "User"))</h3>
 

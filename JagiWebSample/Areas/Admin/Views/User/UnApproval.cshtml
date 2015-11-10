@@ -1,0 +1,69 @@
+﻿@model JagiWebSample.Areas.Admin.Models.UserIndexView
+@{
+    ViewBag.Title = "User Administration: UnApproval Usres";
+}
+
+@if (!Model.IsRolesEnabled)
+{
+    <p class="mvcMembership-warning">WARNING: Your Role Provider is currently disabled - any user may currently visit this page.<br />Change &lt;roleManager enabled="false"&gt; to &lt;roleManager enabled="true"&gt; in your web.config file.</p>
+}
+
+<h2 class="mvcMembership">User Administration: UnApproval Usres</h2>
+
+<div class="mvcMembership-allUsers">
+    @if (Model.Users.Count() > 0)
+    {
+        <ul class="mvcMembership mvcMembership-users">
+            @foreach (var user in Model.OnlineUsers)
+            {
+                <li>
+                    <span class="mvcMembership-username">@Html.ActionLink(user.UserName, "Details", new { id = user.Id })</span>
+                    <span class="mvcMembership-email"><a href="mailto:@user.Email">@user.Email</a></span>
+                    @if (Model.OnlineUsers.Contains(user))
+                    {
+                        <span class="mvcMembership-isOnline">Online</span>
+                    }
+                    else
+                    {
+                        <span class="mvcMembership-isOffline">
+                            Offline for
+                            @{
+                                if (user.LastActivityDate.HasValue){
+                                    TimeSpan offlineSince = (DateTime.Now - (DateTime)user.LastActivityDate);
+                                    if (offlineSince.TotalSeconds <= 60)
+                                    {
+                                        <text>1 minute.</text>
+                                    }
+                                    else if (offlineSince.TotalMinutes < 60)
+                                    {
+                                        <text>@Math.Floor(offlineSince.TotalMinutes) minutes.</text>
+                                    }
+                                    else if (offlineSince.TotalMinutes < 120)
+                                    {
+                                        <text>1 hour</text>
+                                    }
+                                    else if (offlineSince.TotalHours < 24)
+                                    {
+                                        <text>@Math.Floor(offlineSince.TotalHours) hours.</text>
+                                    }
+                                    else if (offlineSince.TotalHours < 48)
+                                    {
+                                        <text>1 day.</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@Math.Floor(offlineSince.TotalDays) days.</text>
+                                    }
+                                }
+                            }
+                    </span>
+                            }
+                        </li>
+            }
+                </ul>
+    }
+            else
+            {
+            <p>No users have registered.</p>
+            }
+        </div>

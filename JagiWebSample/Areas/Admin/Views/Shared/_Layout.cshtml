@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Jagi Library Sample Application</title>
     @Styles.Render("~/Content/css")
+    <link href="~/Content/MvcMembership.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -14,7 +15,7 @@
         <div ng-controller="layoutController as vm" wait-modal>
             <show-errors model-status="vm.modelStatus"></show-errors>
         </div>
-        <div class="alert-container"></div>
+        <div class="alert alert-container"></div>
         @RenderBody()
         <hr />
         <footer>
@@ -35,7 +36,7 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/app")
-    @Html.Partial("_Alerts")        @* 搭配 AlertExtension 使用 TempData *@ 
+    @Html.Partial("_Alerts")        @* 搭配 AlertExtension 使用 TempData *@
     @RenderSection("scripts", required: false)
 </body>
 </html>

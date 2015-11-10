@@ -103,7 +103,9 @@ namespace Jagi.Database.Mvc
         public override void ApplyValidationToInput(HtmlTag input)
         {
             base.ApplyValidationToInput(input);
-            if (!_column.Nullable && !input.HasAttr(ConstantString.VALIDATION_REQUIRED_FIELD))
+            if (_column != null 
+                && !_column.Nullable 
+                && !input.HasAttr(ConstantString.VALIDATION_REQUIRED_FIELD))
             {
                 input.Attr(ConstantString.VALIDATION_REQUIRED_FIELD, "");
             }

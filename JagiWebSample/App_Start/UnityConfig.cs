@@ -1,16 +1,14 @@
+using Jagi.Interface;
+using Jagi.Mvc.Angular;
+using Jagi.Utility;
+using JagiWebSample.Areas.Admin.Models;
+using JagiWebSample.Controllers;
+using JagiWebSample.Models;
+using JagiWebSample.Utility;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
 using System;
 using System.Linq;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
-using Jagi.Utility;
-using Microsoft.Practices.ServiceLocation;
-using JagiWebSample.Areas.Admin.Models;
-using Jagi.Mvc.Angular;
-using JagiWebSample.Models;
-using Jagi.Database.Mvc;
-using Jagi.Interface;
-using JagiWebSample.Utility;
-using JagiWebSample.Controllers;
 
 namespace JagiWebSample.App_Start
 {

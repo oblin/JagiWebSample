@@ -55,7 +55,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 roles = RoleManager.Roles.Select(p => p.Name).ToArray();
             }
 
-            ViewBag.OnlineUsers = GetOnelineUsers(users);
+            ViewBag.OnlineUsers = GetOnlineUsers(users);
 
             return View(new UserIndexView
             {
@@ -63,7 +63,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 Users = users,
                 Roles = roles,
                 IsRolesEnabled = isRolesEnabled,
-                OnlineUsers = GetOnelineUsers(users)
+                OnlineUsers = GetOnlineUsers(users)
             });
         }
 
@@ -131,7 +131,10 @@ namespace JagiWebSample.Areas.Admin.Controllers
         {
             var initModel = InitialRoles();
             if (!ModelState.IsValid)
+            {
+                TempData["WarningMessage"] = "新的使用者驗證錯誤，請重新輸入。";
                 return View(initModel);
+            }
             if (model.Password != model.ConfirmPassword)
             {
                 ModelState.AddModelError("", "使用者密碼輸入有誤，請確認密碼輸入是否正確");
@@ -145,7 +148,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
             }
             var user = new ApplicationUser
             {
-                UserName = model.Username,
+                UserName = model.Email,
                 Email = model.Email,
                 IsApproved = true
             };
@@ -326,7 +329,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
             return model;
         }
 
-        private IEnumerable<ApplicationUser> GetOnelineUsers(IEnumerable<ApplicationUser> users)
+        private IEnumerable<ApplicationUser> GetOnlineUsers(IEnumerable<ApplicationUser> users)
         {
             // 計算 30 分鐘內登入的都算是 Online
             DateTime DateActive = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(30.0));

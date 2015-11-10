@@ -5,7 +5,6 @@ namespace JagiWebSample.Areas.Admin.Models
 {
     public class CreateUserView
     {
-        [Required]
         public string Username { get; set; }
 
         [Required, DataType(DataType.Password)]
