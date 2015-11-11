@@ -137,5 +137,20 @@ namespace JagiWebSample
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+
+        public override async Task<SignInStatus> PasswordSignInAsync(string userName, 
+            string password, bool isPersistent, bool shouldLockout)
+        {
+            /// 加入 ApplicationUser.IsApproved 的判斷，使用 Lockout Status 回傳
+            var result = await base.PasswordSignInAsync(userName, password, isPersistent, shouldLockout);
+            if (result == SignInStatus.Success)
+            {
+                var user = await UserManager.FindByNameAsync(userName);
+                if (!user.IsApproved)
+                    return SignInStatus.LockedOut;
+            }
+
+            return result;
+        }
     }
 }

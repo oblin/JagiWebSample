@@ -11,7 +11,7 @@
     
     app = angular.module('app', ['ngRoute', 'ui.bootstrap', 'loadingService', 'common', 'ui.grid', 'ui.grid.pagination']);
 
-    app.config(function ($httpProvider, $routeProvider, $locationProvider) {
+    app.config(function ($httpProvider, $locationProvider) {
         // Build Http stack to process http request, and show modal 
         $httpProvider.interceptors.push('httpInterceptor');
         var spinnerFunction = function (data, headers) {
@@ -20,17 +20,6 @@
         };
         $httpProvider.defaults.transformRequest.push(spinnerFunction);
 
-        // Set routing for patient
-        $routeProvider
-            .when("/", {
-                templateUrl: '/app/patients/templates/grid.html',       // 直接使用 app/ 目錄下的 html file!
-            })
-            .when("/edit/:id", {
-                templateUrl: '/patients/template/edit.tmp.cshtml',      // 使用 Server side TemplateController 建立
-                controller: "patientEditController",
-                controllerAs: 'vm'
-            });
-            //.when("", {});
     });
 
     angular.module('loadingService', [], function ($provide) {

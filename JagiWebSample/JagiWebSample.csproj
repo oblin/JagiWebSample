@@ -272,7 +272,6 @@
     <Content Include="app\patients\patientsController.js" />
     <Content Include="app\patients\patientEditController.js" />
     <Content Include="app\patients\templates\grid.html" />
-    <Content Include="app\routing.js" />
     <Content Include="app\utility\alerts.js" />
     <Content Include="app\app.js" />
     <Content Include="app\utility\ArrayExtensions.js" />

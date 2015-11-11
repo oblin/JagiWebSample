@@ -67,5 +67,19 @@
             'addrRealmUrl': addrRealmUrl,
             'addrVillageUrl': addrVillageUrl,
         });
+
+        window.app.config(function($routeProvider){
+            // Set routing for using MVC view
+            $routeProvider
+                .when("/", {
+                    templateUrl: '/app/patients/templates/grid.html',       // 直接使用 app/ 目錄下的 html file!
+                })
+                .when("/edit/:id", {
+                    templateUrl: '/patients/template/edit.tmp.cshtml',      // 使用 Server side TemplateController 建立
+                    controller: "patientEditController",
+                    controllerAs: 'vm'
+                });
+            //.when("", {});
+        });
     </script>
 }

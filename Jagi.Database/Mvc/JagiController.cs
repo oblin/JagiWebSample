@@ -1,10 +1,9 @@
-﻿using Jagi.Interface;
-using Jagi.Mvc;
+﻿using Jagi.Mvc;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Jagi.Database.Mvc
@@ -145,12 +144,6 @@ namespace Jagi.Database.Mvc
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
-        }
-
-        protected IEnumerable<T> GetPagedSize<T>(IEnumerable<T> set, PageInfo pageInfo)
-        {
-            return set.Skip((pageInfo.PageNumber - 1) * pageInfo.PageSize)
-                      .Take(pageInfo.PageSize);
         }
     }
 }

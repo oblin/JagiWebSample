@@ -1,5 +1,8 @@
-﻿using Microsoft.Web.Mvc;
+﻿using Jagi.Helpers;
+using Jagi.Interface;
+using Microsoft.Web.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -106,6 +109,33 @@ namespace Jagi.Mvc
             else
                 result = HttpStatusCode.NotAcceptable;
             return (int)result;
+        }
+
+        /// <summary>
+        /// 提供任意物件傳回經過 sort & filtering 的結果
+        /// </summary>
+        /// <typeparam name="T">任意物件</typeparam>
+        /// <param name="set">資料內容</param>
+        /// <param name="pageInfo">如果沒有，則會產生一個新的 pageSize = 25, pageNumber = 1</param>
+        /// <returns></returns>
+        protected virtual IEnumerable<T> GetPagedList<T>(IEnumerable<T> set, ref PageInfo pageInfo, out int totalCount)
+        {
+            if (pageInfo == null || pageInfo.PageNumber == 0 || pageInfo.PageSize == 0)
+                pageInfo = new PageInfo { PageSize = 25, PageNumber = 1 };
+
+            if (!string.IsNullOrEmpty(pageInfo.SearchKeyword))
+                set = set.ContainsWithFieldName(pageInfo.SearchField, pageInfo.SearchKeyword);
+            if (!string.IsNullOrEmpty(pageInfo.SortField))
+                set = set.OrderByFieldName(pageInfo.SortField, pageInfo.Sort);
+            totalCount = set.Count();
+            return TakePagedResult(set, pageInfo);
+        }
+
+
+        protected IEnumerable<T> TakePagedResult<T>(IEnumerable<T> set, PageInfo pageInfo)
+        {
+            return set.Skip((pageInfo.PageNumber - 1) * pageInfo.PageSize)
+                      .Take(pageInfo.PageSize);
         }
     }
 }

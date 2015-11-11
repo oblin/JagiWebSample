@@ -245,7 +245,7 @@ namespace JagiWebSample.Controllers
                     pageInfo = InitializePageInfo();
                 patients = GetFilteredPatients(pageInfo, patients);
                 int count = patients.Count();
-                patients = GetPagedSize(patients, pageInfo);
+                patients = TakePagedResult(patients, pageInfo);
                 var patientListView = Mapper.Map<IEnumerable<PatientListView>>(patients);
 
                 pagedView = new PagedView

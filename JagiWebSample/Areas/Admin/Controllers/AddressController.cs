@@ -36,7 +36,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
                 var orderResult = LinqHelper.OrderByFieldName(fileterResult, pageInfo.SortField, pageInfo.Sort);
                 var thenByResult = (orderResult as IOrderedQueryable<Address>).ThenBy(p => p.Id);
-                var result = GetPagedSize(thenByResult, pageInfo);
+                var result = TakePagedResult(thenByResult, pageInfo);
 
                 return new PagedView
                 {
