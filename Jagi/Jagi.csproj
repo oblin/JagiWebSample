@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\DictionaryHelper.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Interface\PagedView.cs" />
     <Compile Include="Interface\PageInfo.cs" />
     <Compile Include="Mvc\Helpers\JHtmlHelper.cs" />
