@@ -27,14 +27,16 @@ namespace Jagi.Database.Mvc
             {
                 result.AddError(validationError.ErrorMessage);
             }
-
-            foreach (var propertyRule in columnsValidateResult)
+            if (columnsValidateResult != null)
             {
-                string error = string.Empty;
-                foreach (var rule in propertyRule.Rules)
-                    error = error + rule + rule.Value + '\n';
-                if (!string.IsNullOrEmpty(error))
-                    result.AddError(error);
+                foreach (var propertyRule in columnsValidateResult)
+                {
+                    string error = string.Empty;
+                    foreach (var rule in propertyRule.Rules)
+                        error = error + rule + rule.Value + '\n';
+                    if (!string.IsNullOrEmpty(error))
+                        result.AddError(error);
+                }
             }
             Response.StatusCode = ConvertToHttpStatusCode(errorCode);
             return result;

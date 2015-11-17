@@ -50,5 +50,7 @@
         #endregion For Validations
 
         public const string UNAUTHORIZED_ACCESS_EXCEPTION = "使用者尚未登入，或者登入名稱存取錯誤，無法進行資料存取";
+
+        public const int LOGIN_ACCESS_LOCK_COUNT = 5;
     }
 }
