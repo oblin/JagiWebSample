@@ -19,32 +19,68 @@
         if (s.length == 0 || s.length < 6) return "";
 
         if (s.length == 6) {
+            var result = dealSlashDate(s);
+            if (result.length == 10)
+                return result;
             // 處理 990101
             s = '0' + s;
         }
         if (s.length == 7) {
+            var result = dealSlashDate(s);
+            if (result.length == 10)
+                return result;
             // 處理 0990101 or 1031201
             var y = parseInt(s.substr(0, 3), 10) + 1911;
             var m = parseInt(s.substr(3, 2), 10);
             var d = parseInt(s.substr(5, 2), 10);
             var date = y + "/" + m + "/" + d;
-            if (moment(date).isValid()) {
-                var returnDate = moment(date).format(dateFormat);
-                var stringDate = returnDate.toString();
-                return stringDate;
-            }
-            else
-                return "";
+            //if (moment(date).isValid()) {
+            //    var returnDate = moment(date).format(dateFormat);
+            //    var stringDate = returnDate.toString();
+            //    return stringDate;
+            //}
+            //else
+            //    return "";
+            return getDateString(date);
+        }
+        if (s.length == 8 || s.length == 9) {
+            var result = dealSlashDate(s);
+            if (result.length == 10)
+                return result;
         }
 
+        return getDateString(s);
+        //if (moment(s).isValid()) {
+        //    var returnDate = moment(s).format(dateFormat);
+        //    var stringDate = returnDate.toString();
+        //    return stringDate;
+        //} else {
+        //    return "";
+        //}
+    }
+
+    function dealSlashDate(s) {
+        if (s.indexOf('/') > -1) {
+            var array = s.split('/');
+            if (array.length == 3) {
+                var y = parseInt(array[0]) + 1911;
+                var m = parseInt(array[1], 10);
+                var d = parseInt(array[2], 10);
+                var date = y + "/" + m + "/" + d;
+                return getDateString(date);
+            }
+        }
+        return s;
+    }
+
+    function getDateString(s) {
         if (moment(s).isValid()) {
             var returnDate = moment(s).format(dateFormat);
             var stringDate = returnDate.toString();
             return stringDate;
         } else {
             return "";
-        }
-    }
+        }    }
 
     /**
      * 可在Javascript中使用如同C#中的string.format

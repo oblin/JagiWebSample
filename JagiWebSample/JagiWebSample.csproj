@@ -240,7 +240,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DataAccessLog.cs" />
-    <Compile Include="Models\PatientEntity.cs" />
+    <Compile Include="Models\IPatient.cs" />
     <Compile Include="Utility\CurrentRequest.cs" />
     <Compile Include="Utility\EntityHtmlTag.cs" />
     <Compile Include="Utility\RetrieveLogAttribute.cs" />

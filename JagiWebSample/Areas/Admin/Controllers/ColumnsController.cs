@@ -56,7 +56,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
             var tableSchema = Mapper.Map<TableSchema>(model);
             _context.TableSchema.Add(tableSchema);
-            _context.Save();
+            _context.SavingReport();
 
             UpdateColumnCache(tableSchema);
 
@@ -87,7 +87,7 @@ namespace JagiWebSample.Areas.Admin.Controllers
                 return View(model).WithError("找不到該筆資料，請重新操作");
 
             tableSchema = Mapper.Map<TableSchemaEditView, TableSchema>(model, tableSchema);
-            var result = _context.Save();
+            var result = _context.SavingReport();
 
             if (!string.IsNullOrEmpty(result))
                 return RedirectToAction<ColumnsController>(c => c.Index(tableSchema.TableName))

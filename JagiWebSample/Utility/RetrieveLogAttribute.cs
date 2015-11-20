@@ -55,9 +55,13 @@ namespace JagiWebSample.Utility
 
         private string GetUserName(IIdentity identity)
         {
+#if DEBUG
+            if (!identity.IsAuthenticated || identity.Name == null)
+                return "Not Login!";
+#else
             if (!identity.IsAuthenticated || identity.Name == null)
                 throw new UnauthorizedAccessException(ConstantString.UNAUTHORIZED_ACCESS_EXCEPTION);
-
+#endif
             return identity.Name;
         }
 

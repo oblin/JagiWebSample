@@ -11,7 +11,7 @@ namespace Jagi.Database
 {
     public static class EFHelper
     {
-        public static string Save(this DbContext context)
+        public static string SavingReport(this DbContext context)
         {
             try
             {
