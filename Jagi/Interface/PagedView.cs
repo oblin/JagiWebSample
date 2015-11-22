@@ -13,6 +13,9 @@ namespace Jagi.Interface
         public Dictionary<string, string> Headers { get; set; }
         public IEnumerable<object> Data { get; set; }
 
+        public string SearchField { get; set; }
+        public string SearchKeyword { get; set; }
+
         public int PageCount { get; set; }
         public int? CurrentPage { get; set; }
         public int TotalCount { get; set; }

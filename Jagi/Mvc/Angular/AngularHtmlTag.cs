@@ -93,7 +93,9 @@ namespace Jagi.Mvc.Angular
         public virtual void ApplyValidationToInput(HtmlTag input)
         {
             if (this.Metadata.IsRequired)
-                input.Attr(ConstantString.VALIDATION_REQUIRED_FIELD, "");
+            {
+                AddRquiredAttribute(input);
+            }
 
             if (this.Metadata.DataTypeName == "EmailAddress")
                 input.Attr("type", "email");
@@ -118,6 +120,17 @@ namespace Jagi.Mvc.Angular
                 }
                 string messages = this.Validations.Rules.ToJson();
                 input.Attr("message", messages);
+            }
+        }
+
+        protected void AddRquiredAttribute(HtmlTag input)
+        {
+            if (input.Attr("type") != "checkbox")
+                input.Attr(ConstantString.VALIDATION_REQUIRED_FIELD, "");
+            else
+            {
+                // checkbox 當值是 false 時候，會造成 required invalid，因此一定要使用 ng-required
+                input.Attr("ng-required", "value.length == 0");
             }
         }
 

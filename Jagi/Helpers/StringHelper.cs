@@ -40,5 +40,16 @@ namespace Jagi.Helpers
         {
             return value.Humanize(LetterCasing.Title);
         }
+
+        /// <summary>
+        /// 判斷字串是否僅有英文與數字
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public static bool isIntergerOrLetter(this string content)
+        {  
+            System.Text.RegularExpressions.Regex reg1 = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9]+$");  
+            return reg1.IsMatch(content);  
+        }
     }
 }

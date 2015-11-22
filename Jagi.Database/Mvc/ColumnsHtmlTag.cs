@@ -107,7 +107,7 @@ namespace Jagi.Database.Mvc
                 && !_column.Nullable 
                 && !input.HasAttr(ConstantString.VALIDATION_REQUIRED_FIELD))
             {
-                input.Attr(ConstantString.VALIDATION_REQUIRED_FIELD, "");
+                AddRquiredAttribute(input);
             }
         }
 
