@@ -5,6 +5,7 @@ using Jagi.Mvc.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -208,6 +209,19 @@ namespace Jagi.Mvc.Angular
                     return InputTag.Select;
             }
             return InputTag.Input;
+        }
+
+        private bool HasDropdownAttribute()
+        {
+            var propMetadata = _metadata.Properties.Where(e => {
+                var attribute = _metadata.ModelType.GetProperty(e.PropertyName)
+                    .GetCustomAttributes(typeof(DropdownAttribute), false)
+                    .FirstOrDefault() as DropdownAttribute;
+                return attribute != null;
+            });
+            var dropdowns = _metadata.ModelType.GetCustomAttributes(typeof(DropdownAttribute), false);
+            if (dropdowns.Any()) { }
+            throw new NotImplementedException();
         }
 
         protected virtual void SetInputType(HtmlTag input, FormGroupType type, string value)

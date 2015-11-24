@@ -6,6 +6,7 @@ using Jagi.Mvc;
 using Jagi.Mvc.Angular;
 using Jagi.Mvc.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System;
 
@@ -78,7 +79,13 @@ namespace Jagi.Database.Mvc
         public override HtmlTag GetInput(FormGroupType type, string value, Dictionary<string, string> selectOptions = null)
         {
             if (_column == null || type != FormGroupType.Default)
-                return base.GetInput(type, value, selectOptions);
+            {
+                var input = SetDropdownAttribute(type, selectOptions);
+                if (input == null)
+                    return base.GetInput(type, value, selectOptions);
+                else
+                    return input;
+            }
 
             if (_column.DataType == FieldType.Int32 || _column.DataType == FieldType.Decimal)
             {
@@ -87,7 +94,7 @@ namespace Jagi.Database.Mvc
             }
             if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DropdwonKey))
             {
-                HtmlTag input = ProcessDropdownFor();
+                HtmlTag input = ProcessDropdownFor(_column.ColumnName, _column.DropdwonKey, _column.DropdwonCascade);
                 if (input != null)
                     return input;
             }
@@ -98,6 +105,23 @@ namespace Jagi.Database.Mvc
                     return input;
             }
             return base.GetInput(type, value, selectOptions);
+        }
+
+        private HtmlTag SetDropdownAttribute(FormGroupType type, Dictionary<string, string> selectOptions)
+        {
+            if (selectOptions != null && selectOptions.Count > 0)
+                return null;
+
+            if (_metadata.AdditionalValues.ContainsKey(ConstantString.ADDITIONAL_VALUES_CODEMAP))
+            {
+                string codeMap = _metadata.AdditionalValues[ConstantString.ADDITIONAL_VALUES_CODEMAP].ToString();
+                string codeMapFor = null;
+                if (_metadata.AdditionalValues.ContainsKey(ConstantString.ADDITIONAL_VALUES_CODEMAP_FOR))
+                    codeMapFor = _metadata.AdditionalValues[ConstantString.ADDITIONAL_VALUES_CODEMAP_FOR].ToString();
+                return ProcessDropdownFor(Name, codeMap, codeMapFor);
+
+            }
+            return null;
         }
 
         public override void ApplyValidationToInput(HtmlTag input)
@@ -137,21 +161,22 @@ namespace Jagi.Database.Mvc
             return new Dictionary<string, string>();
         }
 
-        private HtmlTag ProcessDropdownFor()
+        private HtmlTag ProcessDropdownFor(string name, string dropdownKey, string dropdownCascade)
         {
             HtmlTag input = null;
-            if (!string.IsNullOrEmpty(_column.DropdwonCascade))
+            if (!string.IsNullOrEmpty(dropdownCascade))
             {
                 input = base.GetInput(FormGroupType.Dropdown, null);
-                input.Attr("dropdown-cascade", GetPrefixDropdownCascade(_column.DropdwonCascade, input));
-                var optionsName = "codedetail" + _column.ColumnName;
+                input.Attr("dropdown-cascade", GetPrefixDropdownCascade(dropdownCascade, input));
+                var optionsName = "codedetail" + name;
                 input.Attr("ng-options", "key as value for (key, value) in {0}"
                     .FormatWith(optionsName));
+                input.Attr("code-map", dropdownKey);
                 input.Attr("cascade-options", optionsName);
             }
             else
             {
-                var options = _codes.GetDetails(_column.DropdwonKey);
+                var options = _codes.GetDetails(dropdownKey);
                 input = base.GetInput(FormGroupType.Dropdown, null, options);
             }
 

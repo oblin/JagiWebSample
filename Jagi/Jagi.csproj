@@ -119,6 +119,7 @@
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Interface\PagedView.cs" />
     <Compile Include="Interface\PageInfo.cs" />
+    <Compile Include="Mvc\DropdownForAttribute.cs" />
     <Compile Include="Mvc\Helpers\JHtmlHelper.cs" />
     <Compile Include="Interface\IRunAtStartup.cs" />
     <Compile Include="Mvc\ConstantString.cs" />
@@ -129,7 +130,9 @@
     <Compile Include="Mvc\Angular\AngularHtmlFactory.cs" />
     <Compile Include="Mvc\Angular\GridTag.cs" />
     <Compile Include="Mvc\AngularValidations.cs" />
-    <Compile Include="Mvc\Razor\BootstrapHelpers.cs" />
+    <Compile Include="Mvc\Razor\BootstrapHelpers.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Utility\AESCryptoProvider.cs" />
     <Compile Include="Utility\DESCryptoProvider.cs" />
     <Compile Include="Utility\CryptoSetting.cs" />
