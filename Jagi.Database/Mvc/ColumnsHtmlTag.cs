@@ -78,13 +78,13 @@ namespace Jagi.Database.Mvc
 
         public override HtmlTag GetInput(FormGroupType type, string value, Dictionary<string, string> selectOptions = null)
         {
+            var attributeDefinedDropdownInput = SetDropdownAttribute(type, selectOptions);
+            if (attributeDefinedDropdownInput != null)
+                return attributeDefinedDropdownInput;
+
             if (_column == null || type != FormGroupType.Default)
             {
-                var input = SetDropdownAttribute(type, selectOptions);
-                if (input == null)
-                    return base.GetInput(type, value, selectOptions);
-                else
-                    return input;
+                return base.GetInput(type, value, selectOptions);
             }
 
             if (_column.DataType == FieldType.Int32 || _column.DataType == FieldType.Decimal)

@@ -96,15 +96,17 @@ namespace Jagi.Mvc.Angular
         {
             RouteValueDictionary dict = DictionaryHelper.ObjectToRouteValueDictionary(attrs);
 
-            try
-            {
-                FormGroupLayout layout = new FormGroupLayout((int)formGroupGrid);
-                return FormGroupFor(property, attrs: dict, layout: layout);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return FormGroupFor(property, attrs: dict, formGroupGrid: formGroupGrid);
-            }
+            FormGroupLayout layout = new FormGroupLayout((int)formGroupGrid);
+            return FormGroupFor(property, attrs: dict, layout: layout);
+            //try
+            //{
+            //    FormGroupLayout layout = new FormGroupLayout((int)formGroupGrid);
+            //    return FormGroupFor(property, attrs: dict, layout: layout);
+            //}
+            //catch (ArgumentOutOfRangeException)
+            //{
+            //    return FormGroupFor(property, attrs: dict, formGroupGrid: formGroupGrid);
+            //}
         }
         
         public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property,

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Jagi.Helpers;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -66,7 +68,7 @@ namespace Jagi.Mvc.Helpers
             return camelCaseName;
         }
 
-        public static string ExpressionForInternal<TModel, TProp>(this Expression<Func<TModel, TProp>> property, 
+        public static string ExpressionForInternal<TModel, TProp>(this Expression<Func<TModel, TProp>> property,
             string expressionPrefix = null)
         {
             var camelCaseName = property.ToCamelCaseName();
@@ -103,6 +105,32 @@ namespace Jagi.Mvc.Helpers
                 chars[i] = char.ToLower(chars[i], CultureInfo.InvariantCulture);
             }
             return new string(chars);
+        }
+
+        /// <summary>
+        /// 將 Json (string array) 設定到物件的同名稱屬性，例如：
+        /// ['Name': 'John', 'Age': 12] to Dest.Name = "John", Dest.Age = 12
+        /// </summary>
+        /// <param name="dest">class 物件</param>
+        /// <param name="options">json string array</param>
+        public static void SetJsonBooleanProperty(this object dest, string name, string[] options)
+        {
+            foreach (var opt in options)
+            {
+                if (string.IsNullOrEmpty(opt))
+                    continue;
+                var propName = name + opt;
+                PropertyInfo prop = dest.GetType().GetProperty(propName, BindingFlags.Public | BindingFlags.Instance);
+                if (null != prop && prop.CanWrite && prop.PropertyType == typeof(bool))
+                {
+                    prop.SetValue(dest, true, null);
+                }
+                else
+                {
+                    throw new ArgumentException("無法轉換資料, Name: {0}, Value: {1}"
+                        .FormatWith(name, string.Join(",", options)));
+                }
+            }
         }
     }
 }
