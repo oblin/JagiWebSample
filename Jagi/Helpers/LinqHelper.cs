@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Jagi.Helpers
 {
@@ -328,6 +329,44 @@ namespace Jagi.Helpers
             else
                 containsExpression = Expression.Call(property, Method, termConstant);
             return containsExpression;
+        }
+
+        public static string  GetExpressionPropertyName<T>(this Expression<Func<T>> action)
+        {
+            var expression = (MemberExpression)action.Body;
+            return expression.Member.Name;
+        }
+
+        /// <summary>
+        /// 提供 AutoMapper 轉換時候，將多個欄位合併成一個欄位的檢查尾碼作法 <para />
+        /// 例如： s.EvDesc1 = true, s.EvDesc2 = false, s.EvDesc3 = true
+        /// ParsingCompoundFieldValue(s.EvDesc1, currentPropertyName, currentPropertyValue) 回傳 1
+        /// ParsingCompoundFieldValue(s.EvDesc2, currentPropertyName, currentPropertyValue) 回傳 empty string
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action">任意的欄位傳入，可以自動解析，例如： () => d.EvDesc </param>
+        /// <param name="name">目前欄位的名稱</param>
+        /// <param name="value">目前欄位的值</param>
+        /// <returns></returns>
+        public static string ParsingCompoundFieldValue<T>(this Expression<Func<T>> action, string name, object value)
+        {
+            string evDescName = LinqHelper.GetExpressionPropertyName(action);
+
+            if (name.StartsWith(evDescName))
+            {
+                bool isTrue = Convert.ToBoolean(value);
+                if (isTrue)
+                {
+                    var field = name.TrimStart(evDescName.ToCharArray());
+                    int i;
+                    if (int.TryParse(field, out i))
+                    {
+                        return field;
+                    }
+                }
+            }
+
+            return string.Empty;
         }
     }
 }
