@@ -108,8 +108,10 @@ namespace Jagi.Mvc.Helpers
         }
 
         /// <summary>
-        /// 將 Json (string array) 設定到物件的同名稱屬性，例如：
-        /// ['Name': 'John', 'Age': 12] to Dest.Name = "John", Dest.Age = 12
+        /// 使用在 AutoMapper 中，將一個欄位用 "-" 分隔到多個 dest 欄位中；例如： <para />
+        ///     var optArray = source.EvDesc.Split('-');
+        ///     dest.SetJsonBooleanProperty("EvDesc", optArray);
+        /// 會放入到 dest.OtherSick1, dest.OtherSick2,...
         /// </summary>
         /// <param name="dest">class 物件</param>
         /// <param name="options">json string array</param>
@@ -131,6 +133,24 @@ namespace Jagi.Mvc.Helpers
                         .FormatWith(name, string.Join(",", options)));
                 }
             }
+        }
+
+        /// <summary>
+        /// 使用在 AutoMapper 中，將一個欄位用 "-" 分隔到多個 dest 欄位中；例如： <para />
+        ///     dest.SetJsonBooleanProperty(() => source.OtherSick, source.OtherSick);
+        /// 會放入到 dest.OtherSick1, dest.OtherSick2,...
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dest"></param>
+        /// <param name="action"></param>
+        /// <param name="value"></param>
+        public static void SetJsonBooleanProperty<T>(this object dest, Expression<Func<T>> action, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return;
+            var optArray = value.Split('-');
+            var name = LinqHelper.GetExpressionPropertyName(action);
+            SetJsonBooleanProperty(dest, name, optArray);
         }
     }
 }
