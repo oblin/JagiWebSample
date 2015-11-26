@@ -1,4 +1,5 @@
-﻿using Jagi.Mvc;
+﻿using Jagi.Interface;
+using Jagi.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
@@ -146,6 +147,14 @@ namespace Jagi.Database.Mvc
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
+        }
+
+        protected override PagedView GetPagedResult<S, D>(PageInfo pageInfo, IEnumerable<S> hdplans)
+        {
+            var result = base.GetPagedResult<S, D>(pageInfo, hdplans);
+            result.Headers = EntityHelper.GetDisplayName(new D());
+
+            return result;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Jagi.Helpers;
+﻿using AutoMapper;
+using Jagi.Helpers;
 using Jagi.Interface;
 using Microsoft.Web.Mvc;
 using System;
@@ -136,6 +137,33 @@ namespace Jagi.Mvc
         {
             return set.Skip((pageInfo.PageNumber - 1) * pageInfo.PageSize)
                       .Take(pageInfo.PageSize);
+        }
+
+        protected PageInfo InitializePageInfo()
+        {
+            return new PageInfo
+            {
+                PageNumber = 1,
+                PageSize = 25,
+                //SortField = "Name"
+            };
+        }
+
+        protected virtual PagedView GetPagedResult<S, D>(PageInfo pageInfo, IEnumerable<S> hdplans)
+            where D : new()
+        {
+            int count;
+            hdplans = GetPagedList(hdplans, ref pageInfo, out count);
+            //hdplans = TakePagedResult(hdplans, pageInfo);
+            var viewResult = Mapper.Map<IEnumerable<D>>(hdplans);
+
+            return new PagedView
+            {
+                Data = viewResult as IEnumerable<object>,
+                TotalCount = count,
+                CurrentPage = pageInfo.PageNumber,
+                PageCount = pageInfo.PageSize,
+            };
         }
     }
 }
