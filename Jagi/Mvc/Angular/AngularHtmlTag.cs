@@ -52,10 +52,22 @@ namespace Jagi.Mvc.Angular
             return ComposeLabelTag(layout, labelText);
         }
 
+        /// <summary>
+        /// 建立 Input Html Tag，會判斷 
+        /// 1. Date: 使用 Input-group 的方式，因此必須要額外判斷 disabled，如果是，則當作一般的 text input；否則會無法控制
+        /// 2. text input: 預設的輸入
+        /// 3. select: 使用 selectOptions 組合成 options 直接變成下拉選單的選項
+        /// 4. textarea
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <param name="selectOptions"></param>
+        /// <param name="disabled"></param>
+        /// <returns></returns>
         public virtual HtmlTag GetInput(FormGroupType type, string value,
-            Dictionary<string, string> selectOptions = null)
+            Dictionary<string, string> selectOptions = null, bool disabled = false)
         {
-            if (_metadata.PropertyName.EndsWith("Date", StringComparison.OrdinalIgnoreCase))
+            if (_metadata.PropertyName.EndsWith("Date", StringComparison.OrdinalIgnoreCase) && !disabled)
             {
                 return GetDateInputTag();
             }

@@ -78,18 +78,24 @@ namespace Jagi.Mvc.Angular
             string value = null)
         {
             AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
-            HtmlTag input = ngControl.GetInput(type, value, options);
+            bool disable = GetDisabledAttributes(attrs);
+            HtmlTag input = ngControl.GetInput(type, value, options, disable);
 
             if (input.IsInputElement())
             {
                 ngControl.ApplyValidationToInput(input);
-
                 ngControl.ApplyCustomizedAttributes(input, attr, attrs);
             }
 
             return input;
         }
 
+        private bool GetDisabledAttributes(RouteValueDictionary attrs)
+        {
+            if (attrs == null)
+                return false;
+            return attrs.ContainsKey("disabled");
+        }
 
         public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property,
             int formGroupGrid, object attrs = null )

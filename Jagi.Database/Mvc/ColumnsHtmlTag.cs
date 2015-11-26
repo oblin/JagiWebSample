@@ -76,7 +76,7 @@ namespace Jagi.Database.Mvc
                 return label.Attr("uib-tooltip", _column.Tooltips);
         }
 
-        public override HtmlTag GetInput(FormGroupType type, string value, Dictionary<string, string> selectOptions = null)
+        public override HtmlTag GetInput(FormGroupType type, string value, Dictionary<string, string> selectOptions = null, bool disable = false)
         {
             var attributeDefinedDropdownInput = SetDropdownAttribute(type, selectOptions);
             if (attributeDefinedDropdownInput != null)
@@ -84,13 +84,13 @@ namespace Jagi.Database.Mvc
 
             if (_column == null || type != FormGroupType.Default)
             {
-                return base.GetInput(type, value, selectOptions);
+                return base.GetInput(type, value, selectOptions, disable);
             }
 
             if (_column.DataType == FieldType.Int32 || _column.DataType == FieldType.Decimal)
             {
                 // For number type input
-                return base.GetInput(FormGroupType.Number, null, null);
+                return base.GetInput(FormGroupType.Number, null, null, disable);
             }
             if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DropdwonKey))
             {
@@ -104,7 +104,7 @@ namespace Jagi.Database.Mvc
                 if (input != null)
                     return input;
             }
-            return base.GetInput(type, value, selectOptions);
+            return base.GetInput(type, value, selectOptions, disable);
         }
 
         private HtmlTag SetDropdownAttribute(FormGroupType type, Dictionary<string, string> selectOptions)
