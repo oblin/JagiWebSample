@@ -161,8 +161,10 @@ namespace Jagi.Mvc
             {
                 Data = viewResult as IEnumerable<object>,
                 TotalCount = count,
-                CurrentPage = pageInfo.PageNumber,
-                PageCount = pageInfo.PageSize,
+                PageNumber = pageInfo.PageNumber,
+                PageSize = pageInfo.PageSize,
+                Sort = pageInfo.Sort,
+                SortField = pageInfo.SortField
             };
         }
     }

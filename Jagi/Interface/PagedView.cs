@@ -1,9 +1,5 @@
-﻿using Jagi.Mvc.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jagi.Interface
 {
@@ -16,16 +12,19 @@ namespace Jagi.Interface
         public string SearchField { get; set; }
         public string SearchKeyword { get; set; }
 
-        public int PageCount { get; set; }
-        public int? CurrentPage { get; set; }
+        public string SortField { get; set; }
+        public string Sort { get; set; }    // ASC & DESC
+
+        public int PageSize { get; set; }
+        public int? PageNumber { get; set; }
         public int TotalCount { get; set; }
         public int TotalPages
         {
             get
             {
-                if (PageCount == 0)
+                if (PageSize == 0)
                     return 0;
-                return (int)Math.Ceiling((decimal)TotalCount / PageCount);
+                return (int)Math.Ceiling((decimal)TotalCount / PageSize);
             }
         }
     }
