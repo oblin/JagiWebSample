@@ -40,9 +40,9 @@ namespace JagiWebSample.Areas.Admin.Controllers
 
                 return new PagedView
                 {
-                    PageCount = pageInfo.PageSize,
+                    PageSize = pageInfo.PageSize,
                     Data = result,
-                    CurrentPage = pageInfo.PageNumber,
+                    PageNumber = pageInfo.PageNumber,
                     TotalCount = count
                 };
             });

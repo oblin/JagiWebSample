@@ -252,8 +252,8 @@ namespace JagiWebSample.Controllers
                 {
                     Data = patientListView,
                     TotalCount = count,
-                    CurrentPage = pageInfo.PageNumber,
-                    PageCount = pageInfo.PageSize,
+                    PageNumber = pageInfo.PageNumber,
+                    PageSize = pageInfo.PageSize,
                     Headers = EntityHelper.GetDisplayName(new PatientListView())
                 };
             });
