@@ -1,11 +1,15 @@
-﻿using Jagi.Interface;
+﻿using Jagi.Database.Cache;
+using Jagi.Interface;
+using Jagi.Helpers;
 using Jagi.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace Jagi.Database.Mvc
 {
@@ -149,12 +153,111 @@ namespace Jagi.Database.Mvc
             }
         }
 
-        protected override PagedView GetPagedResult<S, D>(PageInfo pageInfo, IEnumerable<S> hdplans)
+        protected override PagedView GetPagedResult<S, D>(PageInfo pageInfo, IEnumerable<S> itemSet)
         {
-            var result = base.GetPagedResult<S, D>(pageInfo, hdplans);
+            var result = base.GetPagedResult<S, D>(pageInfo, itemSet);
             result.Headers = EntityHelper.GetDisplayName(new D());
 
             return result;
+        }
+
+        protected PagedView GetPagedResultWithDecoding<S, D>(PageInfo pageInfo, IEnumerable<S> itemSet)
+            where D : new()
+        {
+            var result = GetPagedResult<S, D>(pageInfo, itemSet);
+            result.Headers = EntityHelper.GetDisplayName(new D());
+            IEnumerable<object> list = DecodeByCodeDetails(result.Data);
+            result.Data = list;
+            return result;
+        }
+
+        private IEnumerable<object> DecodeByCodeDetails_Failed(IEnumerable<object> enumerable)
+        {
+            if (enumerable.Count() == 0)
+                return enumerable;
+            var columns = new ColumnsCache();
+            var first = enumerable.First();
+            string typeName = first.GetType().Name;
+            string tableName = columns.GetRelativeTableName(typeName);
+            if (string.IsNullOrEmpty(tableName))
+                return enumerable;
+
+            CodeCache codes = new CodeCache();
+            foreach (var property in first.GetType().GetProperties())
+            {
+                var column = columns.Get(tableName, property.Name);
+                if (column == null || string.IsNullOrEmpty(column.DropdwonKey))
+                    continue;
+                foreach (var item in enumerable)
+                {
+                    var originItem = (JObject)item.CloneJson();
+                    var value = property.GetGetMethod().Invoke(item, null);
+                    string parentCode = null;
+                    if (!string.IsNullOrEmpty(column.DropdwonCascade))
+                    {
+                        var parentProperty = first.GetType().GetProperties()
+                            .FirstOrDefault(p => p.Name == column.DropdwonCascade);
+                        if (parentProperty != null)
+                        {
+                            var parentValue = originItem.GetValue(column.DropdwonCascade).Value<string>();
+                            //var parentValue = parentProperty.GetGetMethod().Invoke(originItem, null);
+                            if (!string.IsNullOrEmpty(parentValue))
+                                parentCode = parentValue.ToString();
+                        }
+
+                    }
+                    var desc = codes.GetCodeDesc(column.DropdwonKey, value.ToString(), parentCode);
+                    if (!string.IsNullOrEmpty(desc))
+                        property.GetSetMethod().Invoke(item, new object[] { desc });
+                }
+            }
+
+            return enumerable;
+        }
+
+        private IEnumerable<object> DecodeByCodeDetails(IEnumerable<object> enumerable)
+        {
+            if (enumerable.Count() == 0)
+                return enumerable;
+            var columns = new ColumnsCache();
+            var first = enumerable.First();
+            string typeName = first.GetType().Name;
+            string tableName = columns.GetRelativeTableName(typeName);
+            if (string.IsNullOrEmpty(tableName))
+                return enumerable;
+
+            CodeCache codes = new CodeCache();
+            foreach (var item in enumerable)
+            {
+                var originItem = (JObject)item.CloneJson();
+
+                foreach (var property in item.GetType().GetProperties())
+                {
+                    var column = columns.Get(tableName, property.Name);
+                    if (column == null || string.IsNullOrEmpty(column.DropdwonKey))
+                        continue;
+                    var value = property.GetGetMethod().Invoke(item, null);
+                    string parentCode = null;
+                    if (!string.IsNullOrEmpty(column.DropdwonCascade))
+                    {
+                        var parentProperty = first.GetType().GetProperties()
+                            .FirstOrDefault(p => p.Name == column.DropdwonCascade);
+                        if (parentProperty != null)
+                        {
+                            var parentValue = originItem.GetValue(column.DropdwonCascade).Value<string>();
+                            //var parentValue = parentProperty.GetGetMethod().Invoke(originItem, null);
+                            if (!string.IsNullOrEmpty(parentValue))
+                                parentCode = parentValue.ToString();
+                        }
+
+                    }
+                    var desc = codes.GetCodeDesc(column.DropdwonKey, value.ToString(), parentCode);
+                    if (!string.IsNullOrEmpty(desc))
+                        property.GetSetMethod().Invoke(item, new object[] { desc });
+                }
+            }
+
+            return enumerable;
         }
     }
 }
