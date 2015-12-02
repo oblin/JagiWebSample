@@ -47,6 +47,8 @@ namespace Jagi.Mapping
             Mapper.CreateMap<string, decimal?>().ConvertUsing<StringToDecimalNull>();
             Mapper.CreateMap<string, DateTime?>().ConvertUsing<StringToDateTimeNull>();
             Mapper.CreateMap<int?, string>().ConvertUsing<NullableIntToString>();
+            Mapper.CreateMap<int, string>().ConvertUsing<IntToString>();
+            Mapper.CreateMap<string, int>().ConvertUsing<StringToInt>();
             Mapper.CreateMap<DateTime?, string>().ConvertUsing<DateTimeNullToString>();
             Mapper.CreateMap<DateTime, string>().ConvertUsing<DateTimeToString>();
         }

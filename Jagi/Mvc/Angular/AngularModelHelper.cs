@@ -141,6 +141,9 @@ namespace Jagi.Mvc.Angular
         /// <param name="options">提供 dropdown options</param>
         /// <param name="value">提供指定的 value，主要是給 checkbox or radio button 使用</param>
         /// <param name="values">提供多個 value，並且會依據每一個 value 產生 input</param>
+        /// <param name="formGroupGrid">提供主要 grid layout 數字，僅允許： 3,4,6,8,12 這幾個數字</param>
+        /// <param name="layout">輸入new FormGroupGrid(labelGrid, inputGrid, formGrid)</param>
+        /// <param name="span">指定 Input 後面的 span (變成 input-addon)，使用 dictionary 輸入 span 的各項屬性</param>
         /// <returns></returns>
         public HtmlTag FormGroupFor<TProp>(Expression<Func<TModel, TProp>> property,
             FormGroupType type = FormGroupType.Default,
@@ -150,7 +153,8 @@ namespace Jagi.Mvc.Angular
             string value = null,
             string[] values = null,
             int? formGroupGrid = null,
-            FormGroupLayout layout = null)
+            FormGroupLayout layout = null,
+            Dictionary<string, string> span = null)
         {
             layout = layout ?? _layout;
             formGroupGrid = formGroupGrid ?? (layout != null ? layout.FormGrid : null);
@@ -174,9 +178,27 @@ namespace Jagi.Mvc.Angular
             label = AngularLabelFor(property, layout);
             if (layout != null)
             {
-                input = AppendLayoutInputDiv(layout, input);
+                var spanTag = CreateSpan(span);
+                input = AppendLayoutInputDiv(layout, input, spanTag);
             }
             return formGroup.Append(label).Append(input);
+        }
+
+        private HtmlTag CreateSpan(Dictionary<string, string> span)
+        {
+            if (span == null)
+                return null;
+            HtmlTag result = new HtmlTag("span");
+            foreach (var item in span)
+            {
+                if (item.Key == "text" || item.Key == "Text")
+                    result.Text(item.Value);
+                else
+                    result.Attr(item.Key, item.Value);
+            }
+            if (!result.HasAttr("input-group-addon"))
+                result.AddClasses("input-group-addon");
+            return result;
         }
 
         private static bool InputHasRquiredAttr(HtmlTag input)
@@ -188,11 +210,19 @@ namespace Jagi.Mvc.Angular
             return false;
         }
 
-        private static HtmlTag AppendLayoutInputDiv(FormGroupLayout layout, HtmlTag input)
+        private static HtmlTag AppendLayoutInputDiv(FormGroupLayout layout, HtmlTag input, HtmlTag span)
         {
             var layoutDiv = new HtmlTag("div");
+            if (span == null)
+            {
+                input = layoutDiv.Append(input);
+            }
+            else
+            {
+                layoutDiv.AddClass("input-group");
+                input = layoutDiv.Append(input).Append(span);
+            }
             layoutDiv.AddClass("col-sm-" + layout.InputGrid);
-            input = layoutDiv.Append(input);
             return input;
         }
 

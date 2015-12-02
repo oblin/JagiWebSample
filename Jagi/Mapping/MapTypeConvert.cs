@@ -18,6 +18,22 @@ namespace Jagi.Mapping
         }
     }
 
+    public class IntToString : TypeConverter<int, string>
+    {
+        protected override string ConvertCore(int source)
+        {
+            return source.ToString();
+        }
+    }
+
+    public class StringToInt : TypeConverter<string, int>
+    {
+        protected override int ConvertCore(string source)
+        {
+            return System.Convert.ToInt16(source);
+        }
+    }
+
     /// <summary>
     /// 設定 AutoMaper 將文字轉換成 Nullabl decimal
     /// </summary>
