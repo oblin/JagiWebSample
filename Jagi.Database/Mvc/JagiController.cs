@@ -239,6 +239,8 @@ namespace Jagi.Database.Mvc
                     if (column == null || string.IsNullOrEmpty(column.DropdwonKey))
                         continue;
                     var value = property.GetGetMethod().Invoke(item, null);
+                    if (value == null)
+                        continue;
                     string parentCode = null;
                     if (!string.IsNullOrEmpty(column.DropdwonCascade))
                     {
