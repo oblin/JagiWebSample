@@ -53,5 +53,8 @@
 
         public const int LOGIN_ACCESS_LOCK_COUNT = 5;
         public const string IDENTITY_ASK_CHANGE_PASSWORD = "AskChanging";
+
+        public const string SAVE_SUCCESSFULLY = "存檔成功";
+        public const string SAVE_FAILED = "存檔失敗";
     }
 }
