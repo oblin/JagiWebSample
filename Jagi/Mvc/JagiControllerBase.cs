@@ -139,7 +139,7 @@ namespace Jagi.Mvc
                       .Take(pageInfo.PageSize);
         }
 
-        protected PageInfo InitializePageInfo()
+        protected virtual PageInfo InitializePageInfo()
         {
             return new PageInfo
             {
