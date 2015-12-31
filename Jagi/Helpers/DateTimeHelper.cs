@@ -78,5 +78,12 @@ namespace Jagi.Helpers
             startDate = result1;
             endDate = result2;
         }
+
+        public static int DaysBetween(this DateTime d1, DateTime d2)
+        {
+            TimeSpan span = d2.Subtract(d1);
+
+            return Convert.ToInt16(Math.Abs(span.TotalDays));
+        }
     }
 }
