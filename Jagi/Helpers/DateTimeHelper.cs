@@ -33,6 +33,14 @@ namespace Jagi.Helpers
             GetWeekStartEndDate(year, week, out weekStartDate, out weekEndDate);
         }
 
+        public static DateTime GetWeekStartDate(this DateTime date)
+        {
+            int year, week; DateTime weekStartDate, weekEndDate;
+            date.GetYearAndWeek(out year, out week, out weekStartDate, out weekEndDate);
+
+            return weekStartDate;
+        }
+
         public static int GetWeekOfYear(DateTime dt)
         {
             GregorianCalendar GetWeek = new GregorianCalendar();

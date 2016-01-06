@@ -1,5 +1,4 @@
 ﻿using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -58,7 +57,7 @@ namespace Jagi.Utility
 
             byte[] output = transform.TransformFinalBlock(plainTextData, 0, plainTextData.Length);
 
-            return Convert.ToBase64String(output); 
+            return Convert.ToBase64String(output);
 
         }
 
@@ -86,7 +85,7 @@ namespace Jagi.Utility
 
             byte[] output = transform.TransformFinalBlock(cipherTextData, 0, cipherTextData.Length);
 
-            return Encoding.Unicode.GetString(output); 
+            return Encoding.Unicode.GetString(output);
 
         }
     }

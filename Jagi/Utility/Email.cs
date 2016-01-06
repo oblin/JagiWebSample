@@ -66,6 +66,12 @@ namespace Jagi.Utility
             mail.To.Add(emailAddress);
             mail.Subject = subject;
             mail.Body = content;
+
+            string tail = "\n---------------------------\n";
+            tail += "本封信件為系統自動發送，請勿直接回信；若有問題請與系統管理員聯繫。";
+
+            mail.Body += tail;
+
             if (callback != null)
             {
                 smtpClient.SendCompleted += (s, e) => {
