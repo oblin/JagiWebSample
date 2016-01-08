@@ -34,8 +34,8 @@
     <script src="~/app/patients/patientsController.js"></script>
     <script type="text/javascript">
         var paginationOptions = {
-            pageNumber: @Model.CurrentPage,
-            pageSize: @Model.PageCount,
+            pageNumber: @Model.PageNumber,
+            pageSize: @Model.PageSize,
         };
 
         var getPagedUrl = '@(Html.BuildUrlFromExpression<PatientsController>(c => c.GetPaged(null, null)))';

@@ -34,6 +34,12 @@ namespace JagiWebSample.Controllers
             ViewBag.Status = GetStatusSelections(status);
             ViewBag.CurrentStatus = status;
             ViewBag.Counties = GetAllCounties();
+
+            string path = Server.MapPath("~/Content/test.log");
+            using (var logger = new FileLog(path))
+            {
+                logger.Info("Into Index");
+            }
             return View(pagedView);
         }
 
@@ -49,6 +55,9 @@ namespace JagiWebSample.Controllers
         [HttpGet, OutputCache(Duration = 0)]
         public JsonResult Get(int id)
         {
+            FileLog logger = new FileLog();
+            logger.Info("Into Get");
+
             if (id == 0)
                 return JsonError("病患 id 不可以為零～");
 

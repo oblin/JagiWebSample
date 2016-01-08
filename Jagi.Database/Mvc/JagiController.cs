@@ -16,6 +16,7 @@ namespace Jagi.Database.Mvc
     public class JagiController : JagiControllerBase
     {
         protected List<PropertyRule> columnsValidateResult = null;
+
         protected bool ColumnsValid<T>(T entity)
         {
             columnsValidateResult = ColumnsValidations.ColumnsValidate(entity);

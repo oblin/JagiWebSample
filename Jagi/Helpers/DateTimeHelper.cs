@@ -93,5 +93,31 @@ namespace Jagi.Helpers
 
             return Convert.ToInt16(Math.Abs(span.TotalDays));
         }
+
+        public static string ConvertToChineseDate(this DateTime date)
+        {
+            try
+            {
+                int year = Convert.ToInt16(date.AddYears(-1911).Year);
+
+                string result = year.ToString().PadLeft(3, '0') + "/"
+                    + date.Month.ToString().PadLeft(2, '0') + "/"
+                    + date.Day.ToString().PadLeft(2, '0');
+
+                //string result = Convert.ToInt16(date.AddYears(-1911).Year) + date.ToString("/MM/dd");
+
+                return result;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                return string.Empty;
+            }
+        }
+
+        public static string ConvertToChineseDate(string sDate)
+        {
+            var date = Convert.ToDateTime(sDate);
+            return ConvertToChineseDate(date);
+        }
     }
 }

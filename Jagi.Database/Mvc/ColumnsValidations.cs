@@ -30,7 +30,7 @@ namespace Jagi.Database.Mvc
             List<PropertyRule> result = new List<PropertyRule>();
 
             string tableName;
-            ColumnsCache columns = GetTableColumns< TModel>(out tableName);
+            ColumnsCache columns = GetTableColumns<TModel>(out tableName);
 
             if (string.IsNullOrEmpty(tableName))
                 return result;
