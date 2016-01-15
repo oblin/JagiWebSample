@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Jagi.Helpers
 {
     public static class DateTimeHelper
     {
-        public static DateTime FirstDateOfMonth(this DateTime date){
+        public static DateTime FirstDateOfMonth(this DateTime date)
+        {
             return new DateTime(date.Year, date.Month, 1);
         }
 
@@ -108,7 +105,7 @@ namespace Jagi.Helpers
 
                 return result;
             }
-            catch (ArgumentOutOfRangeException e)
+            catch (ArgumentOutOfRangeException)
             {
                 return string.Empty;
             }
@@ -118,6 +115,40 @@ namespace Jagi.Helpers
         {
             var date = Convert.ToDateTime(sDate);
             return ConvertToChineseDate(date);
+        }
+
+        public static string ConvertNullable(this DateTime? nullable)
+        {
+            if (nullable == null)
+                return "";
+            else
+            {
+                // 測試日期是否小於 1912 年（ToShortDateString() 不可以為負值）
+                DateTime date = (DateTime)nullable;
+                string dateString = string.Empty;
+                try
+                {
+                    dateString = date.ToShortDateString();
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    dateString = date.Year.ToString() + "/" + date.Month.ToString() + "/" + date.Day.ToString();
+                }
+                return dateString;
+            }
+        }
+
+        public static string ComputeYears(this DateTime beginDate, DateTime? currentDate)
+        {
+            if (currentDate == null)
+                return string.Empty;
+
+            DateTime endDate = (DateTime)currentDate;
+
+            TimeSpan ts = beginDate.Subtract(endDate);
+            int days = ts.Days;
+
+            return StringHelper.FormatDecimal(days, 365);
         }
     }
 }

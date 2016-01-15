@@ -47,9 +47,66 @@ namespace Jagi.Helpers
         /// <param name="content"></param>
         /// <returns></returns>
         public static bool isIntergerOrLetter(this string content)
-        {  
-            System.Text.RegularExpressions.Regex reg1 = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9]+$");  
-            return reg1.IsMatch(content);  
+        {
+            System.Text.RegularExpressions.Regex reg1 = new System.Text.RegularExpressions.Regex(@"^[A-Za-z0-9]+$");
+            return reg1.IsMatch(content);
+        }
+
+        public static string FormatDecimal(this decimal? number)
+        {
+            if (number == null)
+                return string.Empty;
+
+            return FormatDecimal((decimal)number);
+        }
+
+        public static string FormatDecimal(this decimal number)
+        {
+            return string.Format("{0:F2}", number);
+        }
+
+        public static string FormatDecimal(int p, int q)
+        {
+            if (p == 0 || q == 0)
+                return FormatDecimal(0.00M);
+
+            decimal r = (decimal)p / (decimal)q;
+            return FormatDecimal(r);
+        }
+
+        public static string FormatDouble(double number)
+        {
+            return string.Format("{0:F2}", number);
+        }
+
+        public static string FormatRateDouble(double p)
+        {
+            return FormatDouble(p * 100);
+        }
+
+        public static string FormatRateDouble(int p, int q)
+        {
+            if (p == 0 || q == 0)
+                return "0.00";
+
+            double result = (double)p / (double)q;
+            return FormatDouble(result * 100);
+        }
+
+        public static string ToChinese(this bool value)
+        {
+            if (value)
+                return "是";
+            else
+                return "否";
+        }
+
+        public static string ToYN(this bool value)
+        {
+            if (value)
+                return "Y";
+            else
+                return "N";
         }
     }
 }
