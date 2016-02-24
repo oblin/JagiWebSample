@@ -53,6 +53,7 @@ namespace Jagi.Mvc
             result.AddError(errorMessage);
 
             Response.StatusCode = ConvertToHttpStatusCode(errorCode);
+            Response.TrySkipIisCustomErrors = true;     // IIS 會在錯誤訊息中使用 HTML 美化頁面
             return result;
         }
 

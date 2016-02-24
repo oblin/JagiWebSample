@@ -41,6 +41,14 @@ namespace Jagi.Helpers
             return value.Humanize(LetterCasing.Title);
         }
 
+        public static string FixedLength(this string value, int length)
+        {
+            if (!string.IsNullOrEmpty(value) && value.Length > length)
+                return value.Truncate(length);
+
+            return value;
+        }
+
         /// <summary>
         /// 判斷字串是否僅有英文與數字
         /// </summary>
