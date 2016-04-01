@@ -60,6 +60,18 @@ namespace Jagi.Helpers
             return reg1.IsMatch(content);
         }
 
+        public static bool hasInteger(this string content)
+        {
+            System.Text.RegularExpressions.Regex reg1 = new System.Text.RegularExpressions.Regex(@"^[0-9]+$");
+            return reg1.IsMatch(content);
+        }
+
+        public static bool hasLetter(this string content)
+        {
+            System.Text.RegularExpressions.Regex reg1 = new System.Text.RegularExpressions.Regex(@"^[A-Za-z]+$");
+            return reg1.IsMatch(content);
+        }
+
         public static string FormatDecimal(this decimal? number)
         {
             if (number == null)
