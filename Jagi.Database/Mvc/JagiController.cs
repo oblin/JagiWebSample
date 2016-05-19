@@ -28,10 +28,10 @@ namespace Jagi.Database.Mvc
 
         protected override BetterJsonResult JsonValidationError(int? errorCode = default(int?))
         {
-            var result = new BetterJsonResult();
+            List<string> result = new List<string>();
             foreach (var validationError in ModelState.Values.SelectMany(s => s.Errors))
             {
-                result.AddError(validationError.ErrorMessage);
+                result.Add(validationError.ErrorMessage);
             }
             if (columnsValidateResult != null)
             {
@@ -41,12 +41,36 @@ namespace Jagi.Database.Mvc
                     foreach (var rule in propertyRule.Rules)
                         error = error + rule + rule.Value + '\n';
                     if (!string.IsNullOrEmpty(error))
-                        result.AddError(error);
+                        result.Add(error);
                 }
             }
-            Response.StatusCode = ConvertToHttpStatusCode(errorCode);
-            return result;
+            return JsonError(result, errorCode);
         }
+
+        //protected override BetterJsonResult JsonValidationError(int? errorCode = default(int?))
+        //{
+        //    var result = new BetterJsonResult();
+
+        //    foreach (var validationError in ModelState.Values.SelectMany(s => s.Errors))
+        //    {
+        //        result.AddError(validationError.ErrorMessage);
+        //    }
+        //    if (columnsValidateResult != null)
+        //    {
+        //        foreach (var propertyRule in columnsValidateResult)
+        //        {
+        //            string error = string.Empty;
+        //            foreach (var rule in propertyRule.Rules)
+        //                error = error + rule + rule.Value + '\n';
+        //            if (!string.IsNullOrEmpty(error))
+        //                result.AddError(error);
+        //        }
+        //    }
+
+        //    Response.StatusCode = ConvertToHttpStatusCode(errorCode);
+        //    Response.TrySkipIisCustomErrors = true;     // IIS 會在錯誤訊息中使用 HTML 美化頁面
+        //    return result;
+        //}
 
         /// <summary>
         /// 主要處理在執行中可能發生的 Exceptions，轉換成 Json format 提供給前端

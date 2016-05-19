@@ -31,14 +31,10 @@ namespace Jagi.Mvc
         /// <returns></returns>
         protected virtual BetterJsonResult JsonValidationError(int? errorCode = null)
         {
-            var result = new BetterJsonResult();
-            foreach (var validationError in ModelState.Values.SelectMany(s => s.Errors))
-            {
-                result.AddError(validationError.ErrorMessage);
-            }
+            IEnumerable<string> messages =
+                ModelState.Values.SelectMany(s => s.Errors).Select(r => r.ErrorMessage);
 
-            Response.StatusCode = ConvertToHttpStatusCode(errorCode);
-            return result;
+            return JsonError(messages, errorCode);
         }
 
         /// <summary>
@@ -49,11 +45,18 @@ namespace Jagi.Mvc
         /// <returns></returns>
         protected BetterJsonResult JsonError(string errorMessage, int? errorCode = null)
         {
+            return JsonError(new string[] { errorMessage }, errorCode);
+        }
+
+        protected BetterJsonResult JsonError(IEnumerable<string> messages, int? errorCode = null)
+        {
             var result = new BetterJsonResult();
-            result.AddError(errorMessage);
+            foreach(var message in messages)
+                result.AddError(message);
 
             Response.StatusCode = ConvertToHttpStatusCode(errorCode);
-            Response.TrySkipIisCustomErrors = true;     // IIS 會在錯誤訊息中使用 HTML 美化頁面
+            // IIS 會在錯誤訊息中使用 HTML 美化頁面，設定 Skip 讓錯誤訊息可以直接使用 json string 傳回
+            Response.TrySkipIisCustomErrors = true;     
             return result;
         }
 

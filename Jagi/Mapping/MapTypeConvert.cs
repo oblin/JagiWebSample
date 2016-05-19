@@ -58,7 +58,7 @@ namespace Jagi.Mapping
             if (string.IsNullOrEmpty(source))
                 return null;
             else
-                return source.ConvertToDateTime();
+                return System.Convert.ToDateTime(source, System.Globalization.CultureInfo.CurrentCulture);
         }
     }
 
