@@ -295,6 +295,7 @@ namespace Jagi.Mvc.Angular
                  .Attr("ng-model", this.Expression)
                  .Attr("type", "text")
                  .Attr("datepicker-popup", "yyyy/MM/dd")
+                 .Attr("datepicker-options", "{startingDay: 1}")
                  .Attr("is-open", "dateStatus.opened");
 
             ApplyValidationToInput(input);
