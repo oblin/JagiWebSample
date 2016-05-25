@@ -21,6 +21,7 @@
         public const string ADDITIONAL_VALUES_CODEMAP = "_CODEMAP";
         public const string ADDITIONAL_VALUES_CODE_OPTIONS = "_CODEMAP_OPTIONS";
         public const string ADDITIONAL_VALUES_CODEMAP_FOR = "_CODEMAP_FOR";
+        public const string ADDITIONAL_VALUES_CODEMAP_EMPTY_SELECTION = "_CODEMAP_EMPTY_FIELD";
 
         public const string DATATYPE_NAME_VALUEFOR = "Valuefor";
         public const string DATATYPE_NAME_VALUEFORKEY = "ValueforKey";

@@ -47,7 +47,7 @@ namespace UnitTestJagi
 
             var resultObject = JsonConvert.DeserializeObject<dynamic>(jsonString);
 
-            Assert.AreEqual(11, (int)resultObject.number);
+            Assert.AreEqual(11, (int)resultObject.Number);
             Assert.IsNull(resultObject.startDate);
 
             sample = new SampleCopy2 { Number = 11, Text = "Sample Text", StartDate = DateTime.Now };
@@ -55,10 +55,10 @@ namespace UnitTestJagi
 
             resultObject = JsonConvert.DeserializeObject<dynamic>(jsonString);
 
-            Assert.AreEqual(11, (int)resultObject.number);
-            Assert.IsNotNull(resultObject.startDate);
+            Assert.AreEqual(11, (int)resultObject.Number);
+            Assert.IsNotNull(resultObject.StartDate);
 
-            Assert.IsInstanceOfType((DateTime)resultObject.startDate, typeof(DateTime));
+            Assert.IsInstanceOfType((DateTime)resultObject.StartDate, typeof(DateTime));
         }
 
         [TestMethod]

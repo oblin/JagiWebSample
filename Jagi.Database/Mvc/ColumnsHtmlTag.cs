@@ -94,7 +94,7 @@ namespace Jagi.Database.Mvc
             }
             if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DropdwonKey))
             {
-                HtmlTag input = ProcessDropdownFor(_column.ColumnName, _column.DropdwonKey, _column.DropdwonCascade);
+                HtmlTag input = ProcessDropdownFor(_column.ColumnName, _column.DropdwonKey, _column.DropdwonCascade, false);
                 if (input != null)
                     return input;
             }
@@ -116,9 +116,12 @@ namespace Jagi.Database.Mvc
             {
                 string codeMap = _metadata.AdditionalValues[ConstantString.ADDITIONAL_VALUES_CODEMAP].ToString();
                 string codeMapFor = null;
+                bool emptyField = false;
                 if (_metadata.AdditionalValues.ContainsKey(ConstantString.ADDITIONAL_VALUES_CODEMAP_FOR))
                     codeMapFor = _metadata.AdditionalValues[ConstantString.ADDITIONAL_VALUES_CODEMAP_FOR].ToString();
-                return ProcessDropdownFor(Name, codeMap, codeMapFor);
+                if (_metadata.AdditionalValues.ContainsKey(ConstantString.ADDITIONAL_VALUES_CODEMAP_EMPTY_SELECTION))
+                    emptyField = true;
+                return ProcessDropdownFor(Name, codeMap, codeMapFor, emptyField);
 
             }
             return null;
@@ -161,7 +164,7 @@ namespace Jagi.Database.Mvc
             return new Dictionary<string, string>();
         }
 
-        private HtmlTag ProcessDropdownFor(string name, string dropdownKey, string dropdownCascade)
+        private HtmlTag ProcessDropdownFor(string name, string dropdownKey, string dropdownCascade, bool emptyField)
         {
             HtmlTag input = null;
             if (!string.IsNullOrEmpty(dropdownCascade))
@@ -176,7 +179,14 @@ namespace Jagi.Database.Mvc
             }
             else
             {
-                var options = _codes.GetDetails(dropdownKey);
+
+                Dictionary<string, string> options = _codes.GetDetails(dropdownKey);
+                if (emptyField)
+                {
+                    var optionlist = options.ToList();
+                    optionlist.Insert(0, new KeyValuePair<string, string>("", "---請選擇---"));
+                    options = optionlist.ToDictionary(k => k.Key, v => v.Value);
+                }
                 input = base.GetInput(FormGroupType.Dropdown, null, options);
             }
 
