@@ -2,6 +2,8 @@
 using Humanizer;
 using Jagi.Helpers;
 using Jagi.Mvc.Helpers;
+using Jagi.Utility;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -16,6 +18,9 @@ namespace Jagi.Mvc.Angular
         protected readonly HtmlHelper _helper;
         private readonly string _expressionPrefix;
         private readonly FormGroupLayout _layout;
+
+       [Dependency("InjectedAngularHtmlMethod")]
+        public AngularHtmlTag _control { get; set; }
 
         public AngularModelHelper(HtmlHelper helper, string expressionPrefix, FormGroupLayout layout = null)
         {
@@ -62,22 +67,27 @@ namespace Jagi.Mvc.Angular
                 _helper, variableName, propertyExpression);
         }
 
-        public HtmlTag AngularLabelFor<TProp>(Expression<Func<TModel, TProp>> property, FormGroupLayout layout = null)
+        private HtmlTag AngularLabelFor(AngularHtmlTag ngControl, FormGroupLayout layout)
         {
-            AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
             if (layout == null)
                 layout = _layout;
-            return ngControl.GetLabel(layout);
+
+            var result = ngControl.GetLabel(layout);
+
+            return result;
         }
 
-        public HtmlTag AngularEditorFor<TProp>(Expression<Func<TModel, TProp>> property,
-            FormGroupType type = FormGroupType.Default,
-            string attr = null,
-            RouteValueDictionary attrs = null,
-            Dictionary<string, string> options = null,
-            string value = null)
+        private string GetPropertyStringExpression<TProp>(Expression<Func<TModel, TProp>> property)
         {
-            AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
+            string result = ((LambdaExpression)property).Body.ToString();
+            var paramName = property.Parameters[0].Name;
+            var paramTypeName = property.Parameters[0].Type.Name;
+
+            return result.Replace(paramName + ".", paramTypeName + ".");
+        }
+
+        private HtmlTag AngularEditorFor(AngularHtmlTag ngControl, FormGroupType type, string attr, RouteValueDictionary attrs, Dictionary<string, string> options, string value)
+        {
             bool disable = GetDisabledAttributes(attrs);
             HtmlTag input = ngControl.GetInput(type, value, options, disable);
 
@@ -158,6 +168,7 @@ namespace Jagi.Mvc.Angular
         {
             layout = layout ?? _layout;
             formGroupGrid = formGroupGrid ?? (layout != null ? layout.FormGrid : null);
+
             AngularHtmlTag ngControl = AngularHtmlFactory.GetHtmlTag(property, _expressionPrefix);
 
             string name = ngControl.GetName();
@@ -170,12 +181,12 @@ namespace Jagi.Mvc.Angular
                 formGroup.AddClass("col-sm-" + formGroupGrid.ToString());
 
             HtmlTag label = null;
-            HtmlTag input = AngularEditorFor(property, type, attr, attrs, options, value);
+            HtmlTag input = AngularEditorFor(ngControl, type, attr, attrs, options, value);
 
             if (InputHasRquiredAttr(input))
                 formGroup.AddClass(ConstantString.VALIDATION_REQUIRED_FIELD);
 
-            label = AngularLabelFor(property, layout);
+            label = AngularLabelFor(ngControl, layout);
             if (layout != null)
             {
                 var spanTag = CreateSpan(span);

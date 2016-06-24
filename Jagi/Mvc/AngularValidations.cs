@@ -1,6 +1,7 @@
 ﻿//using Jagi.Helpers;
 using Humanizer;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Jagi.Mvc
     public class PropertyRule
     {
         public string PropertyName { get; set; }
-        public Dictionary<string, dynamic> Rules { get; set; }
+        public ConcurrentDictionary<string, dynamic> Rules { get; set; }
     }
 
     /// <summary>
@@ -78,7 +79,7 @@ namespace Jagi.Mvc
                 _displayName = GetDisplayName(_metadata);
 
                 PropertyRule propRule = new PropertyRule 
-                    { PropertyName = propName, Rules = new Dictionary<string, dynamic>() };
+                    { PropertyName = propName, Rules = new ConcurrentDictionary<string, dynamic>() };
 
                 AddStringLengthRule(prop, propRule);
 
@@ -102,7 +103,7 @@ namespace Jagi.Mvc
             bool hadRule = false;
             if (_metadata.IsRequired)
             {
-                propRule.Rules.Add(ConstantString.VALIDATION_REQUIRED_FIELD, 
+                propRule.Rules.TryAdd(ConstantString.VALIDATION_REQUIRED_FIELD, 
                     new { message = ConstantString.VALIDATION_REQUIRED_MESSAGE.FormatWith(_displayName) });
                 hadRule = true;
             }
@@ -118,7 +119,7 @@ namespace Jagi.Mvc
                 var attr = prop.GetCustomAttributes().OfType<StringLengthAttribute>().FirstOrDefault();
                 if (attr.MinimumLength > 0)
                 {
-                    propRule.Rules.Add(ConstantString.VALIDATION_MINLENGTH_FIELD, new
+                    propRule.Rules.TryAdd(ConstantString.VALIDATION_MINLENGTH_FIELD, new
                     {
                         message = attr.ErrorMessage ?? 
                             ConstantString.VALIDATION_MINLENGTH_MESSAGE.FormatWith(_displayName, attr.MinimumLength),
@@ -128,7 +129,7 @@ namespace Jagi.Mvc
                 }
                 if (attr.MaximumLength > 0)
                 {
-                    propRule.Rules.Add(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
+                    propRule.Rules.TryAdd(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
                     {
                         message = attr.ErrorMessage ?? 
                             ConstantString.VALIDATION_MAXLENGTH_MESSAGE.FormatWith(_displayName, attr.MaximumLength),

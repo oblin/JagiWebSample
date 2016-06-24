@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System;
+using System.Collections.Concurrent;
 
 namespace Jagi.Database.Mvc
 {
@@ -41,7 +42,7 @@ namespace Jagi.Database.Mvc
                     if (_validations == null)
                     {
                         _validations = new PropertyRule
-                        { PropertyName = _column.ColumnName, Rules = new Dictionary<string, dynamic>() };
+                        { PropertyName = _column.ColumnName, Rules = new ConcurrentDictionary<string, dynamic>() };
                     }
 
                     var displayName = GetDefaultDisplayName();
@@ -176,6 +177,12 @@ namespace Jagi.Database.Mvc
                     .FormatWith(optionsName));
                 input.Attr("code-map", dropdownKey);
                 input.Attr("cascade-options", optionsName);
+                // 因為 CascadeDropdown 實際上呼叫 CodesController.GetDetail 取出子項目的值
+                // 因此若有需要空白的值，要透過額外的 attribute 再呼叫時候傳入進行判斷
+                if (emptyField)
+                    input.Attr("empty-field", true);
+                else
+                    input.Attr("empty-field", false);
             }
             else
             {
@@ -207,7 +214,7 @@ namespace Jagi.Database.Mvc
         {
             if (_column.DataType == FieldType.String && !string.IsNullOrEmpty(_column.DisplayFormat))
             {
-                _validations.Rules.Add(ConstantString.VALIDATION_PATTERN,
+                _validations.Rules.TryAdd(ConstantString.VALIDATION_PATTERN,
                     new
                     {
                         message = ConstantString.VALIDATION_PATTERN_MESSAGE.FormatWith(displayName),
@@ -222,7 +229,7 @@ namespace Jagi.Database.Mvc
             {
                 if (_column.MinValue.HasValue)
                 {
-                    _validations.Rules.Add(ConstantString.VALIDATION_MIN_VALUE,
+                    _validations.Rules.TryAdd(ConstantString.VALIDATION_MIN_VALUE,
                         new
                         {
                             message = ConstantString.VALIDATION_MIN_MESSAGE
@@ -232,7 +239,7 @@ namespace Jagi.Database.Mvc
                 }
                 if (_column.MaxValue.HasValue)
                 {
-                    _validations.Rules.Add(ConstantString.VALIDATION_MAX_VALUE,
+                    _validations.Rules.TryAdd(ConstantString.VALIDATION_MAX_VALUE,
                         new
                         {
                             message = ConstantString.VALIDATION_MAX_MESSAGE
@@ -250,7 +257,7 @@ namespace Jagi.Database.Mvc
                 if (_column.StringMaxLength > 0
                     && !_validations.Rules.ContainsKey(ConstantString.VALIDATION_MAXLENGTH_FIELD))
                 {
-                    _validations.Rules.Add(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
+                    _validations.Rules.TryAdd(ConstantString.VALIDATION_MAXLENGTH_FIELD, new
                     {
                         message = ConstantString.VALIDATION_MAXLENGTH_MESSAGE
                             .FormatWith(displayName, _column.StringMaxLength),
@@ -260,7 +267,7 @@ namespace Jagi.Database.Mvc
                 if (_column.StringMinLength.HasValue
                     && !_validations.Rules.ContainsKey(ConstantString.VALIDATION_MINLENGTH_FIELD))
                 {
-                    _validations.Rules.Add(ConstantString.VALIDATION_MINLENGTH_FIELD, new
+                    _validations.Rules.TryAdd(ConstantString.VALIDATION_MINLENGTH_FIELD, new
                     {
                         message = ConstantString.VALIDATION_MINLENGTH_MESSAGE
                             .FormatWith(displayName, _column.StringMinLength),
@@ -275,7 +282,7 @@ namespace Jagi.Database.Mvc
             if (!_column.Nullable)
             {
                 if (!_validations.Rules.ContainsKey(ConstantString.VALIDATION_REQUIRED_FIELD))
-                    _validations.Rules.Add(ConstantString.VALIDATION_REQUIRED_FIELD,
+                    _validations.Rules.TryAdd(ConstantString.VALIDATION_REQUIRED_FIELD,
                         new
                         {
                             message = ConstantString.VALIDATION_REQUIRED_MESSAGE

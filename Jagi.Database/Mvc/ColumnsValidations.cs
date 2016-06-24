@@ -2,6 +2,7 @@
 using Jagi.Helpers;
 using Jagi.Mvc;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -51,8 +52,8 @@ namespace Jagi.Database.Mvc
                 PropertyRule invalid = null;
                 if (!column.Nullable && value == null)
                 {
-                    invalid = new PropertyRule { PropertyName = prop.Name, Rules = new Dictionary<string, dynamic>() };
-                    invalid.Rules.Add(ConstantString.VALIDATION_REQUIRED_FIELD, ConstantString.VALIDATION_REQUIRED_MESSAGE.FormatWith(prop.Name));
+                    invalid = new PropertyRule { PropertyName = prop.Name, Rules = new ConcurrentDictionary<string, dynamic>() };
+                    invalid.Rules.TryAdd(ConstantString.VALIDATION_REQUIRED_FIELD, ConstantString.VALIDATION_REQUIRED_MESSAGE.FormatWith(prop.Name));
                 }
 
                 if (column.DataType == Interface.FieldType.String)
@@ -63,8 +64,8 @@ namespace Jagi.Database.Mvc
                         if (sValue.Length > column.StringMaxLength)
                         {
                             if (invalid == null)
-                                invalid = new PropertyRule { PropertyName = prop.Name, Rules = new Dictionary<string, dynamic>() };
-                            invalid.Rules.Add(
+                                invalid = new PropertyRule { PropertyName = prop.Name, Rules = new ConcurrentDictionary<string, dynamic>() };
+                            invalid.Rules.TryAdd(
                                 ConstantString.VALIDATION_MAXLENGTH_FIELD,
                                 ConstantString.VALIDATION_MAXLENGTH_MESSAGE.FormatWith(prop.Name, column.StringMaxLength));
                         }
@@ -74,8 +75,8 @@ namespace Jagi.Database.Mvc
                         if (sValue.Length < column.StringMinLength)
                         {
                             if (invalid == null)
-                                invalid = new PropertyRule { PropertyName = prop.Name, Rules = new Dictionary<string, dynamic>() };
-                            invalid.Rules.Add(
+                                invalid = new PropertyRule { PropertyName = prop.Name, Rules = new ConcurrentDictionary<string, dynamic>() };
+                            invalid.Rules.TryAdd(
                                 ConstantString.VALIDATION_MINLENGTH_FIELD,
                                 ConstantString.VALIDATION_MINLENGTH_MESSAGE.FormatWith(prop.Name, column.StringMinLength));
                         }
@@ -92,8 +93,8 @@ namespace Jagi.Database.Mvc
                             if (dValue < column.MinValue)
                             {
                                 if (invalid == null)
-                                    invalid = new PropertyRule { PropertyName = prop.Name, Rules = new Dictionary<string, dynamic>() };
-                                invalid.Rules.Add(
+                                    invalid = new PropertyRule { PropertyName = prop.Name, Rules = new ConcurrentDictionary<string, dynamic>() };
+                                invalid.Rules.TryAdd(
                                     ConstantString.VALIDATION_MIN_VALUE,
                                     ConstantString.VALIDATION_MIN_MESSAGE.FormatWith(prop.Name, column.MinValue));
                             }
@@ -103,8 +104,8 @@ namespace Jagi.Database.Mvc
                             if (dValue > column.MaxValue)
                             {
                                 if (invalid == null)
-                                    invalid = new PropertyRule { PropertyName = prop.Name, Rules = new Dictionary<string, dynamic>() };
-                                invalid.Rules.Add(
+                                    invalid = new PropertyRule { PropertyName = prop.Name, Rules = new ConcurrentDictionary<string, dynamic>() };
+                                invalid.Rules.TryAdd(
                                     ConstantString.VALIDATION_MAX_VALUE,
                                     ConstantString.VALIDATION_MAX_MESSAGE.FormatWith(prop.Name, column.MaxValue));
                             }
@@ -113,8 +114,8 @@ namespace Jagi.Database.Mvc
                     catch (Exception ex)
                     {
                         if (invalid == null)
-                            invalid = new PropertyRule { PropertyName = prop.Name, Rules = new Dictionary<string, dynamic>() };
-                        invalid.Rules.Add("ValidationException", ex.Message);
+                            invalid = new PropertyRule { PropertyName = prop.Name, Rules = new ConcurrentDictionary<string, dynamic>() };
+                        invalid.Rules.TryAdd("ValidationException", ex.Message);
                     }
                 }
 
